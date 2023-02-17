@@ -1,6 +1,6 @@
 import os, sys, SearchUrl, subprocess
 
-#Fonction qui cherche dans un fichier si il contient les informations liées à l'url du cms (PhpMyAdmin)     
+#Fonction qui cherche dans un fichier si il contient les informations liï¿½es ï¿½ l'url du cms (RocketChat)     
 def TakeUrlRocket(fileConfig):
     listUrlRocket = []
     fileConfig = fileConfig.split('\n')
@@ -14,7 +14,7 @@ def TakeUrlRocket(fileConfig):
 
     return listUrlRocket
 
-#Fonction qui crée une condition pour trier les fichiers contenant les url
+#Fonction qui crï¿½e une condition pour trier les fichiers contenant les url
 def trueOrNotRock(fileConfig):
     fileConfig = fileConfig.split('\n')
     yesOrNo = False
@@ -27,7 +27,7 @@ def trueOrNotRock(fileConfig):
 
     return yesOrNo
 
-#récupération des url du cms (PhpMyAdmin) dans une liste 
+#rï¿½cupï¿½ration des url du cms (RocketChat) dans une liste 
 def displayServRocket():
   currentpath = "/" #chemin vers repertoire courant
   pathOfFileConf = SearchUrl.SearchConfJson(currentpath)
