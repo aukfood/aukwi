@@ -4,6 +4,7 @@ import takeAppInDocker, SearchUrl, displayUrl, gestCsv, displayVers, SearchVersi
 
 def main():
   gestCsv.createInventory()
+  gestCsv.createInventoryJson()
   #listUrl = displayVers.displayVersionJson()
   #listDb = displayUrl.listDbName
   #print(listUrl)
