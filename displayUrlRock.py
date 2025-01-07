@@ -1,56 +1,48 @@
-import os, sys, SearchUrl, subprocess
+import SearchUrl, subprocess
 
-#Fonction qui cherche dans un fichier si il contient les informations li�es � l'url du cms (RocketChat)     
+# Fonction qui cherche dans un fichier si il contient les informations liées à l'url du cms (RocketChat)     
 def TakeUrlRocket(fileConfig):
     listUrlRocket = []
     fileConfig = fileConfig.split('\n')
     for line in fileConfig:
         if line.startswith('    "semver": "'):
-          start = line.index('    "semver": "') + len('    "semver": "')
-          end = line.index('"', start)
-          url = line[start:end]
-          listUrlRocket.append(url)
-          
-
-    return listUrlRocket
-
-#Fonction qui cr�e une condition pour trier les fichiers contenant les url
-def trueOrNotRock(fileConfig):
-    fileConfig = fileConfig.split('\n')
-    yesOrNo = False
-    for line in fileConfig:
-        if line.startswith('    "semver": "'):
             start = line.index('    "semver": "') + len('    "semver": "')
             end = line.index('"', start)
             url = line[start:end]
-            yesOrNo = True
+            listUrlRocket.append(url)
+    return listUrlRocket
 
-    return yesOrNo
+# Fonction qui crée une condition pour trier les fichiers contenant les url
+def trueOrNotRock(fileConfig):
+    fileConfig = fileConfig.split('\n')
+    for line in fileConfig:
+        if line.startswith('    "semver": "'):
+            return True
+    return False
 
-#r�cup�ration des url du cms (RocketChat) dans une liste 
+# Récupération des url du cms (RocketChat) dans une liste 
 def displayServRocket():
-  currentpath = "/" #chemin vers repertoire courant
-  pathOfFileConf = SearchUrl.SearchConfJson(currentpath)
-  servListRock = []
+    currentpath = "/" # chemin vers répertoire courant
+    pathOfFileConf = SearchUrl.SearchConfJson(currentpath)
+    servListRock = []
 
-  for i in range(len(pathOfFileConf)):
-    fileConfig = open(pathOfFileConf[i], 'r').read()
-    if (trueOrNotRock(fileConfig) == True):
-      serve = subprocess.getoutput('sudo '+ pathOfFileConf[i] +' | hostname -f').split('\n')
-      serve = [x.split('\t')[0] for x in serv]
+    for path in pathOfFileConf:
+        with open(path, 'r') as file:
+            fileConfig = file.read()
+            if trueOrNotRock(fileConfig):
+                serve = subprocess.getoutput(f'sudo {path} | hostname -f').split('\n')
+                serve = [x.split('\t')[0] for x in serve]
+                servListRock.extend(serve)
+    return servListRock
 
-  for Name in serve:
-    servListRock.append(Name)
-    break
-  return servListRock
-    
 def displayUrlRock():
-  currentpath = "/" #chemin vers repertoire courant
-  pathOfFileConfJson = SearchUrl.SearchConfJson(currentpath)
-  listUrlRock = []
+    currentpath = "/" # chemin vers répertoire courant
+    pathOfFileConfJson = SearchUrl.SearchConfJson(currentpath)
+    listUrlRock = []
 
-  for y in range(len(pathOfFileConfJson)):
-    if "Rocket.Chat" in pathOfFileConfJson[y]:
-      fileConfig = open(pathOfFileConfJson[y], 'r').read()
-      listUrlRock += TakeUrlRocket(fileConfig)             
-  return listUrlRock
+    for path in pathOfFileConfJson:
+        if "Rocket.Chat" in path:
+            with open(path, 'r') as file:
+                fileConfig = file.read()
+                listUrlRock += TakeUrlRocket(fileConfig)
+    return listUrlRock

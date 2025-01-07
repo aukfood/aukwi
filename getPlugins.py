@@ -1,59 +1,32 @@
-import subprocess, string, time, displayUrl, re
+import subprocess, re
 
 listVersPlug = []
 listNamePlug = []
-listDashPlus = []
 
-#Fonction qui récupère nom + version des plugins dans une liste
+# Fonction qui rÃ©cupÃ¨re nom + version des plugins dans une liste
 def getPlug(listDbName, listUrl):
-
-  for i in range(len(listDbName)):
-    plug = subprocess.getoutput('sudo -u'+ listDbName[i]+ ' php8.1 /var/www/'+ listUrl[i] +'/www/occ app:list').split()
-    plug = [x.split('\t')[0] for x in plug]
-
-    plugNameList = []
     plugList = []
-    for Name in plug:
-      plugList.append(Name)
-  
-    return(plugList)
+    for i in range(len(listDbName)):
+        plug = subprocess.getoutput(f'sudo -u {listDbName[i]} php8.1 /var/www/{listUrl[i]}/www/occ app:list').split()
+        plugList.extend(plug)
+    return plugList
 
-#Fonction qui va permettre de trier le nom + version des plugins pour récupérer que le nom 
+# Fonction qui va permettre de trier le nom + version des plugins pour rÃ©cupÃ©rer que le nom 
 def only_letters(input_str):
     return re.match("^[a-zA-Z:]+$", input_str)
-    
-#Fonction qui va permettre de récupérer que la version des plugins pour récupérer que la version
+
+# Fonction qui va permettre de rÃ©cupÃ©rer que la version des plugins pour rÃ©cupÃ©rer que la version
 def only_numbers(input_str):
     return re.match(r'\b\d+\.\d+\b|\b\d+\b', input_str)
 
-#Fonction qui va permettre de récupérer le nom des plugins dans une liste    
+# Fonction qui va permettre de rÃ©cupÃ©rer le nom des plugins dans une liste    
 def listNamePlg(listPlug):
+    listNamePlug = []
+    for plug in listPlug:
+        if only_letters(plug):
+            listNamePlug.append(plug.replace(":", ""))
+    return listNamePlug
 
-  listNamePlug = []
-  for y in range(len(listPlug)):
-         if listPlug[y] == "-":
-           y = y + 1
-         elif listPlug[y] == "Enabled:":
-           y = y + 1
-         elif listPlug[y] == "Disabled:":
-           break
-         elif only_letters(listPlug[y]):
-           if ":" in listPlug[y]:
-             new_text = listPlug[y].replace(":", "")
-             listNamePlug.append(new_text)
-  return listNamePlug
-
-#Fonction qui va permettre de récupérer la version des plugins dans une liste
+# Fonction qui va permettre de rÃ©cupÃ©rer la version des plugins dans une liste
 def listVersPlg(listPlug):
-
-  listVersPlug = []
-  for y in range(len(listPlug)):
-         if listPlug[y] == "-":
-           y = y + 1
-         elif listPlug[y] == "Enabled:":
-           y = y + 1
-         elif listPlug[y] == "Disabled:":
-           break
-         elif only_numbers(listPlug[y]):     
-           listVersPlug.append(listPlug[y])
-  return listVersPlug
+    return [plug for plug in listPlug if only_numbers(plug)]

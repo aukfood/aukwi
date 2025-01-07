@@ -3,26 +3,20 @@ import os, fnmatch, sys
 listFileVersName = []
 listFileJsonName = []
 
-#Recherche du fichier version.php (où se trouve la version des cms Moodle, Wordpress, Nextcloud) dans tous les dossiers à partir de la raçine du serveur
-def SearchVers(currentpath):
-  pattern = 'version.php'
-  listPathVersion = []
-  for path, dirs, files in os.walk(currentpath):
-    for fname in fnmatch.filter(files, pattern):
-      chemin = os.path.join(path, fname)
-      listPathVersion.append(chemin)
-      listFileVersName.append(fname)
-            
-  return listPathVersion
+# Recherche de fichiers correspondant Ã  un pattern dans tous les dossiers Ã  partir de la racine du serveur
+def searchFiles(currentpath, pattern, fileList):
+    listPath = []
+    for path, dirs, files in os.walk(currentpath):
+        for fname in fnmatch.filter(files, pattern):
+            chemin = os.path.join(path, fname)
+            listPath.append(chemin)
+            fileList.append(fname)
+    return listPath
 
-#Recherche du fichier package.json (où se trouve la version du cmc PhpMyAdmin) dans tous les dossiers à partir de la raçine du serveur
+# Recherche du fichier version.php (oÃ¹ se trouve la version des cms Moodle, Wordpress, Nextcloud)
+def SearchVers(currentpath):
+    return searchFiles(currentpath, 'version.php', listFileVersName)
+
+# Recherche du fichier package.json (oÃ¹ se trouve la version du cmc PhpMyAdmin)
 def SearchJson(currentpath):
-  listPathJson = []
-  pattern = 'package.json'
-  for path, dirs, files in os.walk(currentpath):
-    for fname in fnmatch.filter(files, pattern):
-      chemin = os.path.join(path, fname)
-      listPathJson.append(chemin)
-      listFileJsonName.append(fname)
-            
-  return listPathJson
+    return searchFiles(currentpath, 'package.json', listFileJsonName)
