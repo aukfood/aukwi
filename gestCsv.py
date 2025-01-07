@@ -39,12 +39,12 @@ def createInventory():
         rows.append([serv, url, cms, "Not a plugin", version])
         if cms == "NextCloud":
             listNamePlug = getPlugins.listNamePlg(yp)
-            for y in range(len(listNamePlug)):
-                rows.append([serv, url, listNamePlug[y], "Plugin", getPlugins.listVersPlg(yp)[y]])
+            listVersPlug = getPlugins.listVersPlg(yp)
+            for y in range(min(len(listNamePlug), len(listVersPlug))):
+                rows.append([serv, url, listNamePlug[y], "Plugin", listVersPlug[y]])
 
     for i in range(len(listVersJson)):
         rows.append([displayUrl.displayServJson()[i], displayUrl.displayUrlJson()[i], displayVers.listCmsJson[i], "Not a plugin", listVersJson[i]])
-
 
     writeCsv('inventory.csv', header, rows)
 
@@ -93,13 +93,14 @@ def createInventoryJson():
         })
         if cms == "NextCloud":
             listNamePlug = getPlugins.listNamePlg(yp)
-            for y in range(len(listNamePlug)):
+            listVersPlug = getPlugins.listVersPlg(yp)
+            for y in range(min(len(listNamePlug), len(listVersPlug))):
                 inventory.append({
                     "Server Name": serv,
                     "Url": url,
                     "Cms": listNamePlug[y],
                     "Plugin or not": "Plugin",
-                    "Version": getPlugins.listVersPlg(yp)[y]
+                    "Version": listVersPlug[y]
                 })
 
     for i in range(len(listVersJson)):
