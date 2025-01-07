@@ -14,9 +14,10 @@ def TakeUrlCms(fileConfig):
             listUrlCms.append(url)
         if line.startswith('    0 => \''):
             start = line.index('    0 => \'') + len('    0 => \'')
-            end = line.index('.', start)
-            dbname = line[start:end]
-            listDbName.append(dbname)
+            if '.' in line[start:]:
+                end = line.index('.', start)
+                dbname = line[start:end]
+                listDbName.append(dbname)
     return listUrlCms
 
 # Fonction qui cherche dans un fichier si il contient les informations liées à l'url du cms (PhpMyAdmin)     

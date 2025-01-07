@@ -1,4 +1,4 @@
-import csv, json, displayVers, displayUrl, getPlugins, takeAppInDocker
+import csv, json, displayVers, displayUrl, getPlugins, takeAppInDocker, subprocess
 
 listNameOfDock = takeAppInDocker.getNameOnlyOffice()
 listNameCollabora = takeAppInDocker.getNameCollabora()
@@ -7,6 +7,7 @@ listUrl = displayUrl.displayUrl()
 listDb = displayUrl.listDbName
 yp = getPlugins.getPlug(listDb, listUrl)
 listVersJson = displayVers.displayVersionJson()
+servername = subprocess.getoutput('hostname').strip()
 
 # Fonction pour écrire les données dans un fichier CSV
 def writeCsv(filename, header, rows):
@@ -20,8 +21,15 @@ def createInventory():
     header = ["Server Name", "Url", "Cms", "Plugin or not", "Version"]
     rows = []
 
+    # Ajout des données pour OnlyOffice, Collabora et Calcom (Docker)
     for i in range(len(listNameOfDock)):
-        rows.append([takeAppInDocker.getServOnlyOffice()[i], listNameOfDock[i], "OnlyOffice", "Not a plugin", takeAppInDocker.getVersOnlyOffice()[i]])
+        rows.append([servername, takeAppInDocker.getDockerVhosts(listNameOfDock)[i], "OnlyOffice", "Not a plugin", takeAppInDocker.getVersOnlyOffice()[i]])
+        
+    for i in range(len(listNameCollabora)):
+        rows.append([servername, takeAppInDocker.getDockerVhosts(listNameCollabora)[i], "Collabora", "Not a plugin", takeAppInDocker.getVersCollabora()[i]])
+
+    for i in range(len(listNameCalcom)):
+        rows.append([servername, takeAppInDocker.getDockerVhosts(listNameCalcom)[i], "Calcom", "Not a plugin", takeAppInDocker.getVersCalcom()[i]])
 
     for i in range(len(listUrl)):
         version = displayVers.displayVersion()[i]
@@ -37,11 +45,6 @@ def createInventory():
     for i in range(len(listVersJson)):
         rows.append([displayUrl.displayServJson()[i], displayUrl.displayUrlJson()[i], displayVers.listCmsJson[i], "Not a plugin", listVersJson[i]])
 
-    for i in range(len(listNameCollabora)):
-        rows.append([takeAppInDocker.getServCollabora()[i], listNameCollabora[i], "Collabora", "Not a plugin", takeAppInDocker.getVersCollabora()[i]])
-
-    for i in range(len(listNameCalcom)):
-        rows.append([takeAppInDocker.getServCalcom()[i], listNameCalcom[i], "Calcom", "Not a plugin", takeAppInDocker.getVersCalcom()[i]])
 
     writeCsv('inventory.csv', header, rows)
 
@@ -51,11 +54,29 @@ def createInventoryJson():
 
     for i in range(len(listNameOfDock)):
         inventory.append({
-            "Server Name": takeAppInDocker.getServOnlyOffice()[i],
-            "Url": listNameOfDock[i],
+            "Server Name": servername,
+            "Url": takeAppInDocker.getDockerVhosts(listNameOfDock)[i],
             "Cms": "OnlyOffice",
             "Plugin or not": "Not a plugin",
             "Version": takeAppInDocker.getVersOnlyOffice()[i]
+        })
+        
+    for i in range(len(listNameCollabora)):
+        inventory.append({
+            "Server Name": servername,
+            "Url": takeAppInDocker.getDockerVhosts(listNameCollabora)[i],
+            "Cms": "Collabora",
+            "Plugin or not": "Not a plugin",
+            "Version": takeAppInDocker.getVersCollabora()[i]
+        })
+
+    for i in range(len(listNameCalcom)):
+        inventory.append({
+            "Server Name": servername,
+            "Url": takeAppInDocker.getDockerVhosts(listNameCalcom)[i],
+            "Cms": "Calcom",
+            "Plugin or not": "Not a plugin",
+            "Version": takeAppInDocker.getVersCalcom()[i]
         })
 
     for i in range(len(listUrl)):
@@ -88,24 +109,6 @@ def createInventoryJson():
             "Cms": displayVers.listCmsJson[i],
             "Plugin or not": "Not a plugin",
             "Version": listVersJson[i]
-        })
-
-    for i in range(len(listNameCollabora)):
-        inventory.append({
-            "Server Name": takeAppInDocker.getServCollabora()[i],
-            "Url": listNameCollabora[i],
-            "Cms": "Collabora",
-            "Plugin or not": "Not a plugin",
-            "Version": takeAppInDocker.getVersCollabora()[i]
-        })
-
-    for i in range(len(listNameCalcom)):
-        inventory.append({
-            "Server Name": takeAppInDocker.getServCalcom()[i],
-            "Url": listNameCalcom[i],
-            "Cms": "Calcom",
-            "Plugin or not": "Not a plugin",
-            "Version": takeAppInDocker.getVersCalcom()[i]
         })
 
     with open('inventory.json', 'w') as json_file:

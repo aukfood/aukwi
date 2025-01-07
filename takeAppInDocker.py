@@ -20,6 +20,23 @@ def getDockerVersions(nameList, versionKey):
             versions.append("Unknown")
     return versions
 
+# Fonction pour récupérer le vhost des containers Docker
+def getDockerVhosts(nameList):
+    vhosts = []
+    for name in nameList:
+        # Récupérer le port utilisé par le container Docker
+        port = subprocess.getoutput(f'docker inspect --format="{{{{(index (index .NetworkSettings.Ports \\"80/tcp\\") 0).HostPort}}}}" {name}').strip()
+        if not port:
+            port = "80"
+        
+        # Chercher le vhost dans les fichiers de configuration Apache de l'hôte en utilisant le port trouvé
+        vhost = subprocess.getoutput(f'grep -r ":{port}" /etc/apache2/sites-available/ /etc/apache2/sites-enabled/ | grep ServerName | awk \'{{print $2}}\'').strip()
+        if not vhost:
+            vhost = "Unknown"
+        
+        vhosts.append(vhost)
+    return vhosts
+
 # Fonction pour récupérer tous les noms des OnlyOffice dans les dockers
 def getNameOnlyOffice():
     return getDockerNames('onlyoffice')
