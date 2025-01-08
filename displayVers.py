@@ -21,7 +21,7 @@ def TakeVersionCms(fileVersion):
             version = line[start:end]
             cms = "Wordpress"
             listCms.append(cms)
-            listVersionCms.append(version)
+            listVersionCms.append(version.strip("'"))
         elif line.startswith('$OC_VersionString = \''):
             start = line.index('$OC_VersionString = \'') + len('$OC_VersionString = \'')
             end = line.index('\'', start)

@@ -98,7 +98,7 @@ def displayUrl():
     for path in pathOfFileConf:
         with open(path, 'r') as file:
             fileConfig = file.read()
-            if 'wp' in path:
+            if 'wp' in path or 'wordpress' in path:
                 url = getWordPressUrl(path)
                 listUrl.append(url)  # Ajouter l'URL en tant qu'élément unique
             else:
