@@ -1,4 +1,4 @@
-import SearchUrl, subprocess
+import SearchUrl
 
 # Fonction qui cherche dans un fichier si il contient les informations liées à l'url du cms (RocketChat)     
 def TakeUrlRocket(fileConfig):
@@ -19,21 +19,6 @@ def trueOrNotRock(fileConfig):
         if line.startswith('    "semver": "'):
             return True
     return False
-
-# Récupération des url du cms (RocketChat) dans une liste 
-# def displayServRocket():
-#     currentpath = "/" # chemin vers répertoire courant
-#     pathOfFileConf = SearchUrl.SearchConfJson(currentpath)
-#     servListRock = []
-
-#     for path in pathOfFileConf:
-#         with open(path, 'r') as file:
-#             fileConfig = file.read()
-#             if trueOrNotRock(fileConfig):
-#                 serve = subprocess.getoutput(f'sudo {path} | hostname -f').split('\n')
-#                 serve = [x.split('\t')[0] for x in serve]
-#                 servListRock.extend(serve)
-#     return servListRock
 
 def displayUrlRock():
     currentpath = "/" # chemin vers répertoire courant

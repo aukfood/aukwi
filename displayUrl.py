@@ -1,4 +1,4 @@
-import SearchUrl, subprocess
+import SearchUrl, pymysql, re, os
 
 listDbName = []
 
@@ -10,8 +10,9 @@ def TakeUrlCms(fileConfig):
         if line.startswith('    0 => '):
             start = line.index('    0 => ') + len('    0 => ')
             end = line.index(',', start)
-            url = line[start:end]
-            listUrlCms.append(url)
+            url = line[start:end].strip("'")  # Supprimer les apostrophes
+            if '.' in url:
+                listUrlCms.append(url)
         if line.startswith('    0 => \''):
             start = line.index('    0 => \'') + len('    0 => \'')
             if '.' in line[start:]:
@@ -19,6 +20,45 @@ def TakeUrlCms(fileConfig):
                 dbname = line[start:end]
                 listDbName.append(dbname)
     return listUrlCms
+
+# Fonction pour extraire les informations de connexion à la base de données depuis wp-config.php
+def getDbCredentialsFromWpConfig(path):
+    with open(path, 'r') as file:
+        config = file.read()
+        dbname = re.search(r"define\(\s*['\"]DB_NAME['\"]\s*,\s*['\"](.+?)['\"]\s*\);", config)
+        dbuser = re.search(r"define\(\s*['\"]DB_USER['\"]\s*,\s*['\"](.+?)['\"]\s*\);", config)
+        dbpass = re.search(r"define\(\s*['\"]DB_PASSWORD['\"]\s*,\s*['\"](.+?)['\"]\s*\);", config)
+        if dbname and dbuser and dbpass:
+            return dbname.group(1), dbuser.group(1), dbpass.group(1)
+        else:
+            raise ValueError("Database credentials not found in wp-config.php")
+
+# Fonction pour récupérer l'URL d'un site WordPress depuis la base de données
+def getWordPressUrl(path):
+    wp_config_path = findWpConfigPath(path)
+    dbname, dbuser, dbpass = getDbCredentialsFromWpConfig(wp_config_path)
+    connection = pymysql.connect(
+        host='localhost',
+        user=dbuser,
+        password=dbpass,
+        database=dbname
+    )
+    cursor = connection.cursor()
+    cursor.execute("SELECT option_value FROM wp_options WHERE option_name = 'siteurl'")
+    url = cursor.fetchone()[0]
+    connection.close()
+    # Supprimer les préfixes http:// ou https://
+    url = re.sub(r'^https?://', '', url)
+    return url
+
+# Fonction pour trouver le fichier wp-config.php en remontant dans les répertoires
+def findWpConfigPath(path):
+    while path != '/':
+        wp_config_path = os.path.join(path, 'wp-config.php')
+        if os.path.isfile(wp_config_path):
+            return wp_config_path
+        path = os.path.dirname(path)
+    raise FileNotFoundError("wp-config.php not found")
 
 # Fonction qui cherche dans un fichier si il contient les informations liées à l'url du cms (PhpMyAdmin)     
 def TakeUrlCmsJson(fileConfig):
@@ -28,7 +68,7 @@ def TakeUrlCmsJson(fileConfig):
         if line.startswith('  ServerName '):
             start = line.index('  ServerName ') + len('  ServerName ')
             end = line.index('ovh', start) + 3
-            url = line[start:end]
+            url = line[start:end].strip("'")  # Supprimer les apostrophes
             listUrlCmsJson.append(url)
     return listUrlCmsJson
 
@@ -50,36 +90,6 @@ def trueOrNotJson(fileConfig):
             return True
     return False
 
-# Récupération des url des cms (Moodle, Wordpress, NextCloud) dans une liste
-# def displayServ():
-#     currentpath = "/" # chemin vers répertoire courant
-#     pathOfFileConf = SearchUrl.SearchConf(currentpath)
-#     servList = []
-
-#     for path in pathOfFileConf:
-#         with open(path, 'r') as file:
-#             fileConfig = file.read()
-#             if trueOrNot(fileConfig):
-#                 serv = subprocess.getoutput(f'sudo {path} | hostname -f').split('\n')
-#                 serv = [x.split('\t')[0] for x in serv]
-#                 servList.extend(serv)
-#     return servList
-
-# Récupération des url du cms (PhpMyAdmin) dans une liste 
-# def displayServJson():
-#     currentpath = "/" # chemin vers répertoire courant
-#     pathOfFileConf = SearchUrl.SearchConfJson(currentpath)
-#     servListJson = []
-
-#     for path in pathOfFileConf:
-#         with open(path, 'r') as file:
-#             fileConfig = file.read()
-#             if trueOrNotJson(fileConfig):
-#                 serv = subprocess.getoutput(f'sudo {path} | hostname -f').split('\n')
-#                 serv = [x.split('\t')[0] for x in serv]
-#                 servListJson.extend(serv)
-#     return servListJson
-
 def displayUrl():
     currentpath = "/" # chemin vers répertoire courant
     pathOfFileConf = SearchUrl.SearchConf(currentpath)
@@ -88,7 +98,11 @@ def displayUrl():
     for path in pathOfFileConf:
         with open(path, 'r') as file:
             fileConfig = file.read()
-            listUrl += TakeUrlCms(fileConfig)
+            if 'wp' in path:
+                url = getWordPressUrl(path)
+                listUrl.append(url)  # Ajouter l'URL en tant qu'élément unique
+            else:
+                listUrl += TakeUrlCms(fileConfig)
     return listUrl
 
 def displayUrlJson():

@@ -6,8 +6,9 @@ listNamePlug = []
 # Fonction qui récupère nom + version des plugins dans une liste
 def getPlug(listDbName, listUrl):
     plugList = []
+    filtered_urls = [item for item in listUrl if any(substring in item for substring in listDbName)]
     for i in range(len(listDbName)):
-        plug = subprocess.getoutput(f'sudo -u {listDbName[i]} php8.2 /var/www/{listUrl[i]}/www/occ app:list').split()
+        plug = subprocess.getoutput(f'sudo -u {listDbName[i]} php8.2 /var/www/{filtered_urls[i]}/www/occ app:list').split()
         plugList.extend(plug)
     return plugList
 

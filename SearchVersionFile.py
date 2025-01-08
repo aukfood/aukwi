@@ -1,4 +1,4 @@
-import os, fnmatch, sys
+import os, fnmatch
 
 listFileVersName = []
 listFileJsonName = []

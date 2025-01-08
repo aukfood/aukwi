@@ -8,6 +8,7 @@ listDb = displayUrl.listDbName
 yp = getPlugins.getPlug(listDb, listUrl)
 listVersJson = displayVers.displayVersionJson()
 servername = subprocess.getoutput('hostname -f').strip()
+listVersions = displayVers.displayVersion()
 
 # Fonction pour écrire les données dans un fichier CSV
 def writeCsv(filename, header, rows):
@@ -32,7 +33,7 @@ def createInventory():
         rows.append([servername, takeAppInDocker.getDockerVhosts(listNameCalcom)[i], "Calcom", "Not a plugin", takeAppInDocker.getVersCalcom()[i]])
 
     for i in range(len(listUrl)):
-        version = displayVers.displayVersion()[i]
+        version = listVersions[i]
         cms = displayVers.listCms[i]
         url = listUrl[i]
         serv = servername
@@ -80,7 +81,7 @@ def createInventoryJson():
         })
 
     for i in range(len(listUrl)):
-        version = displayVers.displayVersion()[i]
+        version = listVersions[i]
         cms = displayVers.listCms[i]
         url = listUrl[i]
         serv = servername
