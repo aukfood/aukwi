@@ -7,7 +7,7 @@ listNamePlug = []
 def getPlug(listDbName, listUrl):
     plugList = []
     for i in range(len(listDbName)):
-        plug = subprocess.getoutput(f'sudo -u {listDbName[i]} php8.1 /var/www/{listUrl[i]}/www/occ app:list').split()
+        plug = subprocess.getoutput(f'sudo -u {listDbName[i]} php8.2 /var/www/{listUrl[i]}/www/occ app:list').split()
         plugList.extend(plug)
     return plugList
 

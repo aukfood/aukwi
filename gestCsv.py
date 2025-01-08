@@ -7,7 +7,7 @@ listUrl = displayUrl.displayUrl()
 listDb = displayUrl.listDbName
 yp = getPlugins.getPlug(listDb, listUrl)
 listVersJson = displayVers.displayVersionJson()
-servername = subprocess.getoutput('hostname').strip()
+servername = subprocess.getoutput('hostname -f').strip()
 
 # Fonction pour écrire les données dans un fichier CSV
 def writeCsv(filename, header, rows):
@@ -35,7 +35,7 @@ def createInventory():
         version = displayVers.displayVersion()[i]
         cms = displayVers.listCms[i]
         url = listUrl[i]
-        serv = displayUrl.displayServ()[i]
+        serv = servername
         rows.append([serv, url, cms, "Not a plugin", version])
         if cms == "NextCloud":
             listNamePlug = getPlugins.listNamePlg(yp)
@@ -44,7 +44,7 @@ def createInventory():
                 rows.append([serv, url, listNamePlug[y], "Plugin", listVersPlug[y]])
 
     for i in range(len(listVersJson)):
-        rows.append([displayUrl.displayServJson()[i], displayUrl.displayUrlJson()[i], displayVers.listCmsJson[i], "Not a plugin", listVersJson[i]])
+        rows.append([servername, displayUrl.displayUrlJson()[i], displayVers.listCmsJson[i], "Not a plugin", listVersJson[i]])
 
     writeCsv('inventory.csv', header, rows)
 
@@ -83,7 +83,7 @@ def createInventoryJson():
         version = displayVers.displayVersion()[i]
         cms = displayVers.listCms[i]
         url = listUrl[i]
-        serv = displayUrl.displayServ()[i]
+        serv = servername
         inventory.append({
             "Server Name": serv,
             "Url": url,
@@ -105,7 +105,7 @@ def createInventoryJson():
 
     for i in range(len(listVersJson)):
         inventory.append({
-            "Server Name": displayUrl.displayServJson()[i],
+            "Server Name": servername,
             "Url": displayUrl.displayUrlJson()[i],
             "Cms": displayVers.listCmsJson[i],
             "Plugin or not": "Not a plugin",

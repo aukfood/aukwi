@@ -51,34 +51,34 @@ def trueOrNotJson(fileConfig):
     return False
 
 # Récupération des url des cms (Moodle, Wordpress, NextCloud) dans une liste
-def displayServ():
-    currentpath = "/" # chemin vers répertoire courant
-    pathOfFileConf = SearchUrl.SearchConf(currentpath)
-    servList = []
+# def displayServ():
+#     currentpath = "/" # chemin vers répertoire courant
+#     pathOfFileConf = SearchUrl.SearchConf(currentpath)
+#     servList = []
 
-    for path in pathOfFileConf:
-        with open(path, 'r') as file:
-            fileConfig = file.read()
-            if trueOrNot(fileConfig):
-                serv = subprocess.getoutput(f'sudo {path} | hostname -f').split('\n')
-                serv = [x.split('\t')[0] for x in serv]
-                servList.extend(serv)
-    return servList
+#     for path in pathOfFileConf:
+#         with open(path, 'r') as file:
+#             fileConfig = file.read()
+#             if trueOrNot(fileConfig):
+#                 serv = subprocess.getoutput(f'sudo {path} | hostname -f').split('\n')
+#                 serv = [x.split('\t')[0] for x in serv]
+#                 servList.extend(serv)
+#     return servList
 
 # Récupération des url du cms (PhpMyAdmin) dans une liste 
-def displayServJson():
-    currentpath = "/" # chemin vers répertoire courant
-    pathOfFileConf = SearchUrl.SearchConfJson(currentpath)
-    servListJson = []
+# def displayServJson():
+#     currentpath = "/" # chemin vers répertoire courant
+#     pathOfFileConf = SearchUrl.SearchConfJson(currentpath)
+#     servListJson = []
 
-    for path in pathOfFileConf:
-        with open(path, 'r') as file:
-            fileConfig = file.read()
-            if trueOrNotJson(fileConfig):
-                serv = subprocess.getoutput(f'sudo {path} | hostname -f').split('\n')
-                serv = [x.split('\t')[0] for x in serv]
-                servListJson.extend(serv)
-    return servListJson
+#     for path in pathOfFileConf:
+#         with open(path, 'r') as file:
+#             fileConfig = file.read()
+#             if trueOrNotJson(fileConfig):
+#                 serv = subprocess.getoutput(f'sudo {path} | hostname -f').split('\n')
+#                 serv = [x.split('\t')[0] for x in serv]
+#                 servListJson.extend(serv)
+#     return servListJson
 
 def displayUrl():
     currentpath = "/" # chemin vers répertoire courant
