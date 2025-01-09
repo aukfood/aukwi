@@ -21,17 +21,20 @@ def writeCsv(filename, header, rows):
 def createInventory():
     header = ["Server Name", "Url", "Cms", "Plugin or not", "Version"]
     rows = []
-
+    
     # Ajout des données pour OnlyOffice, Collabora et Calcom (Docker)
-    for i in range(len(listNameOfDock)):
-        rows.append([servername, takeAppInDocker.getDockerUrls(listNameOfDock)[i], "OnlyOffice", "Not a plugin", takeAppInDocker.getVersOnlyOffice()[i]])
-        
-    for i in range(len(listNameCollabora)):
-        rows.append([servername, takeAppInDocker.getDockerUrls(listNameCollabora)[i], "Collabora", "Not a plugin", takeAppInDocker.getVersCollabora()[i]])
+    if len(listNameOfDock) > 0 and listNameOfDock[0] != '':
+        for i in range(len(listNameOfDock)):
+            rows.append([servername, takeAppInDocker.getDockerUrls(listNameOfDock)[i], "OnlyOffice", "Not a plugin", takeAppInDocker.getVersOnlyOffice()[i]])
+    
+    if len(listNameCollabora) > 0 and listNameCollabora[0] != '':        
+        for i in range(len(listNameCollabora)):
+            rows.append([servername, takeAppInDocker.getDockerUrls(listNameCollabora)[i], "Collabora", "Not a plugin", takeAppInDocker.getVersCollabora()[i]])
 
-    for i in range(len(listNameCalcom)):
-        rows.append([servername, takeAppInDocker.getDockerUrls(listNameCalcom)[i], "Calcom", "Not a plugin", takeAppInDocker.getVersCalcom()[i]])
-
+    if len(listNameCalcom) > 0 and listNameCalcom[0] != '':
+        for i in range(len(listNameCalcom)):
+            rows.append([servername, takeAppInDocker.getDockerUrls(listNameCalcom)[i], "Calcom", "Not a plugin", takeAppInDocker.getVersCalcom()[i]])
+    
     for i in range(len(listUrl)):
         version = listVersions[i]
         cms = displayVers.listCms[i]
@@ -53,32 +56,35 @@ def createInventory():
 def createInventoryJson():
     inventory = []
 
-    for i in range(len(listNameOfDock)):
-        inventory.append({
-            "Server Name": servername,
-            "Url": takeAppInDocker.getDockerUrls(listNameOfDock)[i],
-            "Cms": "OnlyOffice",
-            "Plugin or not": "Not a plugin",
-            "Version": takeAppInDocker.getVersOnlyOffice()[i]
-        })
-        
-    for i in range(len(listNameCollabora)):
-        inventory.append({
-            "Server Name": servername,
-            "Url": takeAppInDocker.getDockerUrls(listNameCollabora)[i],
-            "Cms": "Collabora",
-            "Plugin or not": "Not a plugin",
-            "Version": takeAppInDocker.getVersCollabora()[i]
-        })
+    if len(listNameOfDock) > 0 and listNameOfDock[0] != '':
+        for i in range(len(listNameOfDock)):
+            inventory.append({
+                "Server Name": servername,
+                "Url": takeAppInDocker.getDockerUrls(listNameOfDock)[i],
+                "Cms": "OnlyOffice",
+                "Plugin or not": "Not a plugin",
+                "Version": takeAppInDocker.getVersOnlyOffice()[i]
+            })
 
-    for i in range(len(listNameCalcom)):
-        inventory.append({
-            "Server Name": servername,
-            "Url": takeAppInDocker.getDockerUrls(listNameCalcom)[i],
-            "Cms": "Calcom",
-            "Plugin or not": "Not a plugin",
-            "Version": takeAppInDocker.getVersCalcom()[i]
-        })
+    if len(listNameCollabora) > 0 and listNameCollabora[0] != '':
+        for i in range(len(listNameCollabora)):
+            inventory.append({
+                "Server Name": servername,
+                "Url": takeAppInDocker.getDockerUrls(listNameCollabora)[i],
+                "Cms": "Collabora",
+                "Plugin or not": "Not a plugin",
+                "Version": takeAppInDocker.getVersCollabora()[i]
+            })
+
+    if len(listNameCalcom) > 0 and listNameCalcom[0] != '':
+        for i in range(len(listNameCalcom)):
+            inventory.append({
+                "Server Name": servername,
+                "Url": takeAppInDocker.getDockerUrls(listNameCalcom)[i],
+                "Cms": "Calcom",
+                "Plugin or not": "Not a plugin",
+                "Version": takeAppInDocker.getVersCalcom()[i]
+            })
 
     for i in range(len(listUrl)):
         version = listVersions[i]
