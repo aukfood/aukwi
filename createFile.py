@@ -24,13 +24,13 @@ def createInventory():
 
     # Ajout des données pour OnlyOffice, Collabora et Calcom (Docker)
     for i in range(len(listNameOfDock)):
-        rows.append([servername, takeAppInDocker.getDockerVhosts(listNameOfDock)[i], "OnlyOffice", "Not a plugin", takeAppInDocker.getVersOnlyOffice()[i]])
+        rows.append([servername, takeAppInDocker.getDockerUrls(listNameOfDock)[i], "OnlyOffice", "Not a plugin", takeAppInDocker.getVersOnlyOffice()[i]])
         
     for i in range(len(listNameCollabora)):
-        rows.append([servername, takeAppInDocker.getDockerVhosts(listNameCollabora)[i], "Collabora", "Not a plugin", takeAppInDocker.getVersCollabora()[i]])
+        rows.append([servername, takeAppInDocker.getDockerUrls(listNameCollabora)[i], "Collabora", "Not a plugin", takeAppInDocker.getVersCollabora()[i]])
 
     for i in range(len(listNameCalcom)):
-        rows.append([servername, takeAppInDocker.getDockerVhosts(listNameCalcom)[i], "Calcom", "Not a plugin", takeAppInDocker.getVersCalcom()[i]])
+        rows.append([servername, takeAppInDocker.getDockerUrls(listNameCalcom)[i], "Calcom", "Not a plugin", takeAppInDocker.getVersCalcom()[i]])
 
     for i in range(len(listUrl)):
         version = listVersions[i]
@@ -56,7 +56,7 @@ def createInventoryJson():
     for i in range(len(listNameOfDock)):
         inventory.append({
             "Server Name": servername,
-            "Url": takeAppInDocker.getDockerVhosts(listNameOfDock)[i],
+            "Url": takeAppInDocker.getDockerUrls(listNameOfDock)[i],
             "Cms": "OnlyOffice",
             "Plugin or not": "Not a plugin",
             "Version": takeAppInDocker.getVersOnlyOffice()[i]
@@ -65,7 +65,7 @@ def createInventoryJson():
     for i in range(len(listNameCollabora)):
         inventory.append({
             "Server Name": servername,
-            "Url": takeAppInDocker.getDockerVhosts(listNameCollabora)[i],
+            "Url": takeAppInDocker.getDockerUrls(listNameCollabora)[i],
             "Cms": "Collabora",
             "Plugin or not": "Not a plugin",
             "Version": takeAppInDocker.getVersCollabora()[i]
@@ -74,7 +74,7 @@ def createInventoryJson():
     for i in range(len(listNameCalcom)):
         inventory.append({
             "Server Name": servername,
-            "Url": takeAppInDocker.getDockerVhosts(listNameCalcom)[i],
+            "Url": takeAppInDocker.getDockerUrls(listNameCalcom)[i],
             "Cms": "Calcom",
             "Plugin or not": "Not a plugin",
             "Version": takeAppInDocker.getVersCalcom()[i]

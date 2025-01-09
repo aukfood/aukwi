@@ -1,4 +1,4 @@
-import subprocess
+import subprocess, os, re, json
 
 # Fonction pour récupérer tous les noms des containers Docker correspondant à un pattern
 def getDockerNames(pattern):
@@ -18,12 +18,49 @@ def getDockerVersions(nameList, packageName):
             versions.append("Unknown")
     return versions
 
-# Fonction pour récupérer le vhost des containers Docker
-def getDockerVhosts(nameList):
-    vhosts = []
-    for name in nameList:
-        vhosts.append("unknown")
-    return vhosts
+# Fonction pour récupérer les URLs des applications Docker
+def getDockerUrls(container_names, apache_config_path="/etc/apache2/sites-enabled"):
+    vhosts = {}  # Dictionnaire pour stocker les correspondances conteneur -> vhost
+
+    # Étape 1 : Inspecter les conteneurs Docker
+    container_ports = {}
+    for container in container_names:
+        try:
+            # Récupérer les informations du conteneur
+            output = subprocess.getoutput(f'docker inspect {container}')
+            container_info = json.loads(output)
+            
+            # Extraire les ports exposés
+            ports = container_info[0].get("NetworkSettings", {}).get("Ports", {})
+            for port, mappings in ports.items():
+                if mappings:  # Si le port est mappé
+                    container_ports[container] = mappings[0]['HostPort']
+            if container not in container_ports:
+                container_ports[container] = "Unknown"
+        except Exception as e:
+            print(f"Erreur lors de l'inspection du conteneur {container} : {str(e)}")
+    # Étape 2 : Associer les ports aux vhosts Apache
+    for root, dirs, files in os.walk(apache_config_path):
+        for file in files:
+            if file.endswith(".conf"):  # Analyser uniquement les fichiers .conf
+                with open(os.path.join(root, file), 'r') as f:
+                    content = f.read()
+                    
+                    # Extraire les ServerName
+                    server_names = re.findall(r"ServerName\s+([^\s]+)", content)
+                    
+                    # Extraire les ports dans ProxyPass, même avec du texte avant ou après
+                    proxy_passes = re.findall(r"ProxyPass.*https?://127\.0\.0\.1:(\d+)", content)
+                    
+                    # Associer les vhosts aux conteneurs en fonction des ports
+                    for server_name in server_names:
+                        for container, port in container_ports.items():
+                            if port == "Unknown":
+                                vhosts[container] = "Unknown"
+                            elif port in proxy_passes:  # Si le port du conteneur correspond
+                                vhosts[container] = server_name
+    # Retourner uniquement les vhosts sous forme de liste
+    return list(vhosts.values())
 
 # Fonction pour récupérer tous les noms des OnlyOffice dans les dockers
 def getNameOnlyOffice():
