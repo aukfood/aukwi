@@ -1,0 +1,1423 @@
+[
+    {
+        "Server Name": "demoweb.aukfood.ovh",
+        "Url": "only1.demoweb.aukfood.ovh",
+        "Cms": "OnlyOffice",
+        "Plugin or not": "Not a plugin",
+        "Version": "8.2.0-143"
+    },
+    {
+        "Server Name": "demoweb.aukfood.ovh",
+        "Url": "collab01.demoweb.aukfood.ovh",
+        "Cms": "Collabora",
+        "Plugin or not": "Not a plugin",
+        "Version": "24.04.9-1"
+    },
+    {
+        "Server Name": "demoweb.aukfood.ovh",
+        "Url": "Unknown",
+        "Cms": "Calcom",
+        "Plugin or not": "Not a plugin",
+        "Version": "Unknown"
+    },
+    {
+        "Server Name": "demoweb.aukfood.ovh",
+        "Url": "rvdemo01.demoweb.aukfood.ovh",
+        "Cms": "Calcom",
+        "Plugin or not": "Not a plugin",
+        "Version": "Unknown"
+    },
+    {
+        "Server Name": "demoweb.aukfood.ovh",
+        "Url": "wp.demoweb.aukfood.ovh",
+        "Cms": "Wordpress",
+        "Plugin or not": "Not a plugin",
+        "Version": "6.7.1"
+    },
+    {
+        "Server Name": "demoweb.aukfood.ovh",
+        "Url": "demo02.demoweb.aukfood.ovh",
+        "Cms": "NextCloud",
+        "Plugin or not": "Not a plugin",
+        "Version": "29.0.8"
+    },
+    {
+        "Server Name": "demoweb.aukfood.ovh",
+        "Url": "demo02.demoweb.aukfood.ovh",
+        "Cms": "Enabled",
+        "Plugin or not": "Plugin",
+        "Version": "2.21.1"
+    },
+    {
+        "Server Name": "demoweb.aukfood.ovh",
+        "Url": "demo02.demoweb.aukfood.ovh",
+        "Cms": "activity",
+        "Plugin or not": "Plugin",
+        "Version": "29.0.0-dev"
+    },
+    {
+        "Server Name": "demoweb.aukfood.ovh",
+        "Url": "demo02.demoweb.aukfood.ovh",
+        "Cms": "circles",
+        "Plugin or not": "Plugin",
+        "Version": "1.12.0"
+    },
+    {
+        "Server Name": "demoweb.aukfood.ovh",
+        "Url": "demo02.demoweb.aukfood.ovh",
+        "Cms": "comments",
+        "Plugin or not": "Plugin",
+        "Version": "1.19.0"
+    },
+    {
+        "Server Name": "demoweb.aukfood.ovh",
+        "Url": "demo02.demoweb.aukfood.ovh",
+        "Cms": "contactsinteraction",
+        "Plugin or not": "Plugin",
+        "Version": "1.10.0"
+    },
+    {
+        "Server Name": "demoweb.aukfood.ovh",
+        "Url": "demo02.demoweb.aukfood.ovh",
+        "Cms": "dashboard",
+        "Plugin or not": "Plugin",
+        "Version": "7.9.0"
+    },
+    {
+        "Server Name": "demoweb.aukfood.ovh",
+        "Url": "demo02.demoweb.aukfood.ovh",
+        "Cms": "dav",
+        "Plugin or not": "Plugin",
+        "Version": "1.30.1"
+    },
+    {
+        "Server Name": "demoweb.aukfood.ovh",
+        "Url": "demo02.demoweb.aukfood.ovh",
+        "Cms": "federatedfilesharing",
+        "Plugin or not": "Plugin",
+        "Version": "1.19.0"
+    },
+    {
+        "Server Name": "demoweb.aukfood.ovh",
+        "Url": "demo02.demoweb.aukfood.ovh",
+        "Cms": "federation",
+        "Plugin or not": "Plugin",
+        "Version": "1.19.0"
+    },
+    {
+        "Server Name": "demoweb.aukfood.ovh",
+        "Url": "demo02.demoweb.aukfood.ovh",
+        "Cms": "files",
+        "Plugin or not": "Plugin",
+        "Version": "2.1.1"
+    },
+    {
+        "Server Name": "demoweb.aukfood.ovh",
+        "Url": "demo02.demoweb.aukfood.ovh",
+        "Cms": "firstrunwizard",
+        "Plugin or not": "Plugin",
+        "Version": "2.0.0"
+    },
+    {
+        "Server Name": "demoweb.aukfood.ovh",
+        "Url": "demo02.demoweb.aukfood.ovh",
+        "Cms": "logreader",
+        "Plugin or not": "Plugin",
+        "Version": "2.10.0"
+    },
+    {
+        "Server Name": "demoweb.aukfood.ovh",
+        "Url": "demo02.demoweb.aukfood.ovh",
+        "Cms": "notifications",
+        "Plugin or not": "Plugin",
+        "Version": "1.2.0"
+    },
+    {
+        "Server Name": "demoweb.aukfood.ovh",
+        "Url": "demo02.demoweb.aukfood.ovh",
+        "Cms": "photos",
+        "Plugin or not": "Plugin",
+        "Version": "1.21.0"
+    },
+    {
+        "Server Name": "demoweb.aukfood.ovh",
+        "Url": "demo02.demoweb.aukfood.ovh",
+        "Cms": "privacy",
+        "Plugin or not": "Plugin",
+        "Version": "1.19.0"
+    },
+    {
+        "Server Name": "demoweb.aukfood.ovh",
+        "Url": "demo02.demoweb.aukfood.ovh",
+        "Cms": "recommendations",
+        "Plugin or not": "Plugin",
+        "Version": "1.22.0"
+    },
+    {
+        "Server Name": "demoweb.aukfood.ovh",
+        "Url": "demo02.demoweb.aukfood.ovh",
+        "Cms": "serverinfo",
+        "Plugin or not": "Plugin",
+        "Version": "2.18.0"
+    },
+    {
+        "Server Name": "demoweb.aukfood.ovh",
+        "Url": "demo02.demoweb.aukfood.ovh",
+        "Cms": "settings",
+        "Plugin or not": "Plugin",
+        "Version": "2.14.0"
+    },
+    {
+        "Server Name": "demoweb.aukfood.ovh",
+        "Url": "demo02.demoweb.aukfood.ovh",
+        "Cms": "sharebymail",
+        "Plugin or not": "Plugin",
+        "Version": "1.17.0"
+    },
+    {
+        "Server Name": "demoweb.aukfood.ovh",
+        "Url": "demo02.demoweb.aukfood.ovh",
+        "Cms": "support",
+        "Plugin or not": "Plugin",
+        "Version": "1.18.0"
+    },
+    {
+        "Server Name": "demoweb.aukfood.ovh",
+        "Url": "demo02.demoweb.aukfood.ovh",
+        "Cms": "systemtags",
+        "Plugin or not": "Plugin",
+        "Version": "2.17.0"
+    },
+    {
+        "Server Name": "demoweb.aukfood.ovh",
+        "Url": "demo02.demoweb.aukfood.ovh",
+        "Cms": "text",
+        "Plugin or not": "Plugin",
+        "Version": "1.17.1"
+    },
+    {
+        "Server Name": "demoweb.aukfood.ovh",
+        "Url": "demo02.demoweb.aukfood.ovh",
+        "Cms": "theming",
+        "Plugin or not": "Plugin",
+        "Version": "1.19.0"
+    },
+    {
+        "Server Name": "demoweb.aukfood.ovh",
+        "Url": "demo02.demoweb.aukfood.ovh",
+        "Cms": "updatenotification",
+        "Plugin or not": "Plugin",
+        "Version": "2.5.0"
+    },
+    {
+        "Server Name": "demoweb.aukfood.ovh",
+        "Url": "demo02.demoweb.aukfood.ovh",
+        "Cms": "viewer",
+        "Plugin or not": "Plugin",
+        "Version": "1.13.0"
+    },
+    {
+        "Server Name": "demoweb.aukfood.ovh",
+        "Url": "demo02.demoweb.aukfood.ovh",
+        "Cms": "workflowengine",
+        "Plugin or not": "Plugin",
+        "Version": "1.19.0"
+    },
+    {
+        "Server Name": "demoweb.aukfood.ovh",
+        "Url": "demo02.demoweb.aukfood.ovh",
+        "Cms": "Disabled",
+        "Plugin or not": "Plugin",
+        "Version": "2.1.0"
+    },
+    {
+        "Server Name": "demoweb.aukfood.ovh",
+        "Url": "demo02.demoweb.aukfood.ovh",
+        "Cms": "bruteforcesettings",
+        "Plugin or not": "Plugin",
+        "Version": "1.4.0"
+    },
+    {
+        "Server Name": "demoweb.aukfood.ovh",
+        "Url": "demo02.demoweb.aukfood.ovh",
+        "Cms": "encryption",
+        "Plugin or not": "Plugin",
+        "Version": "1.19.0"
+    },
+    {
+        "Server Name": "demoweb.aukfood.ovh",
+        "Url": "demo02.demoweb.aukfood.ovh",
+        "Cms": "Enabled",
+        "Plugin or not": "Plugin",
+        "Version": "1.12.0"
+    },
+    {
+        "Server Name": "demoweb.aukfood.ovh",
+        "Url": "demo02.demoweb.aukfood.ovh",
+        "Cms": "activity",
+        "Plugin or not": "Plugin",
+        "Version": "1.19.0"
+    },
+    {
+        "Server Name": "demoweb.aukfood.ovh",
+        "Url": "demo02.demoweb.aukfood.ovh",
+        "Cms": "circles",
+        "Plugin or not": "Plugin",
+        "Version": "1.12.0"
+    },
+    {
+        "Server Name": "demoweb.aukfood.ovh",
+        "Url": "demo02.demoweb.aukfood.ovh",
+        "Cms": "comments",
+        "Plugin or not": "Plugin",
+        "Version": "1.17.0"
+    },
+    {
+        "Server Name": "demoweb.aukfood.ovh",
+        "Url": "demo02.demoweb.aukfood.ovh",
+        "Cms": "contactsinteraction",
+        "Plugin or not": "Plugin",
+        "Version": "1.19.0"
+    },
+    {
+        "Server Name": "demoweb.aukfood.ovh",
+        "Url": "demo02.demoweb.aukfood.ovh",
+        "Cms": "dashboard",
+        "Plugin or not": "Plugin",
+        "Version": "3.10.1"
+    },
+    {
+        "Server Name": "demoweb.aukfood.ovh",
+        "Url": "demo02.demoweb.aukfood.ovh",
+        "Cms": "dav",
+        "Plugin or not": "Plugin",
+        "Version": "2.4.0"
+    },
+    {
+        "Server Name": "demoweb.aukfood.ovh",
+        "Url": "demo02.demoweb.aukfood.ovh",
+        "Cms": "federatedfilesharing",
+        "Plugin or not": "Plugin",
+        "Version": "1.18.0"
+    },
+    {
+        "Server Name": "demoweb.aukfood.ovh",
+        "Url": "demo02.demoweb.aukfood.ovh",
+        "Cms": "federation",
+        "Plugin or not": "Plugin",
+        "Version": "1.19.1"
+    },
+    {
+        "Server Name": "demoweb.aukfood.ovh",
+        "Url": "demo02.demoweb.aukfood.ovh",
+        "Cms": "files",
+        "Plugin or not": "Plugin",
+        "Version": "1.9.0"
+    },
+    {
+        "Server Name": "demoweb.aukfood.ovh",
+        "Url": "demo02.demoweb.aukfood.ovh",
+        "Cms": "firstrunwizard",
+        "Plugin or not": "Plugin",
+        "Version": "2.3.0"
+    },
+    {
+        "Server Name": "demoweb.aukfood.ovh",
+        "Url": "demo02.demoweb.aukfood.ovh",
+        "Cms": "logreader",
+        "Plugin or not": "Plugin",
+        "Version": "1.9.0"
+    },
+    {
+        "Server Name": "demoweb.aukfood.ovh",
+        "Url": "demo02.demoweb.aukfood.ovh",
+        "Cms": "notifications",
+        "Plugin or not": "Plugin",
+        "Version": "2.11.0"
+    },
+    {
+        "Server Name": "demoweb.aukfood.ovh",
+        "Url": "demo02.demoweb.aukfood.ovh",
+        "Cms": "photos",
+        "Plugin or not": "Plugin",
+        "Version": "1.19.0"
+    },
+    {
+        "Server Name": "demoweb.aukfood.ovh",
+        "Url": "demo02.demoweb.aukfood.ovh",
+        "Cms": "privacy",
+        "Plugin or not": "Plugin",
+        "Version": "2.9.0"
+    },
+    {
+        "Server Name": "demoweb.aukfood.ovh",
+        "Url": "demo02.demoweb.aukfood.ovh",
+        "Cms": "recommendations",
+        "Plugin or not": "Plugin",
+        "Version": "2.17.0"
+    },
+    {
+        "Server Name": "demoweb.aukfood.ovh",
+        "Url": "demo02.demoweb.aukfood.ovh",
+        "Cms": "serverinfo",
+        "Plugin or not": "Plugin",
+        "Version": "1.21.0"
+    },
+    {
+        "Server Name": "demoweb.aukfood.ovh",
+        "Url": "demo02.demoweb.aukfood.ovh",
+        "Cms": "settings",
+        "Plugin or not": "Plugin",
+        "Version": "7.0.0"
+    },
+    {
+        "Server Name": "demoweb.aukfood.ovh",
+        "Url": "demo02.demoweb.aukfood.ovh",
+        "Cms": "sharebymail",
+        "Plugin or not": "Plugin",
+        "Version": "11.0.0-dev"
+    },
+    {
+        "Server Name": "demoweb.aukfood.ovh",
+        "Url": "demo02.demoweb.aukfood.ovh",
+        "Cms": "support",
+        "Plugin or not": "Plugin",
+        "Version": "1.20.0"
+    },
+    {
+        "Server Name": "demoweb.aukfood.ovh",
+        "Url": "demo02.demoweb.aukfood.ovh",
+        "Cms": "systemtags",
+        "Plugin or not": "Plugin",
+        "Version": "2.21.1"
+    },
+    {
+        "Server Name": "demoweb.aukfood.ovh",
+        "Url": "demo02.demoweb.aukfood.ovh",
+        "Cms": "text",
+        "Plugin or not": "Plugin",
+        "Version": "29.0.0-dev"
+    },
+    {
+        "Server Name": "demoweb.aukfood.ovh",
+        "Url": "demo02.demoweb.aukfood.ovh",
+        "Cms": "theming",
+        "Plugin or not": "Plugin",
+        "Version": "1.12.0"
+    },
+    {
+        "Server Name": "demoweb.aukfood.ovh",
+        "Url": "demo02.demoweb.aukfood.ovh",
+        "Cms": "updatenotification",
+        "Plugin or not": "Plugin",
+        "Version": "1.19.0"
+    },
+    {
+        "Server Name": "demoweb.aukfood.ovh",
+        "Url": "demo02.demoweb.aukfood.ovh",
+        "Cms": "viewer",
+        "Plugin or not": "Plugin",
+        "Version": "1.10.0"
+    },
+    {
+        "Server Name": "demoweb.aukfood.ovh",
+        "Url": "demo02.demoweb.aukfood.ovh",
+        "Cms": "workflowengine",
+        "Plugin or not": "Plugin",
+        "Version": "7.9.0"
+    },
+    {
+        "Server Name": "demoweb.aukfood.ovh",
+        "Url": "demo02.demoweb.aukfood.ovh",
+        "Cms": "Disabled",
+        "Plugin or not": "Plugin",
+        "Version": "1.30.1"
+    },
+    {
+        "Server Name": "demoweb.aukfood.ovh",
+        "Url": "demo02.demoweb.aukfood.ovh",
+        "Cms": "bruteforcesettings",
+        "Plugin or not": "Plugin",
+        "Version": "1.19.0"
+    },
+    {
+        "Server Name": "demoweb.aukfood.ovh",
+        "Url": "demo02.demoweb.aukfood.ovh",
+        "Cms": "encryption",
+        "Plugin or not": "Plugin",
+        "Version": "1.19.0"
+    },
+    {
+        "Server Name": "demoweb.aukfood.ovh",
+        "Url": "demo02.demoweb.aukfood.ovh",
+        "Cms": "sudo",
+        "Plugin or not": "Plugin",
+        "Version": "2.1.1"
+    },
+    {
+        "Server Name": "demoweb.aukfood.ovh",
+        "Url": "demo02.demoweb.aukfood.ovh",
+        "Cms": "utilisateur",
+        "Plugin or not": "Plugin",
+        "Version": "2.0.0"
+    },
+    {
+        "Server Name": "demoweb.aukfood.ovh",
+        "Url": "demo02.demoweb.aukfood.ovh",
+        "Cms": "inconnu",
+        "Plugin or not": "Plugin",
+        "Version": "2.10.0"
+    },
+    {
+        "Server Name": "demoweb.aukfood.ovh",
+        "Url": "demo02.demoweb.aukfood.ovh",
+        "Cms": "sudo",
+        "Plugin or not": "Plugin",
+        "Version": "1.2.0"
+    },
+    {
+        "Server Name": "demoweb.aukfood.ovh",
+        "Url": "demo02.demoweb.aukfood.ovh",
+        "Cms": "erreur",
+        "Plugin or not": "Plugin",
+        "Version": "1.21.0"
+    },
+    {
+        "Server Name": "demoweb.aukfood.ovh",
+        "Url": "demo02.demoweb.aukfood.ovh",
+        "Cms": "du",
+        "Plugin or not": "Plugin",
+        "Version": "1.19.0"
+    },
+    {
+        "Server Name": "demoweb.aukfood.ovh",
+        "Url": "demo02.demoweb.aukfood.ovh",
+        "Cms": "greffon",
+        "Plugin or not": "Plugin",
+        "Version": "1.22.0"
+    },
+    {
+        "Server Name": "demoweb.aukfood.ovh",
+        "Url": "demo03.demoweb.aukfood.ovh",
+        "Cms": "NextCloud",
+        "Plugin or not": "Not a plugin",
+        "Version": "29.0.8"
+    },
+    {
+        "Server Name": "demoweb.aukfood.ovh",
+        "Url": "demo03.demoweb.aukfood.ovh",
+        "Cms": "Enabled",
+        "Plugin or not": "Plugin",
+        "Version": "2.21.1"
+    },
+    {
+        "Server Name": "demoweb.aukfood.ovh",
+        "Url": "demo03.demoweb.aukfood.ovh",
+        "Cms": "activity",
+        "Plugin or not": "Plugin",
+        "Version": "29.0.0-dev"
+    },
+    {
+        "Server Name": "demoweb.aukfood.ovh",
+        "Url": "demo03.demoweb.aukfood.ovh",
+        "Cms": "circles",
+        "Plugin or not": "Plugin",
+        "Version": "1.12.0"
+    },
+    {
+        "Server Name": "demoweb.aukfood.ovh",
+        "Url": "demo03.demoweb.aukfood.ovh",
+        "Cms": "comments",
+        "Plugin or not": "Plugin",
+        "Version": "1.19.0"
+    },
+    {
+        "Server Name": "demoweb.aukfood.ovh",
+        "Url": "demo03.demoweb.aukfood.ovh",
+        "Cms": "contactsinteraction",
+        "Plugin or not": "Plugin",
+        "Version": "1.10.0"
+    },
+    {
+        "Server Name": "demoweb.aukfood.ovh",
+        "Url": "demo03.demoweb.aukfood.ovh",
+        "Cms": "dashboard",
+        "Plugin or not": "Plugin",
+        "Version": "7.9.0"
+    },
+    {
+        "Server Name": "demoweb.aukfood.ovh",
+        "Url": "demo03.demoweb.aukfood.ovh",
+        "Cms": "dav",
+        "Plugin or not": "Plugin",
+        "Version": "1.30.1"
+    },
+    {
+        "Server Name": "demoweb.aukfood.ovh",
+        "Url": "demo03.demoweb.aukfood.ovh",
+        "Cms": "federatedfilesharing",
+        "Plugin or not": "Plugin",
+        "Version": "1.19.0"
+    },
+    {
+        "Server Name": "demoweb.aukfood.ovh",
+        "Url": "demo03.demoweb.aukfood.ovh",
+        "Cms": "federation",
+        "Plugin or not": "Plugin",
+        "Version": "1.19.0"
+    },
+    {
+        "Server Name": "demoweb.aukfood.ovh",
+        "Url": "demo03.demoweb.aukfood.ovh",
+        "Cms": "files",
+        "Plugin or not": "Plugin",
+        "Version": "2.1.1"
+    },
+    {
+        "Server Name": "demoweb.aukfood.ovh",
+        "Url": "demo03.demoweb.aukfood.ovh",
+        "Cms": "firstrunwizard",
+        "Plugin or not": "Plugin",
+        "Version": "2.0.0"
+    },
+    {
+        "Server Name": "demoweb.aukfood.ovh",
+        "Url": "demo03.demoweb.aukfood.ovh",
+        "Cms": "logreader",
+        "Plugin or not": "Plugin",
+        "Version": "2.10.0"
+    },
+    {
+        "Server Name": "demoweb.aukfood.ovh",
+        "Url": "demo03.demoweb.aukfood.ovh",
+        "Cms": "notifications",
+        "Plugin or not": "Plugin",
+        "Version": "1.2.0"
+    },
+    {
+        "Server Name": "demoweb.aukfood.ovh",
+        "Url": "demo03.demoweb.aukfood.ovh",
+        "Cms": "photos",
+        "Plugin or not": "Plugin",
+        "Version": "1.21.0"
+    },
+    {
+        "Server Name": "demoweb.aukfood.ovh",
+        "Url": "demo03.demoweb.aukfood.ovh",
+        "Cms": "privacy",
+        "Plugin or not": "Plugin",
+        "Version": "1.19.0"
+    },
+    {
+        "Server Name": "demoweb.aukfood.ovh",
+        "Url": "demo03.demoweb.aukfood.ovh",
+        "Cms": "recommendations",
+        "Plugin or not": "Plugin",
+        "Version": "1.22.0"
+    },
+    {
+        "Server Name": "demoweb.aukfood.ovh",
+        "Url": "demo03.demoweb.aukfood.ovh",
+        "Cms": "serverinfo",
+        "Plugin or not": "Plugin",
+        "Version": "2.18.0"
+    },
+    {
+        "Server Name": "demoweb.aukfood.ovh",
+        "Url": "demo03.demoweb.aukfood.ovh",
+        "Cms": "settings",
+        "Plugin or not": "Plugin",
+        "Version": "2.14.0"
+    },
+    {
+        "Server Name": "demoweb.aukfood.ovh",
+        "Url": "demo03.demoweb.aukfood.ovh",
+        "Cms": "sharebymail",
+        "Plugin or not": "Plugin",
+        "Version": "1.17.0"
+    },
+    {
+        "Server Name": "demoweb.aukfood.ovh",
+        "Url": "demo03.demoweb.aukfood.ovh",
+        "Cms": "support",
+        "Plugin or not": "Plugin",
+        "Version": "1.18.0"
+    },
+    {
+        "Server Name": "demoweb.aukfood.ovh",
+        "Url": "demo03.demoweb.aukfood.ovh",
+        "Cms": "systemtags",
+        "Plugin or not": "Plugin",
+        "Version": "2.17.0"
+    },
+    {
+        "Server Name": "demoweb.aukfood.ovh",
+        "Url": "demo03.demoweb.aukfood.ovh",
+        "Cms": "text",
+        "Plugin or not": "Plugin",
+        "Version": "1.17.1"
+    },
+    {
+        "Server Name": "demoweb.aukfood.ovh",
+        "Url": "demo03.demoweb.aukfood.ovh",
+        "Cms": "theming",
+        "Plugin or not": "Plugin",
+        "Version": "1.19.0"
+    },
+    {
+        "Server Name": "demoweb.aukfood.ovh",
+        "Url": "demo03.demoweb.aukfood.ovh",
+        "Cms": "updatenotification",
+        "Plugin or not": "Plugin",
+        "Version": "2.5.0"
+    },
+    {
+        "Server Name": "demoweb.aukfood.ovh",
+        "Url": "demo03.demoweb.aukfood.ovh",
+        "Cms": "viewer",
+        "Plugin or not": "Plugin",
+        "Version": "1.13.0"
+    },
+    {
+        "Server Name": "demoweb.aukfood.ovh",
+        "Url": "demo03.demoweb.aukfood.ovh",
+        "Cms": "workflowengine",
+        "Plugin or not": "Plugin",
+        "Version": "1.19.0"
+    },
+    {
+        "Server Name": "demoweb.aukfood.ovh",
+        "Url": "demo03.demoweb.aukfood.ovh",
+        "Cms": "Disabled",
+        "Plugin or not": "Plugin",
+        "Version": "2.1.0"
+    },
+    {
+        "Server Name": "demoweb.aukfood.ovh",
+        "Url": "demo03.demoweb.aukfood.ovh",
+        "Cms": "bruteforcesettings",
+        "Plugin or not": "Plugin",
+        "Version": "1.4.0"
+    },
+    {
+        "Server Name": "demoweb.aukfood.ovh",
+        "Url": "demo03.demoweb.aukfood.ovh",
+        "Cms": "encryption",
+        "Plugin or not": "Plugin",
+        "Version": "1.19.0"
+    },
+    {
+        "Server Name": "demoweb.aukfood.ovh",
+        "Url": "demo03.demoweb.aukfood.ovh",
+        "Cms": "Enabled",
+        "Plugin or not": "Plugin",
+        "Version": "1.12.0"
+    },
+    {
+        "Server Name": "demoweb.aukfood.ovh",
+        "Url": "demo03.demoweb.aukfood.ovh",
+        "Cms": "activity",
+        "Plugin or not": "Plugin",
+        "Version": "1.19.0"
+    },
+    {
+        "Server Name": "demoweb.aukfood.ovh",
+        "Url": "demo03.demoweb.aukfood.ovh",
+        "Cms": "circles",
+        "Plugin or not": "Plugin",
+        "Version": "1.12.0"
+    },
+    {
+        "Server Name": "demoweb.aukfood.ovh",
+        "Url": "demo03.demoweb.aukfood.ovh",
+        "Cms": "comments",
+        "Plugin or not": "Plugin",
+        "Version": "1.17.0"
+    },
+    {
+        "Server Name": "demoweb.aukfood.ovh",
+        "Url": "demo03.demoweb.aukfood.ovh",
+        "Cms": "contactsinteraction",
+        "Plugin or not": "Plugin",
+        "Version": "1.19.0"
+    },
+    {
+        "Server Name": "demoweb.aukfood.ovh",
+        "Url": "demo03.demoweb.aukfood.ovh",
+        "Cms": "dashboard",
+        "Plugin or not": "Plugin",
+        "Version": "3.10.1"
+    },
+    {
+        "Server Name": "demoweb.aukfood.ovh",
+        "Url": "demo03.demoweb.aukfood.ovh",
+        "Cms": "dav",
+        "Plugin or not": "Plugin",
+        "Version": "2.4.0"
+    },
+    {
+        "Server Name": "demoweb.aukfood.ovh",
+        "Url": "demo03.demoweb.aukfood.ovh",
+        "Cms": "federatedfilesharing",
+        "Plugin or not": "Plugin",
+        "Version": "1.18.0"
+    },
+    {
+        "Server Name": "demoweb.aukfood.ovh",
+        "Url": "demo03.demoweb.aukfood.ovh",
+        "Cms": "federation",
+        "Plugin or not": "Plugin",
+        "Version": "1.19.1"
+    },
+    {
+        "Server Name": "demoweb.aukfood.ovh",
+        "Url": "demo03.demoweb.aukfood.ovh",
+        "Cms": "files",
+        "Plugin or not": "Plugin",
+        "Version": "1.9.0"
+    },
+    {
+        "Server Name": "demoweb.aukfood.ovh",
+        "Url": "demo03.demoweb.aukfood.ovh",
+        "Cms": "firstrunwizard",
+        "Plugin or not": "Plugin",
+        "Version": "2.3.0"
+    },
+    {
+        "Server Name": "demoweb.aukfood.ovh",
+        "Url": "demo03.demoweb.aukfood.ovh",
+        "Cms": "logreader",
+        "Plugin or not": "Plugin",
+        "Version": "1.9.0"
+    },
+    {
+        "Server Name": "demoweb.aukfood.ovh",
+        "Url": "demo03.demoweb.aukfood.ovh",
+        "Cms": "notifications",
+        "Plugin or not": "Plugin",
+        "Version": "2.11.0"
+    },
+    {
+        "Server Name": "demoweb.aukfood.ovh",
+        "Url": "demo03.demoweb.aukfood.ovh",
+        "Cms": "photos",
+        "Plugin or not": "Plugin",
+        "Version": "1.19.0"
+    },
+    {
+        "Server Name": "demoweb.aukfood.ovh",
+        "Url": "demo03.demoweb.aukfood.ovh",
+        "Cms": "privacy",
+        "Plugin or not": "Plugin",
+        "Version": "2.9.0"
+    },
+    {
+        "Server Name": "demoweb.aukfood.ovh",
+        "Url": "demo03.demoweb.aukfood.ovh",
+        "Cms": "recommendations",
+        "Plugin or not": "Plugin",
+        "Version": "2.17.0"
+    },
+    {
+        "Server Name": "demoweb.aukfood.ovh",
+        "Url": "demo03.demoweb.aukfood.ovh",
+        "Cms": "serverinfo",
+        "Plugin or not": "Plugin",
+        "Version": "1.21.0"
+    },
+    {
+        "Server Name": "demoweb.aukfood.ovh",
+        "Url": "demo03.demoweb.aukfood.ovh",
+        "Cms": "settings",
+        "Plugin or not": "Plugin",
+        "Version": "7.0.0"
+    },
+    {
+        "Server Name": "demoweb.aukfood.ovh",
+        "Url": "demo03.demoweb.aukfood.ovh",
+        "Cms": "sharebymail",
+        "Plugin or not": "Plugin",
+        "Version": "11.0.0-dev"
+    },
+    {
+        "Server Name": "demoweb.aukfood.ovh",
+        "Url": "demo03.demoweb.aukfood.ovh",
+        "Cms": "support",
+        "Plugin or not": "Plugin",
+        "Version": "1.20.0"
+    },
+    {
+        "Server Name": "demoweb.aukfood.ovh",
+        "Url": "demo03.demoweb.aukfood.ovh",
+        "Cms": "systemtags",
+        "Plugin or not": "Plugin",
+        "Version": "2.21.1"
+    },
+    {
+        "Server Name": "demoweb.aukfood.ovh",
+        "Url": "demo03.demoweb.aukfood.ovh",
+        "Cms": "text",
+        "Plugin or not": "Plugin",
+        "Version": "29.0.0-dev"
+    },
+    {
+        "Server Name": "demoweb.aukfood.ovh",
+        "Url": "demo03.demoweb.aukfood.ovh",
+        "Cms": "theming",
+        "Plugin or not": "Plugin",
+        "Version": "1.12.0"
+    },
+    {
+        "Server Name": "demoweb.aukfood.ovh",
+        "Url": "demo03.demoweb.aukfood.ovh",
+        "Cms": "updatenotification",
+        "Plugin or not": "Plugin",
+        "Version": "1.19.0"
+    },
+    {
+        "Server Name": "demoweb.aukfood.ovh",
+        "Url": "demo03.demoweb.aukfood.ovh",
+        "Cms": "viewer",
+        "Plugin or not": "Plugin",
+        "Version": "1.10.0"
+    },
+    {
+        "Server Name": "demoweb.aukfood.ovh",
+        "Url": "demo03.demoweb.aukfood.ovh",
+        "Cms": "workflowengine",
+        "Plugin or not": "Plugin",
+        "Version": "7.9.0"
+    },
+    {
+        "Server Name": "demoweb.aukfood.ovh",
+        "Url": "demo03.demoweb.aukfood.ovh",
+        "Cms": "Disabled",
+        "Plugin or not": "Plugin",
+        "Version": "1.30.1"
+    },
+    {
+        "Server Name": "demoweb.aukfood.ovh",
+        "Url": "demo03.demoweb.aukfood.ovh",
+        "Cms": "bruteforcesettings",
+        "Plugin or not": "Plugin",
+        "Version": "1.19.0"
+    },
+    {
+        "Server Name": "demoweb.aukfood.ovh",
+        "Url": "demo03.demoweb.aukfood.ovh",
+        "Cms": "encryption",
+        "Plugin or not": "Plugin",
+        "Version": "1.19.0"
+    },
+    {
+        "Server Name": "demoweb.aukfood.ovh",
+        "Url": "demo03.demoweb.aukfood.ovh",
+        "Cms": "sudo",
+        "Plugin or not": "Plugin",
+        "Version": "2.1.1"
+    },
+    {
+        "Server Name": "demoweb.aukfood.ovh",
+        "Url": "demo03.demoweb.aukfood.ovh",
+        "Cms": "utilisateur",
+        "Plugin or not": "Plugin",
+        "Version": "2.0.0"
+    },
+    {
+        "Server Name": "demoweb.aukfood.ovh",
+        "Url": "demo03.demoweb.aukfood.ovh",
+        "Cms": "inconnu",
+        "Plugin or not": "Plugin",
+        "Version": "2.10.0"
+    },
+    {
+        "Server Name": "demoweb.aukfood.ovh",
+        "Url": "demo03.demoweb.aukfood.ovh",
+        "Cms": "sudo",
+        "Plugin or not": "Plugin",
+        "Version": "1.2.0"
+    },
+    {
+        "Server Name": "demoweb.aukfood.ovh",
+        "Url": "demo03.demoweb.aukfood.ovh",
+        "Cms": "erreur",
+        "Plugin or not": "Plugin",
+        "Version": "1.21.0"
+    },
+    {
+        "Server Name": "demoweb.aukfood.ovh",
+        "Url": "demo03.demoweb.aukfood.ovh",
+        "Cms": "du",
+        "Plugin or not": "Plugin",
+        "Version": "1.19.0"
+    },
+    {
+        "Server Name": "demoweb.aukfood.ovh",
+        "Url": "demo03.demoweb.aukfood.ovh",
+        "Cms": "greffon",
+        "Plugin or not": "Plugin",
+        "Version": "1.22.0"
+    },
+    {
+        "Server Name": "demoweb.aukfood.ovh",
+        "Url": "demo01.demoweb.aukfood.ovh",
+        "Cms": "NextCloud",
+        "Plugin or not": "Not a plugin",
+        "Version": "30.0.0"
+    },
+    {
+        "Server Name": "demoweb.aukfood.ovh",
+        "Url": "demo01.demoweb.aukfood.ovh",
+        "Cms": "Enabled",
+        "Plugin or not": "Plugin",
+        "Version": "2.21.1"
+    },
+    {
+        "Server Name": "demoweb.aukfood.ovh",
+        "Url": "demo01.demoweb.aukfood.ovh",
+        "Cms": "activity",
+        "Plugin or not": "Plugin",
+        "Version": "29.0.0-dev"
+    },
+    {
+        "Server Name": "demoweb.aukfood.ovh",
+        "Url": "demo01.demoweb.aukfood.ovh",
+        "Cms": "circles",
+        "Plugin or not": "Plugin",
+        "Version": "1.12.0"
+    },
+    {
+        "Server Name": "demoweb.aukfood.ovh",
+        "Url": "demo01.demoweb.aukfood.ovh",
+        "Cms": "comments",
+        "Plugin or not": "Plugin",
+        "Version": "1.19.0"
+    },
+    {
+        "Server Name": "demoweb.aukfood.ovh",
+        "Url": "demo01.demoweb.aukfood.ovh",
+        "Cms": "contactsinteraction",
+        "Plugin or not": "Plugin",
+        "Version": "1.10.0"
+    },
+    {
+        "Server Name": "demoweb.aukfood.ovh",
+        "Url": "demo01.demoweb.aukfood.ovh",
+        "Cms": "dashboard",
+        "Plugin or not": "Plugin",
+        "Version": "7.9.0"
+    },
+    {
+        "Server Name": "demoweb.aukfood.ovh",
+        "Url": "demo01.demoweb.aukfood.ovh",
+        "Cms": "dav",
+        "Plugin or not": "Plugin",
+        "Version": "1.30.1"
+    },
+    {
+        "Server Name": "demoweb.aukfood.ovh",
+        "Url": "demo01.demoweb.aukfood.ovh",
+        "Cms": "federatedfilesharing",
+        "Plugin or not": "Plugin",
+        "Version": "1.19.0"
+    },
+    {
+        "Server Name": "demoweb.aukfood.ovh",
+        "Url": "demo01.demoweb.aukfood.ovh",
+        "Cms": "federation",
+        "Plugin or not": "Plugin",
+        "Version": "1.19.0"
+    },
+    {
+        "Server Name": "demoweb.aukfood.ovh",
+        "Url": "demo01.demoweb.aukfood.ovh",
+        "Cms": "files",
+        "Plugin or not": "Plugin",
+        "Version": "2.1.1"
+    },
+    {
+        "Server Name": "demoweb.aukfood.ovh",
+        "Url": "demo01.demoweb.aukfood.ovh",
+        "Cms": "firstrunwizard",
+        "Plugin or not": "Plugin",
+        "Version": "2.0.0"
+    },
+    {
+        "Server Name": "demoweb.aukfood.ovh",
+        "Url": "demo01.demoweb.aukfood.ovh",
+        "Cms": "logreader",
+        "Plugin or not": "Plugin",
+        "Version": "2.10.0"
+    },
+    {
+        "Server Name": "demoweb.aukfood.ovh",
+        "Url": "demo01.demoweb.aukfood.ovh",
+        "Cms": "notifications",
+        "Plugin or not": "Plugin",
+        "Version": "1.2.0"
+    },
+    {
+        "Server Name": "demoweb.aukfood.ovh",
+        "Url": "demo01.demoweb.aukfood.ovh",
+        "Cms": "photos",
+        "Plugin or not": "Plugin",
+        "Version": "1.21.0"
+    },
+    {
+        "Server Name": "demoweb.aukfood.ovh",
+        "Url": "demo01.demoweb.aukfood.ovh",
+        "Cms": "privacy",
+        "Plugin or not": "Plugin",
+        "Version": "1.19.0"
+    },
+    {
+        "Server Name": "demoweb.aukfood.ovh",
+        "Url": "demo01.demoweb.aukfood.ovh",
+        "Cms": "recommendations",
+        "Plugin or not": "Plugin",
+        "Version": "1.22.0"
+    },
+    {
+        "Server Name": "demoweb.aukfood.ovh",
+        "Url": "demo01.demoweb.aukfood.ovh",
+        "Cms": "serverinfo",
+        "Plugin or not": "Plugin",
+        "Version": "2.18.0"
+    },
+    {
+        "Server Name": "demoweb.aukfood.ovh",
+        "Url": "demo01.demoweb.aukfood.ovh",
+        "Cms": "settings",
+        "Plugin or not": "Plugin",
+        "Version": "2.14.0"
+    },
+    {
+        "Server Name": "demoweb.aukfood.ovh",
+        "Url": "demo01.demoweb.aukfood.ovh",
+        "Cms": "sharebymail",
+        "Plugin or not": "Plugin",
+        "Version": "1.17.0"
+    },
+    {
+        "Server Name": "demoweb.aukfood.ovh",
+        "Url": "demo01.demoweb.aukfood.ovh",
+        "Cms": "support",
+        "Plugin or not": "Plugin",
+        "Version": "1.18.0"
+    },
+    {
+        "Server Name": "demoweb.aukfood.ovh",
+        "Url": "demo01.demoweb.aukfood.ovh",
+        "Cms": "systemtags",
+        "Plugin or not": "Plugin",
+        "Version": "2.17.0"
+    },
+    {
+        "Server Name": "demoweb.aukfood.ovh",
+        "Url": "demo01.demoweb.aukfood.ovh",
+        "Cms": "text",
+        "Plugin or not": "Plugin",
+        "Version": "1.17.1"
+    },
+    {
+        "Server Name": "demoweb.aukfood.ovh",
+        "Url": "demo01.demoweb.aukfood.ovh",
+        "Cms": "theming",
+        "Plugin or not": "Plugin",
+        "Version": "1.19.0"
+    },
+    {
+        "Server Name": "demoweb.aukfood.ovh",
+        "Url": "demo01.demoweb.aukfood.ovh",
+        "Cms": "updatenotification",
+        "Plugin or not": "Plugin",
+        "Version": "2.5.0"
+    },
+    {
+        "Server Name": "demoweb.aukfood.ovh",
+        "Url": "demo01.demoweb.aukfood.ovh",
+        "Cms": "viewer",
+        "Plugin or not": "Plugin",
+        "Version": "1.13.0"
+    },
+    {
+        "Server Name": "demoweb.aukfood.ovh",
+        "Url": "demo01.demoweb.aukfood.ovh",
+        "Cms": "workflowengine",
+        "Plugin or not": "Plugin",
+        "Version": "1.19.0"
+    },
+    {
+        "Server Name": "demoweb.aukfood.ovh",
+        "Url": "demo01.demoweb.aukfood.ovh",
+        "Cms": "Disabled",
+        "Plugin or not": "Plugin",
+        "Version": "2.1.0"
+    },
+    {
+        "Server Name": "demoweb.aukfood.ovh",
+        "Url": "demo01.demoweb.aukfood.ovh",
+        "Cms": "bruteforcesettings",
+        "Plugin or not": "Plugin",
+        "Version": "1.4.0"
+    },
+    {
+        "Server Name": "demoweb.aukfood.ovh",
+        "Url": "demo01.demoweb.aukfood.ovh",
+        "Cms": "encryption",
+        "Plugin or not": "Plugin",
+        "Version": "1.19.0"
+    },
+    {
+        "Server Name": "demoweb.aukfood.ovh",
+        "Url": "demo01.demoweb.aukfood.ovh",
+        "Cms": "Enabled",
+        "Plugin or not": "Plugin",
+        "Version": "1.12.0"
+    },
+    {
+        "Server Name": "demoweb.aukfood.ovh",
+        "Url": "demo01.demoweb.aukfood.ovh",
+        "Cms": "activity",
+        "Plugin or not": "Plugin",
+        "Version": "1.19.0"
+    },
+    {
+        "Server Name": "demoweb.aukfood.ovh",
+        "Url": "demo01.demoweb.aukfood.ovh",
+        "Cms": "circles",
+        "Plugin or not": "Plugin",
+        "Version": "1.12.0"
+    },
+    {
+        "Server Name": "demoweb.aukfood.ovh",
+        "Url": "demo01.demoweb.aukfood.ovh",
+        "Cms": "comments",
+        "Plugin or not": "Plugin",
+        "Version": "1.17.0"
+    },
+    {
+        "Server Name": "demoweb.aukfood.ovh",
+        "Url": "demo01.demoweb.aukfood.ovh",
+        "Cms": "contactsinteraction",
+        "Plugin or not": "Plugin",
+        "Version": "1.19.0"
+    },
+    {
+        "Server Name": "demoweb.aukfood.ovh",
+        "Url": "demo01.demoweb.aukfood.ovh",
+        "Cms": "dashboard",
+        "Plugin or not": "Plugin",
+        "Version": "3.10.1"
+    },
+    {
+        "Server Name": "demoweb.aukfood.ovh",
+        "Url": "demo01.demoweb.aukfood.ovh",
+        "Cms": "dav",
+        "Plugin or not": "Plugin",
+        "Version": "2.4.0"
+    },
+    {
+        "Server Name": "demoweb.aukfood.ovh",
+        "Url": "demo01.demoweb.aukfood.ovh",
+        "Cms": "federatedfilesharing",
+        "Plugin or not": "Plugin",
+        "Version": "1.18.0"
+    },
+    {
+        "Server Name": "demoweb.aukfood.ovh",
+        "Url": "demo01.demoweb.aukfood.ovh",
+        "Cms": "federation",
+        "Plugin or not": "Plugin",
+        "Version": "1.19.1"
+    },
+    {
+        "Server Name": "demoweb.aukfood.ovh",
+        "Url": "demo01.demoweb.aukfood.ovh",
+        "Cms": "files",
+        "Plugin or not": "Plugin",
+        "Version": "1.9.0"
+    },
+    {
+        "Server Name": "demoweb.aukfood.ovh",
+        "Url": "demo01.demoweb.aukfood.ovh",
+        "Cms": "firstrunwizard",
+        "Plugin or not": "Plugin",
+        "Version": "2.3.0"
+    },
+    {
+        "Server Name": "demoweb.aukfood.ovh",
+        "Url": "demo01.demoweb.aukfood.ovh",
+        "Cms": "logreader",
+        "Plugin or not": "Plugin",
+        "Version": "1.9.0"
+    },
+    {
+        "Server Name": "demoweb.aukfood.ovh",
+        "Url": "demo01.demoweb.aukfood.ovh",
+        "Cms": "notifications",
+        "Plugin or not": "Plugin",
+        "Version": "2.11.0"
+    },
+    {
+        "Server Name": "demoweb.aukfood.ovh",
+        "Url": "demo01.demoweb.aukfood.ovh",
+        "Cms": "photos",
+        "Plugin or not": "Plugin",
+        "Version": "1.19.0"
+    },
+    {
+        "Server Name": "demoweb.aukfood.ovh",
+        "Url": "demo01.demoweb.aukfood.ovh",
+        "Cms": "privacy",
+        "Plugin or not": "Plugin",
+        "Version": "2.9.0"
+    },
+    {
+        "Server Name": "demoweb.aukfood.ovh",
+        "Url": "demo01.demoweb.aukfood.ovh",
+        "Cms": "recommendations",
+        "Plugin or not": "Plugin",
+        "Version": "2.17.0"
+    },
+    {
+        "Server Name": "demoweb.aukfood.ovh",
+        "Url": "demo01.demoweb.aukfood.ovh",
+        "Cms": "serverinfo",
+        "Plugin or not": "Plugin",
+        "Version": "1.21.0"
+    },
+    {
+        "Server Name": "demoweb.aukfood.ovh",
+        "Url": "demo01.demoweb.aukfood.ovh",
+        "Cms": "settings",
+        "Plugin or not": "Plugin",
+        "Version": "7.0.0"
+    },
+    {
+        "Server Name": "demoweb.aukfood.ovh",
+        "Url": "demo01.demoweb.aukfood.ovh",
+        "Cms": "sharebymail",
+        "Plugin or not": "Plugin",
+        "Version": "11.0.0-dev"
+    },
+    {
+        "Server Name": "demoweb.aukfood.ovh",
+        "Url": "demo01.demoweb.aukfood.ovh",
+        "Cms": "support",
+        "Plugin or not": "Plugin",
+        "Version": "1.20.0"
+    },
+    {
+        "Server Name": "demoweb.aukfood.ovh",
+        "Url": "demo01.demoweb.aukfood.ovh",
+        "Cms": "systemtags",
+        "Plugin or not": "Plugin",
+        "Version": "2.21.1"
+    },
+    {
+        "Server Name": "demoweb.aukfood.ovh",
+        "Url": "demo01.demoweb.aukfood.ovh",
+        "Cms": "text",
+        "Plugin or not": "Plugin",
+        "Version": "29.0.0-dev"
+    },
+    {
+        "Server Name": "demoweb.aukfood.ovh",
+        "Url": "demo01.demoweb.aukfood.ovh",
+        "Cms": "theming",
+        "Plugin or not": "Plugin",
+        "Version": "1.12.0"
+    },
+    {
+        "Server Name": "demoweb.aukfood.ovh",
+        "Url": "demo01.demoweb.aukfood.ovh",
+        "Cms": "updatenotification",
+        "Plugin or not": "Plugin",
+        "Version": "1.19.0"
+    },
+    {
+        "Server Name": "demoweb.aukfood.ovh",
+        "Url": "demo01.demoweb.aukfood.ovh",
+        "Cms": "viewer",
+        "Plugin or not": "Plugin",
+        "Version": "1.10.0"
+    },
+    {
+        "Server Name": "demoweb.aukfood.ovh",
+        "Url": "demo01.demoweb.aukfood.ovh",
+        "Cms": "workflowengine",
+        "Plugin or not": "Plugin",
+        "Version": "7.9.0"
+    },
+    {
+        "Server Name": "demoweb.aukfood.ovh",
+        "Url": "demo01.demoweb.aukfood.ovh",
+        "Cms": "Disabled",
+        "Plugin or not": "Plugin",
+        "Version": "1.30.1"
+    },
+    {
+        "Server Name": "demoweb.aukfood.ovh",
+        "Url": "demo01.demoweb.aukfood.ovh",
+        "Cms": "bruteforcesettings",
+        "Plugin or not": "Plugin",
+        "Version": "1.19.0"
+    },
+    {
+        "Server Name": "demoweb.aukfood.ovh",
+        "Url": "demo01.demoweb.aukfood.ovh",
+        "Cms": "encryption",
+        "Plugin or not": "Plugin",
+        "Version": "1.19.0"
+    },
+    {
+        "Server Name": "demoweb.aukfood.ovh",
+        "Url": "demo01.demoweb.aukfood.ovh",
+        "Cms": "sudo",
+        "Plugin or not": "Plugin",
+        "Version": "2.1.1"
+    },
+    {
+        "Server Name": "demoweb.aukfood.ovh",
+        "Url": "demo01.demoweb.aukfood.ovh",
+        "Cms": "utilisateur",
+        "Plugin or not": "Plugin",
+        "Version": "2.0.0"
+    },
+    {
+        "Server Name": "demoweb.aukfood.ovh",
+        "Url": "demo01.demoweb.aukfood.ovh",
+        "Cms": "inconnu",
+        "Plugin or not": "Plugin",
+        "Version": "2.10.0"
+    },
+    {
+        "Server Name": "demoweb.aukfood.ovh",
+        "Url": "demo01.demoweb.aukfood.ovh",
+        "Cms": "sudo",
+        "Plugin or not": "Plugin",
+        "Version": "1.2.0"
+    },
+    {
+        "Server Name": "demoweb.aukfood.ovh",
+        "Url": "demo01.demoweb.aukfood.ovh",
+        "Cms": "erreur",
+        "Plugin or not": "Plugin",
+        "Version": "1.21.0"
+    },
+    {
+        "Server Name": "demoweb.aukfood.ovh",
+        "Url": "demo01.demoweb.aukfood.ovh",
+        "Cms": "du",
+        "Plugin or not": "Plugin",
+        "Version": "1.19.0"
+    },
+    {
+        "Server Name": "demoweb.aukfood.ovh",
+        "Url": "demo01.demoweb.aukfood.ovh",
+        "Cms": "greffon",
+        "Plugin or not": "Plugin",
+        "Version": "1.22.0"
+    }
+]
