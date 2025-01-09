@@ -42,10 +42,11 @@ def createInventory():
         serv = servername
         rows.append([serv, url, cms, "Not a plugin", version])
         if cms == "NextCloud":
-            listNamePlug = getPlugins.listNamePlg(yp)
-            listVersPlug = getPlugins.listVersPlg(yp)
-            for y in range(min(len(listNamePlug), len(listVersPlug))):
-                rows.append([serv, url, listNamePlug[y], "Plugin", listVersPlug[y]])
+            dbName = next((db for db in listDb if db in url), None)
+            if dbName and dbName in yp:
+                for status in ['enabled', 'disabled']:
+                    for y in range(len(yp[dbName][status])):
+                        rows.append([serv, url, yp[dbName][status][y][0], f"Plugin ({status})", yp[dbName][status][y][1]])
 
     for i in range(len(listVersJson)):
         rows.append([servername, displayUrl.displayUrlJson()[i], displayVers.listCmsJson[i], "Not a plugin", listVersJson[i]])
@@ -99,16 +100,17 @@ def createInventoryJson():
             "Version": version
         })
         if cms == "NextCloud":
-            listNamePlug = getPlugins.listNamePlg(yp)
-            listVersPlug = getPlugins.listVersPlg(yp)
-            for y in range(min(len(listNamePlug), len(listVersPlug))):
-                inventory.append({
-                    "Server Name": serv,
-                    "Url": url,
-                    "Cms": listNamePlug[y],
-                    "Plugin or not": "Plugin",
-                    "Version": listVersPlug[y]
-                })
+            dbName = next((db for db in listDb if db in url), None)
+            if dbName and dbName in yp:
+                for status in ['enabled', 'disabled']:
+                    for y in range(len(yp[dbName][status])):
+                        inventory.append({
+                            "Server Name": serv,
+                            "Url": url,
+                            "Cms": yp[dbName][status][y][0],
+                            "Plugin or not": f"Plugin ({status})",
+                            "Version": yp[dbName][status][y][1]
+                        })
 
     for i in range(len(listVersJson)):
         inventory.append({
