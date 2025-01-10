@@ -1,8 +1,6 @@
 import csv, json, displayVers, displayUrl, getPlugins, takeAppInDocker, subprocess
 
-listNameOfDock = takeAppInDocker.getNameOnlyOffice()
-listNameCollabora = takeAppInDocker.getNameCollabora()
-listNameCalcom = takeAppInDocker.getNameCalcom()
+Dockers = takeAppInDocker.getAllDockers()
 listUrl = displayUrl.displayUrl()
 listDb = displayUrl.listDbName
 yp = getPlugins.getPlug(listDb, listUrl)
@@ -22,18 +20,9 @@ def createInventory():
     header = ["Server Name", "Url", "Cms", "Plugin or not", "Version"]
     rows = []
     
-    # Ajout des données pour OnlyOffice, Collabora et Calcom (Docker)
-    if len(listNameOfDock) > 0 and listNameOfDock[0] != '':
-        for i in range(len(listNameOfDock)):
-            rows.append([servername, takeAppInDocker.getDockerUrls(listNameOfDock)[i], "OnlyOffice", "Not a plugin", takeAppInDocker.getVersOnlyOffice()[i]])
-    
-    if len(listNameCollabora) > 0 and listNameCollabora[0] != '':        
-        for i in range(len(listNameCollabora)):
-            rows.append([servername, takeAppInDocker.getDockerUrls(listNameCollabora)[i], "Collabora", "Not a plugin", takeAppInDocker.getVersCollabora()[i]])
-
-    if len(listNameCalcom) > 0 and listNameCalcom[0] != '':
-        for i in range(len(listNameCalcom)):
-            rows.append([servername, takeAppInDocker.getDockerUrls(listNameCalcom)[i], "Calcom", "Not a plugin", takeAppInDocker.getVersCalcom()[i]])
+    # Ajout des données pour tous les dockers
+    for docker in Dockers:
+        rows.append([servername, docker['url'], docker['cms'], "Not a plugin", docker['version']])
     
     for i in range(len(listUrl)):
         version = listVersions[i]
@@ -47,7 +36,7 @@ def createInventory():
                 for status in ['enabled', 'disabled']:
                     for y in range(len(yp[dbName][status])):
                         rows.append([serv, url, yp[dbName][status][y][0], f"Plugin ({status})", yp[dbName][status][y][1]])
-        elif cms == "Wordpress!":
+        elif cms == "Wordpress":
             plugins = getPlugins.getPlugWP(url)
             for status in ['enabled']:
                 for y in range(len(plugins[status])):
@@ -62,35 +51,15 @@ def createInventory():
 def createInventoryJson():
     inventory = []
 
-    if len(listNameOfDock) > 0 and listNameOfDock[0] != '':
-        for i in range(len(listNameOfDock)):
-            inventory.append({
-                "Server Name": servername,
-                "Url": takeAppInDocker.getDockerUrls(listNameOfDock)[i],
-                "Cms": "OnlyOffice",
-                "Plugin or not": "Not a plugin",
-                "Version": takeAppInDocker.getVersOnlyOffice()[i]
-            })
-
-    if len(listNameCollabora) > 0 and listNameCollabora[0] != '':
-        for i in range(len(listNameCollabora)):
-            inventory.append({
-                "Server Name": servername,
-                "Url": takeAppInDocker.getDockerUrls(listNameCollabora)[i],
-                "Cms": "Collabora",
-                "Plugin or not": "Not a plugin",
-                "Version": takeAppInDocker.getVersCollabora()[i]
-            })
-
-    if len(listNameCalcom) > 0 and listNameCalcom[0] != '':
-        for i in range(len(listNameCalcom)):
-            inventory.append({
-                "Server Name": servername,
-                "Url": takeAppInDocker.getDockerUrls(listNameCalcom)[i],
-                "Cms": "Calcom",
-                "Plugin or not": "Not a plugin",
-                "Version": takeAppInDocker.getVersCalcom()[i]
-            })
+    # Ajout des données pour tous les dockers
+    for docker in Dockers:
+        inventory.append({
+            "Server Name": servername,
+            "Url": docker['url'],
+            "Cms": docker['cms'],
+            "Plugin or not": "Not a plugin",
+            "Version": docker['version']
+        })
 
     for i in range(len(listUrl)):
         version = listVersions[i]
@@ -116,17 +85,17 @@ def createInventoryJson():
                             "Plugin or not": f"Plugin ({status})",
                             "Version": yp[dbName][status][y][1]
                         })
-            elif cms == "WordPress!":
-                plugins = getPlugins.getPlugWP(url)
-                for status in ['enabled', 'disabled']:
-                    for y in range(len(plugins[status])):
-                        inventory.append({
-                            "Server Name": serv,
-                            "Url": url,
-                            "Cms": plugins[status][y][0],
-                            "Plugin or not": f"Plugin ({status})",
-                            "Version": plugins[status][y][1]
-                        })
+        elif cms == "WordPress":
+            plugins = getPlugins.getPlugWP(url)
+            for status in ['enabled', 'disabled']:
+                for y in range(len(plugins[status])):
+                    inventory.append({
+                        "Server Name": serv,
+                        "Url": url,
+                        "Cms": plugins[status][y][0],
+                        "Plugin or not": f"Plugin ({status})",
+                        "Version": plugins[status][y][1]
+                    })
 
     for i in range(len(listVersJson)):
         inventory.append({

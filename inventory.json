@@ -1,35 +1,42 @@
 [
     {
         "Server Name": "demoweb.aukfood.ovh",
+        "Url": "collab01.demoweb.aukfood.ovh",
+        "Cms": "collabora",
+        "Plugin or not": "Not a plugin",
+        "Version": "24.04-23"
+    },
+    {
+        "Server Name": "demoweb.aukfood.ovh",
         "Url": "only1.demoweb.aukfood.ovh",
-        "Cms": "OnlyOffice",
+        "Cms": "onlyoffice",
         "Plugin or not": "Not a plugin",
         "Version": "8.2.0-143"
     },
     {
         "Server Name": "demoweb.aukfood.ovh",
-        "Url": "collab01.demoweb.aukfood.ovh",
-        "Cms": "Collabora",
-        "Plugin or not": "Not a plugin",
-        "Version": "24.04.9-1"
-    },
-    {
-        "Server Name": "demoweb.aukfood.ovh",
         "Url": "Unknown",
-        "Cms": "Calcom",
+        "Cms": "calcom",
         "Plugin or not": "Not a plugin",
         "Version": "Unknown"
     },
     {
         "Server Name": "demoweb.aukfood.ovh",
         "Url": "rvdemo01.demoweb.aukfood.ovh",
-        "Cms": "Calcom",
+        "Cms": "calcom",
         "Plugin or not": "Not a plugin",
         "Version": "Unknown"
     },
     {
         "Server Name": "demoweb.aukfood.ovh",
-        "Url": "wp.demoweb.aukfood.ovh",
+        "Url": "Unknown",
+        "Cms": "postgres",
+        "Plugin or not": "Not a plugin",
+        "Version": "3.7.9-2+deb12u2"
+    },
+    {
+        "Server Name": "demoweb.aukfood.ovh",
+        "Url": "Unknown",
         "Cms": "Wordpress",
         "Plugin or not": "Not a plugin",
         "Version": "6.7.1"
@@ -736,6 +743,13 @@
     },
     {
         "Server Name": "demoweb.aukfood.ovh",
+        "Url": "Unknown",
+        "Cms": "Wordpress",
+        "Plugin or not": "Not a plugin",
+        "Version": "6.7.1"
+    },
+    {
+        "Server Name": "demoweb.aukfood.ovh",
         "Url": "demo01.demoweb.aukfood.ovh",
         "Cms": "NextCloud",
         "Plugin or not": "Not a plugin",
@@ -1167,5 +1181,12 @@
         "Cms": " user_ldap",
         "Plugin or not": "Plugin (disabled)",
         "Version": "1.21.0"
+    },
+    {
+        "Server Name": "demoweb.aukfood.ovh",
+        "Url": "phpmyadmin.demoweb.aukfood.ovh",
+        "Cms": "PhpMyAdmin",
+        "Plugin or not": "Not a plugin",
+        "Version": "5.2.1"
     }
 ]
