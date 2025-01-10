@@ -20,3 +20,6 @@ def SearchConf(currentpath):
 # Fonction qui cherche le fichier apache.conf où se trouve l'url de certains cms
 def SearchConfJson(currentpath):
     return searchConfigFiles(currentpath, 'apache.conf', listFileConfJson)
+
+def SearchConfWp(url):
+    return searchConfigFiles(f"/var/www/{url}/", 'wp-config.php', listFileConfName)[0]

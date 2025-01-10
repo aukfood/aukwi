@@ -35,21 +35,24 @@ def getDbCredentialsFromWpConfig(path):
 
 # Fonction pour récupérer l'URL d'un site WordPress depuis la base de données
 def getWordPressUrl(path):
-    wp_config_path = findWpConfigPath(path)
-    dbname, dbuser, dbpass = getDbCredentialsFromWpConfig(wp_config_path)
-    connection = pymysql.connect(
-        host='localhost',
-        user=dbuser,
-        password=dbpass,
-        database=dbname
-    )
-    cursor = connection.cursor()
-    cursor.execute("SELECT option_value FROM wp_options WHERE option_name = 'siteurl'")
-    url = cursor.fetchone()[0]
-    connection.close()
-    # Supprimer les préfixes http:// ou https://
-    url = re.sub(r'^https?://', '', url)
-    return url
+    try:
+        wp_config_path = findWpConfigPath(path)
+        dbname, dbuser, dbpass = getDbCredentialsFromWpConfig(wp_config_path)
+        connection = pymysql.connect(
+            host='localhost',
+            user=dbuser,
+            password=dbpass,
+            database=dbname
+        )
+        cursor = connection.cursor()
+        cursor.execute("SELECT option_value FROM wp_options WHERE option_name = 'siteurl'")
+        url = cursor.fetchone()[0]
+        connection.close()
+        # Supprimer les préfixes http:// ou https://
+        url = re.sub(r'^https?://', '', url)
+        return url
+    except:
+        return "Unknown"
 
 # Fonction pour trouver le fichier wp-config.php en remontant dans les répertoires
 def findWpConfigPath(path):

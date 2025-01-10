@@ -13,7 +13,7 @@ listVersions = displayVers.displayVersion()
 # Fonction pour écrire les données dans un fichier CSV
 def writeCsv(filename, header, rows):
     with open(filename, "w") as csv_file:
-        writer = csv.writer(csv_file, delimiter=",")
+        writer = csv.writer(csv_file, delimiter=";")
         writer.writerow(header)
         writer.writerows(rows)
 
@@ -47,6 +47,11 @@ def createInventory():
                 for status in ['enabled', 'disabled']:
                     for y in range(len(yp[dbName][status])):
                         rows.append([serv, url, yp[dbName][status][y][0], f"Plugin ({status})", yp[dbName][status][y][1]])
+        elif cms == "Wordpress!":
+            plugins = getPlugins.getPlugWP(url)
+            for status in ['enabled']:
+                for y in range(len(plugins[status])):
+                    rows.append([serv, url, plugins[status][y], f"Plugin ({status})", "Unknown"])
 
     for i in range(len(listVersJson)):
         rows.append([servername, displayUrl.displayUrlJson()[i], displayVers.listCmsJson[i], "Not a plugin", listVersJson[i]])
@@ -110,6 +115,17 @@ def createInventoryJson():
                             "Cms": yp[dbName][status][y][0],
                             "Plugin or not": f"Plugin ({status})",
                             "Version": yp[dbName][status][y][1]
+                        })
+            elif cms == "WordPress!":
+                plugins = getPlugins.getPlugWP(url)
+                for status in ['enabled', 'disabled']:
+                    for y in range(len(plugins[status])):
+                        inventory.append({
+                            "Server Name": serv,
+                            "Url": url,
+                            "Cms": plugins[status][y][0],
+                            "Plugin or not": f"Plugin ({status})",
+                            "Version": plugins[status][y][1]
                         })
 
     for i in range(len(listVersJson)):
