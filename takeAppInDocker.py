@@ -13,13 +13,25 @@ def getDockerNames():
             # Extraire l'image utilisée par le conteneur
             docker_image = container_info[0].get("Config", {}).get("Image", "unknown")
             
-            # Déterminer le type de Docker à partir de l'image
-            docker_type = docker_image.split('/')[0].split('.')[0]
+            # Retirer "docker" des chaînes de caractères
+            docker_image = docker_image.replace("docker", "")
+            
+            
+            # Déterminer le type de Docker à partir de l'image et du nom du conteneur
+            image_parts = docker_image.replace('.', '/').split('/')
+            name_parts = name.replace("docker", "").split('_')
+            
+            common_word = next((word for word in image_parts if any(word in part for part in name_parts)), None)
+            if common_word:
+                docker_type = common_word
+            else:
+                docker_type = image_parts[0] if image_parts else name_parts[0]
             
             docker_info[name] = docker_type
+            if docker_info[name] == "":
+                docker_info[name] = "Unknown"
         except Exception as e:
             print(f"Erreur lors de l'inspection du conteneur {name} : {str(e)}")
-            docker_info[name] = "Unknown"
     return docker_info
 
 # Fonction pour récupérer la version des containers Docker
@@ -34,11 +46,11 @@ def getDockerVersions(nameList):
                 package_index = status.index(package_name)
                 status = status[package_index:]
                 version_index = status.index("Version:") + 1
-                versions[name]=status[version_index]
+                versions[name] = status[version_index]
             else:
-                versions[name]="Unknown"
-        except ValueError:
-            versions[name]="Unknown"
+                versions[name] = "Unknown"
+        except (ValueError, IndexError):
+            versions[name] = "Unknown"
     return versions
 
 # Fonction pour récupérer les URLs des applications Docker
@@ -96,11 +108,12 @@ def getAllDockers():
     # Combiner les informations dans une liste de dictionnaires
     dockers_info = []
     for name,type in docker_names.items():
-        dockers_info.append({
-            "name": name,
-            "cms": type,
-            "version": docker_versions[name],
-            "url": docker_urls[name]
-        })
+        if type != "Unknown" and docker_urls[name] != "Unknown":
+            dockers_info.append({
+                "name": name,
+                "cms": type,
+                "version": docker_versions[name],
+                "url": docker_urls[name]
+            })
     # print(dockers_info)
     return dockers_info

@@ -38,9 +38,9 @@ def createInventory():
                         rows.append([serv, url, yp[dbName][status][y][0], f"Plugin ({status})", yp[dbName][status][y][1]])
         elif cms == "Wordpress":
             plugins = getPlugins.getPlugWP(url)
-            for status in ['enabled']:
+            for status in plugins.keys():
                 for y in range(len(plugins[status])):
-                    rows.append([serv, url, plugins[status][y], f"Plugin ({status})", "Unknown"])
+                    rows.append([serv, url, plugins[status][y]['name'], f"Plugin ({status})",  plugins[status][y]['version']])
 
     for i in range(len(listVersJson)):
         rows.append([servername, displayUrl.displayUrlJson()[i], displayVers.listCmsJson[i], "Not a plugin", listVersJson[i]])
@@ -85,16 +85,16 @@ def createInventoryJson():
                             "Plugin or not": f"Plugin ({status})",
                             "Version": yp[dbName][status][y][1]
                         })
-        elif cms == "WordPress":
+        elif cms == "Wordpress":
             plugins = getPlugins.getPlugWP(url)
-            for status in ['enabled', 'disabled']:
+            for status in plugins.keys():
                 for y in range(len(plugins[status])):
                     inventory.append({
                         "Server Name": serv,
                         "Url": url,
-                        "Cms": plugins[status][y][0],
+                        "Cms": plugins[status][y]['name'],
                         "Plugin or not": f"Plugin ({status})",
-                        "Version": plugins[status][y][1]
+                        "Version": plugins[status][y]['version']
                     })
 
     for i in range(len(listVersJson)):

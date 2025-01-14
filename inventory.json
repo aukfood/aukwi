@@ -36,13 +36,6 @@
     },
     {
         "Server Name": "demoweb.aukfood.ovh",
-        "Url": "Unknown",
-        "Cms": "Wordpress",
-        "Plugin or not": "Not a plugin",
-        "Version": "6.7.1"
-    },
-    {
-        "Server Name": "demoweb.aukfood.ovh",
         "Url": "demo02.demoweb.aukfood.ovh",
         "Cms": "NextCloud",
         "Plugin or not": "Not a plugin",
@@ -743,10 +736,31 @@
     },
     {
         "Server Name": "demoweb.aukfood.ovh",
-        "Url": "Unknown",
+        "Url": "wordpress.demoweb.aukfood.ovh",
         "Cms": "Wordpress",
         "Plugin or not": "Not a plugin",
         "Version": "6.7.1"
+    },
+    {
+        "Server Name": "demoweb.aukfood.ovh",
+        "Url": "wordpress.demoweb.aukfood.ovh",
+        "Cms": "crowdsec",
+        "Plugin or not": "Plugin (enabled)",
+        "Version": "2.8.1"
+    },
+    {
+        "Server Name": "demoweb.aukfood.ovh",
+        "Url": "wordpress.demoweb.aukfood.ovh",
+        "Cms": "hello",
+        "Plugin or not": "Plugin (disabled)",
+        "Version": "1.7.2"
+    },
+    {
+        "Server Name": "demoweb.aukfood.ovh",
+        "Url": "wordpress.demoweb.aukfood.ovh",
+        "Cms": "akismet",
+        "Plugin or not": "Plugin (disabled)",
+        "Version": "5.3.5"
     },
     {
         "Server Name": "demoweb.aukfood.ovh",

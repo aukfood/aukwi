@@ -4,7 +4,6 @@ demoweb.aukfood.ovh;only1.demoweb.aukfood.ovh;onlyoffice;Not a plugin;8.2.0-143
 demoweb.aukfood.ovh;Unknown;calcom;Not a plugin;Unknown
 demoweb.aukfood.ovh;rvdemo01.demoweb.aukfood.ovh;calcom;Not a plugin;Unknown
 demoweb.aukfood.ovh;Unknown;postgres;Not a plugin;3.7.9-2+deb12u2
-demoweb.aukfood.ovh;wp.demoweb.aukfood.ovh;Wordpress;Not a plugin;6.7.1
 demoweb.aukfood.ovh;demo02.demoweb.aukfood.ovh;NextCloud;Not a plugin;29.0.8
 demoweb.aukfood.ovh;demo02.demoweb.aukfood.ovh; activity;Plugin (enabled);2.21.1
 demoweb.aukfood.ovh;demo02.demoweb.aukfood.ovh; circles;Plugin (enabled);29.0.0-dev
@@ -105,7 +104,10 @@ demoweb.aukfood.ovh;demo03.demoweb.aukfood.ovh; files_external;Plugin (disabled)
 demoweb.aukfood.ovh;demo03.demoweb.aukfood.ovh; suspicious_login;Plugin (disabled);7.0.0
 demoweb.aukfood.ovh;demo03.demoweb.aukfood.ovh; twofactor_totp;Plugin (disabled);11.0.0-dev
 demoweb.aukfood.ovh;demo03.demoweb.aukfood.ovh; user_ldap;Plugin (disabled);1.20.0
-demoweb.aukfood.ovh;Unknown;Wordpress;Not a plugin;6.7.1
+demoweb.aukfood.ovh;wordpress.demoweb.aukfood.ovh;Wordpress;Not a plugin;6.7.1
+demoweb.aukfood.ovh;wordpress.demoweb.aukfood.ovh;crowdsec;Plugin (enabled);2.8.1
+demoweb.aukfood.ovh;wordpress.demoweb.aukfood.ovh;hello;Plugin (disabled);1.7.2
+demoweb.aukfood.ovh;wordpress.demoweb.aukfood.ovh;akismet;Plugin (disabled);5.3.5
 demoweb.aukfood.ovh;demo01.demoweb.aukfood.ovh;NextCloud;Not a plugin;30.0.0
 demoweb.aukfood.ovh;demo01.demoweb.aukfood.ovh; activity;Plugin (enabled);3.0.0
 demoweb.aukfood.ovh;demo01.demoweb.aukfood.ovh; bruteforcesettings;Plugin (enabled);3.0.0

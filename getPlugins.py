@@ -1,4 +1,4 @@
-import subprocess, pwd, displayUrl, pymysql, phpserialize, SearchUrl
+import subprocess, pwd, displayUrl, pymysql, phpserialize, SearchUrl, os
 
 listVersPlug = []
 listNamePlug = []
@@ -28,7 +28,7 @@ def getPlug(listDbName, listUrl):
             elif current_list is not None:
                 plugin_info = line.split(':')
                 if len(plugin_info) == 2:
-                    plugin_name = plugin_info[0].strip().lstrip('-')
+                    plugin_name = plugin_info[0].strip().lstrip('-').lstrip()
                     plugin_version = plugin_info[1].strip()
                     current_list.append((plugin_name, plugin_version))
         plugDict[listDbName[i]] = {'enabled': enabled_plugins, 'disabled': disabled_plugins}
@@ -38,8 +38,9 @@ def getPlug(listDbName, listUrl):
 def getPlugWP(url):
     try:
         # Récupérer les informations de connexion à la base de données
-        path = SearchUrl.SearchConfWp(url)
-        dbname, dbuser, dbpass = displayUrl.getDbCredentialsFromWpConfig(path)
+        wpPath = SearchUrl.SearchConfWp(url)
+        wpDir = os.path.dirname(wpPath)  # Retirer wp-config.php
+        dbname, dbuser, dbpass = displayUrl.getDbCredentialsFromWpConfig(wpPath)
         connection = pymysql.connect(
             host='localhost',
             user=dbuser,
@@ -58,7 +59,7 @@ def getPlugWP(url):
         updatePlugins = cursor.fetchone()
         connection.close()
     except:
-        return {'enabled': []}
+        return {'enabled': [], 'disabled': []}
 
     plugin_versions = {}
     if updatePlugins:
@@ -66,7 +67,7 @@ def getPlugWP(url):
         updateData = phpserialize.loads(
             updatePlugins[0].encode('utf-8'),
             decode_strings=True,
-            object_hook=lambda obj: {key.decode(): value for key, value in obj.items()}
+            object_hook=lambda name, obj: {(key.decode() if isinstance(key, bytes) else key): value for key, value in obj.items()}
         )
 
         # Vérifier la liste des plugins dans "checked"
@@ -74,7 +75,24 @@ def getPlugWP(url):
         for plugin_path, version in checked_plugins.items():
             plugin_name = plugin_path.split('/')[0]
             plugin_versions[plugin_name] = version
-
+            
+    # Récupérer les plugins inactifs
+    inactivePlugins = []
+    plugins_dir = os.path.join(wpDir, 'wp-content', 'plugins')
+    for root, dirs, files in os.walk(plugins_dir):
+        for file in files:
+            if file.endswith('.php'):
+                plugin_path = os.path.join(root, file)
+                plugin_name = os.path.splitext(file)[0]
+                if plugin_name not in [p.split('/')[0] for p in activePlugins]:
+                    plugin_version = 'unknown'
+                    with open(plugin_path, 'r') as f:
+                        for line in f:
+                            if 'Version:' in line:
+                                plugin_version = line.split(':')[1].strip()
+                                break
+                    if plugin_version and plugin_version != 'unknown' and any(char.isdigit() for char in plugin_version):
+                        inactivePlugins.append({'name': plugin_name, 'version': plugin_version})
     # Associer les versions aux plugins activés
     plugins = {
         'enabled': [
@@ -84,6 +102,7 @@ def getPlugWP(url):
             }
             for plugin in activePlugins
         ],
+        'disabled': inactivePlugins
     }
     return plugins
 
