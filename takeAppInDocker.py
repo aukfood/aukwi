@@ -2,6 +2,9 @@ import subprocess, os, re, json
 
 # Fonction pour récupérer tous les noms des containers Docker correspondant à un pattern
 def getDockerNames():
+    """
+    Récupère les noms des conteneurs Docker et détermine leur type à partir de l'image et du nom du conteneur.
+    """
     docker_names = subprocess.getoutput(f'docker ps -a --format \'{{{{.Names}}}}\'').split('\n')
     docker_info = {}
     for name in docker_names:
@@ -15,7 +18,6 @@ def getDockerNames():
             
             # Retirer "docker" des chaînes de caractères
             docker_image = docker_image.replace("docker", "")
-            
             
             # Déterminer le type de Docker à partir de l'image et du nom du conteneur
             image_parts = docker_image.replace('.', '/').split('/')
@@ -36,6 +38,9 @@ def getDockerNames():
 
 # Fonction pour récupérer la version des containers Docker
 def getDockerVersions(nameList):
+    """
+    Récupère les versions des conteneurs Docker en lisant le fichier de statut des paquets.
+    """
     versions = {}
     for name, type in nameList.items():
         status = subprocess.getoutput(f'docker exec -it {name} cat /var/lib/dpkg/status').split()
@@ -55,6 +60,9 @@ def getDockerVersions(nameList):
 
 # Fonction pour récupérer les URLs des applications Docker
 def getDockerUrls(container_names, apache_config_path="/etc/apache2/sites-enabled"):
+    """
+    Récupère les URLs des applications Docker en associant les ports des conteneurs aux vhosts Apache.
+    """
     vhosts = {}  # Dictionnaire pour stocker les correspondances conteneur -> vhost
 
     # Étape 1 : Inspecter les conteneurs Docker
@@ -74,6 +82,7 @@ def getDockerUrls(container_names, apache_config_path="/etc/apache2/sites-enable
                 container_ports[container] = "Unknown"
         except Exception as e:
             print(f"Erreur lors de l'inspection du conteneur {container} : {str(e)}")
+    
     # Étape 2 : Associer les ports aux vhosts Apache
     for root, dirs, files in os.walk(apache_config_path):
         for file in files:
@@ -96,7 +105,10 @@ def getDockerUrls(container_names, apache_config_path="/etc/apache2/sites-enable
                                 vhosts[container] = server_name
     return vhosts
 
-def getAllDockers():    
+def getAllDockers():
+    """
+    Récupère toutes les informations sur les conteneurs Docker, y compris les noms, versions et URLs.
+    """
     # Récupérer les noms des containers
     docker_names = getDockerNames()
     # Récupérer les versions des containers
@@ -107,7 +119,7 @@ def getAllDockers():
 
     # Combiner les informations dans une liste de dictionnaires
     dockers_info = []
-    for name,type in docker_names.items():
+    for name, type in docker_names.items():
         if type != "Unknown" and docker_urls[name] != "Unknown":
             dockers_info.append({
                 "name": name,
@@ -115,5 +127,4 @@ def getAllDockers():
                 "version": docker_versions[name],
                 "url": docker_urls[name]
             })
-    # print(dockers_info)
     return dockers_info

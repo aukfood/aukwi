@@ -5,6 +5,9 @@ listNamePlug = []
 
 # Fonction qui récupère nom + version des plugins dans un dictionnaire
 def getPlug(listDbName, listUrl):
+    """
+    Récupère les noms et versions des plugins pour une liste de bases de données et d'URLs.
+    """
     plugDict = {}
     filtered_urls = [item for item in listUrl if any(substring in item for substring in listDbName)]
     for i in range(len(listDbName)):
@@ -36,6 +39,9 @@ def getPlug(listDbName, listUrl):
 
 # Fonction qui récupère les plugins WordPress
 def getPlugWP(url):
+    """
+    Récupère les plugins activés et désactivés pour un site WordPress donné.
+    """
     try:
         # Récupérer les informations de connexion à la base de données
         wpPath = SearchUrl.SearchConfWp(url)

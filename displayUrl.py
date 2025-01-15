@@ -4,6 +4,9 @@ listDbName = []
 
 # Fonction qui cherche dans un fichier si il contient les informations liées à l'url des cms (Wordpress, Moodle, NextCloud)
 def TakeUrlCms(fileConfig):
+    """
+    Extrait l'URL des CMS (Wordpress, Moodle, NextCloud) à partir d'un fichier de configuration.
+    """
     listUrlCms = []
     fileConfig = fileConfig.split('\n')
     for line in fileConfig:
@@ -23,6 +26,9 @@ def TakeUrlCms(fileConfig):
 
 # Fonction pour extraire les informations de connexion à la base de données depuis wp-config.php
 def getDbCredentialsFromWpConfig(path):
+    """
+    Extrait les informations de connexion à la base de données depuis le fichier wp-config.php.
+    """
     with open(path, 'r') as file:
         config = file.read()
         dbname = re.search(r"define\(\s*['\"]DB_NAME['\"]\s*,\s*['\"](.+?)['\"]\s*\);", config)
@@ -35,6 +41,9 @@ def getDbCredentialsFromWpConfig(path):
 
 # Fonction pour récupérer l'URL d'un site WordPress depuis la base de données
 def getWordPressUrl(path):
+    """
+    Récupère l'URL d'un site WordPress depuis la base de données.
+    """
     try:
         wp_config_path = findWpConfigPath(path)
         dbname, dbuser, dbpass = getDbCredentialsFromWpConfig(wp_config_path)
@@ -56,6 +65,9 @@ def getWordPressUrl(path):
 
 # Fonction pour trouver le fichier wp-config.php en remontant dans les répertoires
 def findWpConfigPath(path):
+    """
+    Trouve le fichier wp-config.php en remontant dans les répertoires.
+    """
     while path != '/':
         wp_config_path = os.path.join(path, 'wp-config.php')
         if os.path.isfile(wp_config_path):
@@ -65,6 +77,9 @@ def findWpConfigPath(path):
 
 # Fonction qui cherche dans un fichier si il contient les informations liées à l'url du cms (PhpMyAdmin)     
 def TakeUrlCmsJson(fileConfig):
+    """
+    Extrait l'URL de PhpMyAdmin à partir d'un fichier de configuration JSON.
+    """
     listUrlCmsJson = []
     fileConfig = fileConfig.split('\n')
     for line in fileConfig:
@@ -77,6 +92,9 @@ def TakeUrlCmsJson(fileConfig):
 
 # Fonction qui crée une condition pour trier les fichiers contenant les url
 def trueOrNot(fileConfig):
+    """
+    Vérifie si un fichier de configuration contient des informations liées à l'URL des CMS.
+    """
     fileConfig = fileConfig.split('\n')
     for line in fileConfig:
         if line.startswith('    0 => '):
@@ -87,6 +105,9 @@ def trueOrNot(fileConfig):
 
 # Fonction qui crée une condition pour trier les fichiers contenant les url
 def trueOrNotJson(fileConfig):
+    """
+    Vérifie si un fichier de configuration JSON contient des informations liées à l'URL des CMS.
+    """
     fileConfig = fileConfig.split('\n')
     for line in fileConfig:
         if line.startswith('  ServerName '):
@@ -94,6 +115,9 @@ def trueOrNotJson(fileConfig):
     return False
 
 def displayUrl():
+    """
+    Affiche les URLs des CMS (Wordpress, Moodle, NextCloud) en parcourant les fichiers de configuration.
+    """
     currentpath = "/" # chemin vers répertoire courant
     pathOfFileConf = SearchUrl.SearchConf(currentpath)
     listUrl = []
@@ -109,6 +133,9 @@ def displayUrl():
     return listUrl
 
 def displayUrlJson():
+    """
+    Affiche les URLs de PhpMyAdmin en parcourant les fichiers de configuration JSON.
+    """
     currentpath = "/" # chemin vers répertoire courant
     pathOfFileConfJson = SearchUrl.SearchConfJson(currentpath)
     listUrlJson = []

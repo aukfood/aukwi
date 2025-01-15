@@ -4,6 +4,9 @@ listRocket = []
 
 # Fonction qui cherche dans un fichier si il contient les informations liées à la version de RocketChat
 def TakeVersionRocket(fileVersion):
+    """
+    Extrait la version de RocketChat à partir d'un fichier de version.
+    """
     listVersionRocket = []
     fileVersion = fileVersion.split('\n')
     for line in fileVersion:
@@ -18,6 +21,9 @@ def TakeVersionRocket(fileVersion):
 
 # Récupération de la version du cms (RocketChat) dans une liste     
 def displayVersionRocket():
+    """
+    Récupère les versions de RocketChat à partir des fichiers JSON trouvés.
+    """
     currentpath = "/" # chemin vers répertoire courant
     pathOfFileJson = SearchVersionFile.SearchJson(currentpath)
     listVersionJson = []

@@ -5,6 +5,9 @@ listCmsJson = []
 
 # Fonction qui cherche dans un fichier si il contient les informations liées à la version des cms 
 def TakeVersionCms(fileVersion):
+    """
+    Extrait la version des CMS (Moodle, Wordpress, NextCloud) à partir d'un fichier de version.
+    """
     listVersionCms = []
     fileVersion = fileVersion.split('\n')
     for line in fileVersion:
@@ -33,6 +36,9 @@ def TakeVersionCms(fileVersion):
 
 # Fonction qui cherche dans un fichier si il contient les informations liées à la version du cms
 def TakeVersionCmsJson(fileVersion):
+    """
+    Extrait la version du CMS (PhpMyAdmin) à partir d'un fichier JSON de version.
+    """
     listVersionCmsJson = []
     fileVersion = fileVersion.split('\n')
     for line in fileVersion:
@@ -47,6 +53,9 @@ def TakeVersionCmsJson(fileVersion):
 
 # Récupération de la version des cms (Moodle, Wordpress, NextCloud) dans une liste 
 def displayVersion():
+    """
+    Affiche la version des CMS (Moodle, Wordpress, NextCloud) en parcourant les fichiers de version.
+    """
     currentpath = "/" # chemin vers répertoire courant
     pathOfFileVers = SearchVersionFile.SearchVers(currentpath)
     listVersion = []
@@ -59,6 +68,9 @@ def displayVersion():
 
 # Récupération de la version du cms (PhpMyAdmin) dans une liste     
 def displayVersionJson():
+    """
+    Affiche la version du CMS (PhpMyAdmin) en parcourant les fichiers JSON de version.
+    """
     currentpath = "/" # chemin vers répertoire courant
     pathOfFileJson = SearchVersionFile.SearchJson(currentpath)
     listVersionJson = []

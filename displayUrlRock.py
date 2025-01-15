@@ -2,6 +2,9 @@ import SearchUrl
 
 # Fonction qui cherche dans un fichier si il contient les informations liées à l'url du cms (RocketChat)     
 def TakeUrlRocket(fileConfig):
+    """
+    Extrait l'URL de RocketChat à partir d'un fichier de configuration.
+    """
     listUrlRocket = []
     fileConfig = fileConfig.split('\n')
     for line in fileConfig:
@@ -14,6 +17,9 @@ def TakeUrlRocket(fileConfig):
 
 # Fonction qui crée une condition pour trier les fichiers contenant les url
 def trueOrNotRock(fileConfig):
+    """
+    Vérifie si un fichier de configuration contient des informations liées à l'URL de RocketChat.
+    """
     fileConfig = fileConfig.split('\n')
     for line in fileConfig:
         if line.startswith('    "semver": "'):
@@ -21,6 +27,9 @@ def trueOrNotRock(fileConfig):
     return False
 
 def displayUrlRock():
+    """
+    Affiche les URLs de RocketChat en parcourant les fichiers de configuration.
+    """
     currentpath = "/" # chemin vers répertoire courant
     pathOfFileConfJson = SearchUrl.SearchConfJson(currentpath)
     listUrlRock = []

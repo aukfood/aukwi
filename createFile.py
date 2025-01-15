@@ -10,6 +10,9 @@ listVersions = displayVers.displayVersion()
 
 # Fonction pour écrire les données dans un fichier CSV
 def writeCsv(filename, header, rows):
+    """
+    Écrit les données dans un fichier CSV.
+    """
     with open(filename, "w") as csv_file:
         writer = csv.writer(csv_file, delimiter=";")
         writer.writerow(header)
@@ -17,6 +20,9 @@ def writeCsv(filename, header, rows):
 
 # Fonction pour créer et remplir le fichier "inventory.csv"
 def createInventory():
+    """
+    Crée et remplit le fichier inventory.csv avec les informations des CMS et plugins.
+    """
     header = ["Server Name", "Url", "Cms", "Plugin or not", "Version"]
     rows = []
     
@@ -49,6 +55,9 @@ def createInventory():
 
 # Fonction pour créer et remplir le fichier "inventory.json"
 def createInventoryJson():
+    """
+    Crée et remplit le fichier inventory.json avec les informations des CMS et plugins.
+    """
     inventory = []
 
     # Ajout des données pour tous les dockers
