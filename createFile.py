@@ -1,120 +1,114 @@
-import csv, json, displayVers, displayUrl, getPlugins, takeAppInDocker, subprocess
+import json, displayVers, displayUrl, getPlugins, takeAppInDocker, subprocess, time
 
-Dockers = takeAppInDocker.getAllDockers()
-listUrl = displayUrl.displayUrl()
-listDb = displayUrl.listDbName
-yp = getPlugins.getPlug(listDb, listUrl)
-listVersJson = displayVers.displayVersionJson()
-servername = subprocess.getoutput('hostname -f').strip()
-listVersions = displayVers.displayVersion()
+def createAndSend():
+    """
+    Crée l'inventaire JSON en local, ajoute les sites en tant que logiciels, et l'envoie à GLPI.
+    """
 
-# Fonction pour écrire les données dans un fichier CSV
-def writeCsv(filename, header, rows):
-    """
-    Écrit les données dans un fichier CSV.
-    """
-    with open(filename, "w") as csv_file:
-        writer = csv.writer(csv_file, delimiter=";")
-        writer.writerow(header)
-        writer.writerows(rows)
+    def print_progress(step, total_steps):
+        progress = (step / total_steps) * 100
+        print(f"\rProgression: {progress:.2f}% [{'#' * int(progress // 2)}{' ' * (50 - int(progress // 2))}]", end="", flush=True)
 
-# Fonction pour créer et remplir le fichier "inventory.csv"
-def createInventory():
-    """
-    Crée et remplit le fichier inventory.csv avec les informations des CMS et plugins.
-    """
-    header = ["Server Name", "Url", "Cms", "Plugin or not", "Version"]
-    rows = []
-    
-    # Ajout des données pour tous les dockers
+    total_steps = 6
+    current_step = 0
+
+    # Préparation des données
+    print_progress(current_step, total_steps)
+    Dockers = takeAppInDocker.getAllDockers()
+    current_step += 1
+    print_progress(current_step, total_steps)
+    listUrl = displayUrl.displayUrl()
+    current_step += 1
+    print_progress(current_step, total_steps)
+    listDb = displayUrl.listDbName
+    yp = getPlugins.getPlug(listDb, listUrl)
+    current_step += 1
+    print_progress(current_step, total_steps)
+    listVersJson = displayVers.displayVersionJson()
+    servername = subprocess.getoutput('hostname -f').strip()
+    listVersions = displayVers.displayVersion()
+    current_step += 1
+
+    # Étape 1 : Générer l'inventaire local au format JSON
+    print_progress(current_step, total_steps)
+    subprocess.getoutput("glpi-inventory --json > inventory.json")
+    current_step += 1
+
+    # Étape 2 : Modifier le fichier JSON pour ajouter les sites en tant que logiciels
+    print_progress(current_step, total_steps)
+    with open("inventory.json", "r") as file:
+        inventory = json.load(file)
+
+    # Ajouter les sites en tant que logiciels
     for docker in Dockers:
-        rows.append([servername, docker['url'], docker['cms'], "Not a plugin", docker['version']])
-    
-    for i in range(len(listUrl)):
-        version = listVersions[i]
-        cms = displayVers.listCms[i]
-        url = listUrl[i]
-        serv = servername
-        rows.append([serv, url, cms, "Not a plugin", version])
-        if cms == "NextCloud":
-            dbName = next((db for db in listDb if db in url), None)
-            if dbName and dbName in yp:
-                for status in ['enabled', 'disabled']:
-                    for y in range(len(yp[dbName][status])):
-                        rows.append([serv, url, yp[dbName][status][y][0], f"Plugin ({status})", yp[dbName][status][y][1]])
-        elif cms == "Wordpress":
-            plugins = getPlugins.getPlugWP(url)
-            for status in plugins.keys():
-                for y in range(len(plugins[status])):
-                    rows.append([serv, url, plugins[status][y]['name'], f"Plugin ({status})",  plugins[status][y]['version']])
-
-    for i in range(len(listVersJson)):
-        rows.append([servername, displayUrl.displayUrlJson()[i], displayVers.listCmsJson[i], "Not a plugin", listVersJson[i]])
-
-    writeCsv('inventory.csv', header, rows)
-
-# Fonction pour créer et remplir le fichier "inventory.json"
-def createInventoryJson():
-    """
-    Crée et remplit le fichier inventory.json avec les informations des CMS et plugins.
-    """
-    inventory = []
-
-    # Ajout des données pour tous les dockers
-    for docker in Dockers:
-        inventory.append({
-            "Server Name": servername,
-            "Url": docker['url'],
-            "Cms": docker['cms'],
-            "Plugin or not": "Not a plugin",
-            "Version": docker['version']
-        })
+        new_software = {
+            "arch": "all",
+            "name": docker['url'],
+            "publisher": "AukFood",
+            "version": docker['version'],
+            "system_category": docker['cms']
+        }
+        inventory["content"]["softwares"].append(new_software)
 
     for i in range(len(listUrl)):
         version = listVersions[i]
         cms = displayVers.listCms[i]
         url = listUrl[i]
-        serv = servername
-        inventory.append({
-            "Server Name": serv,
-            "Url": url,
-            "Cms": cms,
-            "Plugin or not": "Not a plugin",
-            "Version": version
-        })
+        new_software = {
+            "arch": "all",
+            "name": url,
+            "publisher": "AukFood",
+            "version": version,
+            "system_category": cms
+        }
+        inventory["content"]["softwares"].append(new_software)
         if cms == "NextCloud":
             dbName = next((db for db in listDb if db in url), None)
             if dbName and dbName in yp:
                 for status in ['enabled', 'disabled']:
                     for y in range(len(yp[dbName][status])):
-                        inventory.append({
-                            "Server Name": serv,
-                            "Url": url,
-                            "Cms": yp[dbName][status][y][0],
-                            "Plugin or not": f"Plugin ({status})",
-                            "Version": yp[dbName][status][y][1]
-                        })
+                        new_software = {
+                            "arch": "all",
+                            "name": yp[dbName][status][y][0],
+                            "publisher": "AukFood",
+                            "version": yp[dbName][status][y][1],
+                            "system_category": f"Plugin ({status})"
+                        }
+                        inventory["content"]["softwares"].append(new_software)
         elif cms == "Wordpress":
             plugins = getPlugins.getPlugWP(url)
             for status in plugins.keys():
                 for y in range(len(plugins[status])):
-                    inventory.append({
-                        "Server Name": serv,
-                        "Url": url,
-                        "Cms": plugins[status][y]['name'],
-                        "Plugin or not": f"Plugin ({status})",
-                        "Version": plugins[status][y]['version']
-                    })
+                    new_software = {
+                        "arch": "all",
+                        "name": plugins[status][y]['name'],
+                        "publisher": "AukFood",
+                        "version": plugins[status][y]['version'],
+                        "system_category": f"Plugin ({status})"
+                    }
+                    inventory["content"]["softwares"].append(new_software)
 
     for i in range(len(listVersJson)):
-        inventory.append({
-            "Server Name": servername,
-            "Url": displayUrl.displayUrlJson()[i],
-            "Cms": displayVers.listCmsJson[i],
-            "Plugin or not": "Not a plugin",
-            "Version": listVersJson[i]
-        })
+        new_software = {
+            "arch": "all",
+            "name": displayUrl.displayUrlJson()[i],
+            "publisher": "AukFood",
+            "version": listVersJson[i],
+            "system_category": displayVers.listCmsJson[i]
+        }
+        inventory["content"]["softwares"].append(new_software)
 
-    with open('inventory.json', 'w') as json_file:
-        json.dump(inventory, json_file, indent=4)
+    # Enregistrer le fichier JSON modifié
+    print_progress(current_step, total_steps)
+    with open("inventory.json", "w") as file:
+        json.dump(inventory, file, indent=4)
+    current_step += 1
 
+    # Étape 3 : Soumettre l'inventaire mis à jour à GLPI
+    print_progress(current_step, total_steps)
+    subprocess.run(["glpi-agent", "--force"], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+    current_step += 1
+
+    # Finaliser la progression
+    print_progress(current_step, total_steps)
+    print("\nInventaire terminé et envoyé à GLPI.")

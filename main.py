@@ -5,9 +5,8 @@ def main():
     """
     Fonction principale pour créer les fichiers d'inventaire.
     """
-    # Création des fichiers d'inventaire
-    createFile.createInventory()
-    #createFile.createInventoryJson()
+    # Création et envoi de l'inventaire
+    createFile.createAndSend()
 
 if __name__ == "__main__":
     main()

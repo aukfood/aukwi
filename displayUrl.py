@@ -85,7 +85,9 @@ def TakeUrlCmsJson(fileConfig):
     for line in fileConfig:
         if line.startswith('  ServerName '):
             start = line.index('  ServerName ') + len('  ServerName ')
-            end = line.index('ovh', start) + 3
+            end = line.find(' ', start)  # Trouver la fin de l'URL
+            if end == -1:  # Si aucun espace trouvé, prendre toute la ligne
+                end = len(line)
             url = line[start:end].strip("'")  # Supprimer les apostrophes
             listUrlCmsJson.append(url)
     return listUrlCmsJson
