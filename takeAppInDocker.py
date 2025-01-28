@@ -68,6 +68,7 @@ def getDockerUrls(container_names, apache_config_path="/etc/apache2/sites-enable
     # Étape 1 : Inspecter les conteneurs Docker
     container_ports = {}
     for container in container_names:
+        vhosts[container] = "Unknown"
         try:
             # Récupérer les informations du conteneur
             output = subprocess.getoutput(f'docker inspect {container}')
@@ -99,9 +100,7 @@ def getDockerUrls(container_names, apache_config_path="/etc/apache2/sites-enable
                     # Associer les vhosts aux conteneurs en fonction des ports
                     for server_name in server_names:
                         for container, port in container_ports.items():
-                            if port == "Unknown":
-                                vhosts[container] = "Unknown"
-                            elif port in proxy_passes:  # Si le port du conteneur correspond
+                            if port in proxy_passes:  # Si le port du conteneur correspond
                                 vhosts[container] = server_name
     return vhosts
 
