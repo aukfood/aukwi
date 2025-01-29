@@ -1,4 +1,7 @@
-import SearchUrl, pymysql, re, os
+import SearchUrl
+import pymysql
+import re
+import os
 
 listDbName = []
 
@@ -10,18 +13,21 @@ def TakeUrlCms(fileConfig):
     listUrlCms = []
     fileConfig = fileConfig.split('\n')
     for line in fileConfig:
-        if line.startswith('    0 => '):
-            start = line.index('    0 => ') + len('    0 => ')
-            end = line.index(',', start)
-            url = line[start:end].strip("'")  # Supprimer les apostrophes
-            if '.' in url:
-                listUrlCms.append(url)
-        if line.startswith('    0 => \''):
-            start = line.index('    0 => \'') + len('    0 => \'')
-            if '.' in line[start:]:
-                end = line.index('.', start)
-                dbname = line[start:end]
-                listDbName.append(dbname)
+        try:
+            if line.startswith('    0 => '):
+                start = line.index('    0 => ') + len('    0 => ')
+                end = line.index(',', start)
+                url = line[start:end].strip("'")  # Supprimer les apostrophes
+                if '.' in url:
+                    listUrlCms.append(url)
+            if line.startswith('    0 => \''):
+                start = line.index('    0 => \'') + len('    0 => \'')
+                if '.' in line[start:]:
+                    end = line.index('.', start)
+                    dbname = line[start:end]
+                    listDbName.append(dbname)
+        except:
+            continue
     return listUrlCms
 
 # Fonction pour extraire les informations de connexion à la base de données depuis wp-config.php

@@ -1,4 +1,9 @@
-import json, displayVers, displayUrl, getPlugins, takeAppInDocker, subprocess, time
+import json
+import displayVers
+import displayUrl
+import getPlugins
+import takeAppInDocker
+import subprocess
 
 def createAndSend():
     """
@@ -25,7 +30,6 @@ def createAndSend():
     current_step += 1
     print_progress(current_step, total_steps)
     listVersJson = displayVers.displayVersionJson()
-    servername = subprocess.getoutput('hostname -f').strip()
     listVersions = displayVers.displayVersion()
     current_step += 1
 
@@ -98,6 +102,15 @@ def createAndSend():
         }
         inventory["content"]["softwares"].append(new_software)
 
+    # specifier l'entité (client)
+    with open("/etc/ansible/facts.d/client-server.fact", "r") as facts:
+        for line in facts:
+            if line.startswith('client'):
+                client =  line.split('=')[1].strip()
+                print(client)
+                
+    inventory["content"]["entities"] = [{"name": client}]
+    
     # Enregistrer le fichier JSON modifié
     print_progress(current_step, total_steps)
     with open("inventory.json", "w") as file:
