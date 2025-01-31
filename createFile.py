@@ -4,6 +4,7 @@ import displayUrl
 import getPlugins
 import takeAppInDocker
 import subprocess
+import re
 
 def createAndSend():
     """
@@ -42,6 +43,7 @@ def createAndSend():
     print_progress(current_step, total_steps)
     with open("inventory.json", "r") as file:
         inventory = json.load(file)
+    inventory["content"]["softwares"]= []
 
     # Ajouter les sites en tant que logiciels
     for docker in Dockers:
@@ -102,15 +104,15 @@ def createAndSend():
         }
         inventory["content"]["softwares"].append(new_software)
 
-    # specifier l'entité (client)
+    # Spécifier l'entité (client)
     with open("/etc/ansible/facts.d/client-server.fact", "r") as facts:
         for line in facts:
             if line.startswith('client'):
-                client =  line.split('=')[1].strip()
-                print(client)
-                
-    inventory["content"]["entities"] = [{"name": client}]
-    
+                client = line.split('=')[1].strip()
+                break
+    if not client:
+        client ="Clients"
+
     # Enregistrer le fichier JSON modifié
     print_progress(current_step, total_steps)
     with open("inventory.json", "w") as file:
@@ -119,9 +121,7 @@ def createAndSend():
 
     # Étape 3 : Soumettre l'inventaire mis à jour à GLPI
     print_progress(current_step, total_steps)
-    subprocess.run(["glpi-agent", "--force"], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
-    current_step += 1
+    print("\n")
+    subprocess.run(["glpi-agent", "--force", f"--tag={re.sub(r'[^A-Za-z0-9]', '', client)}"])
 
-    # Finaliser la progression
-    print_progress(current_step, total_steps)
     print("\nInventaire terminé et envoyé à GLPI.")

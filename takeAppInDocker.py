@@ -79,11 +79,12 @@ def getDockerUrls(container_names, apache_config_path="/etc/apache2/sites-enable
             
             # Extraire les ports exposés
             ports = container_info[0].get("NetworkSettings", {}).get("Ports", {})
+            container_ports[container] = []
             for port, mappings in ports.items():
                 if mappings:  # Si le port est mappé
-                    container_ports[container] = mappings[0]['HostPort']
-            if container not in container_ports:
-                container_ports[container] = "Unknown"
+                    for mapping in mappings:
+                        if mapping['HostPort'] not in container_ports[container]:
+                            container_ports[container].append(mapping['HostPort'])
         except Exception as e:
             print(f"Erreur lors de l'inspection du conteneur {container} : {str(e)}")
     
@@ -95,16 +96,17 @@ def getDockerUrls(container_names, apache_config_path="/etc/apache2/sites-enable
                     content = f.read()
                     
                     # Extraire les ServerName
-                    server_names = re.findall(r"ServerName\s+([^\s]+)", content)
+                    server_names = list(set(re.findall(r"ServerName\s+([^\s]+)", content)))
                     
-                    # Extraire les ports dans ProxyPass, même avec du texte avant ou après
-                    proxy_passes = re.findall(r"ProxyPass.*https?://127\.0\.0\.1:(\d+)", content)
+                    # Extraire les ports dans ProxyPass et ProxyPassMatch, même avec du texte avant ou après
+                    proxy_passes = list(set(re.findall(r"ProxyPass(?:Match)?\s+[^\s]+\s+['\"]?https?://(?:127\.0\.0\.1|localhost):(\d+)", content)))
                     
                     # Associer les vhosts aux conteneurs en fonction des ports
                     for server_name in server_names:
-                        for container, port in container_ports.items():
-                            if port in proxy_passes:  # Si le port du conteneur correspond
-                                vhosts[container] = server_name
+                        for container, ports in container_ports.items():
+                            for port in ports:
+                                if port in proxy_passes:  # Si le port du conteneur correspond
+                                    vhosts[container] = server_name
     return vhosts
 
 def getAllDockers():
@@ -124,9 +126,9 @@ def getAllDockers():
     for name, type in docker_names.items():
         if type != "Unknown" and docker_urls[name] != "Unknown":
             dockers_info.append({
-                "name": name,
-                "cms": type,
-                "version": docker_versions[name],
-                "url": docker_urls[name]
-            })
+                    "name": name,
+                    "cms": type,
+                    "version": docker_versions[name],
+                    "url": docker_urls[name]
+                })
     return dockers_info
