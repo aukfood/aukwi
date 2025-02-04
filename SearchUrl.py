@@ -16,6 +16,13 @@ def searchConfigFiles(currentpath, pattern, fileList):
             fileList.append(fname)
     return listPath
 
+# Fonction qui cherche les fichiers de configuration Apache
+def searchApacheConfigs(currentpath):
+    """
+    Recherche des fichiers de configuration Apache dans le répertoire courant et ses sous-répertoires.
+    """
+    return searchConfigFiles(currentpath, '*.conf', listFileConfName)
+
 # Fonction qui cherche le fichier config.php où se trouve l'url de certains cms
 def SearchConf(currentpath):
     """

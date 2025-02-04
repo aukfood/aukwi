@@ -2,33 +2,9 @@ import SearchUrl
 import pymysql
 import re
 import os
+import phpserialize  # Ajout de l'importation
 
 listDbName = []
-
-# Fonction qui cherche dans un fichier si il contient les informations liées à l'url des cms (Wordpress, Moodle, NextCloud)
-def TakeUrlCms(fileConfig):
-    """
-    Extrait l'URL des CMS (Wordpress, Moodle, NextCloud) à partir d'un fichier de configuration.
-    """
-    listUrlCms = []
-    fileConfig = fileConfig.split('\n')
-    for line in fileConfig:
-        try:
-            if line.startswith('    0 => '):
-                start = line.index('    0 => ') + len('    0 => ')
-                end = line.index(',', start)
-                url = line[start:end].strip("'")  # Supprimer les apostrophes
-                if '.' in url:
-                    listUrlCms.append(url)
-            if line.startswith('    0 => \''):
-                start = line.index('    0 => \'') + len('    0 => \'')
-                if '.' in line[start:]:
-                    end = line.index('.', start)
-                    dbname = line[start:end]
-                    listDbName.append(dbname)
-        except:
-            continue
-    return listUrlCms
 
 # Fonction pour extraire les informations de connexion à la base de données depuis wp-config.php
 def getDbCredentialsFromWpConfig(path):
@@ -81,76 +57,143 @@ def findWpConfigPath(path):
         path = os.path.dirname(path)
     raise FileNotFoundError("wp-config.php not found")
 
-# Fonction qui cherche dans un fichier si il contient les informations liées à l'url du cms (PhpMyAdmin)     
-def TakeUrlCmsJson(fileConfig):
+# Fonction pour déterminer le type de CMS à partir de l'URL ou des fichiers
+def determineCmsType(path):
     """
-    Extrait l'URL de PhpMyAdmin à partir d'un fichier de configuration JSON.
+    Détermine le type de CMS (Wordpress, Moodle, NextCloud, etc.) à partir de l'URL ou des fichiers.
     """
-    listUrlCmsJson = []
-    fileConfig = fileConfig.split('\n')
-    for line in fileConfig:
-        if line.startswith('  ServerName '):
-            start = line.index('  ServerName ') + len('  ServerName ')
-            end = line.find(' ', start)  # Trouver la fin de l'URL
-            if end == -1:  # Si aucun espace trouvé, prendre toute la ligne
-                end = len(line)
-            url = line[start:end].strip("'")  # Supprimer les apostrophes
-            listUrlCmsJson.append(url)
-    return listUrlCmsJson
+    if os.path.isfile(os.path.join(path, 'wp-config.php')):
+        return "Wordpress"
+    elif os.path.isfile(os.path.join(path, 'config.php')) and 'moodle' in path:
+        return "Moodle"
+    elif os.path.isfile(os.path.join(path, 'version.php')) and 'nextcloud' in path:
+        return "NextCloud"
+    elif os.path.isfile(os.path.join(path, 'config.inc.php')) and 'phpmyadmin' in path:
+        return "PhpMyAdmin"
+    elif os.path.isfile(os.path.join(path, 'configuration.php')) and 'joomla' in path:
+        return "Joomla"
+    elif os.path.isfile(os.path.join(path, 'settings.php')) and 'drupal' in path:
+        return "Drupal"
+    elif os.path.isfile(os.path.join(path, 'config.php')) and 'dolibarr' in path:
+        return "Dolibarr"
+    elif os.path.isfile(os.path.join(path, 'config.php')) and 'peertube' in path:
+        return "PeerTube"
+    elif os.path.isfile(os.path.join(path, 'config.php')) and 'limesurvey' in path:
+        return "LimeSurvey"
+    elif os.path.isfile(os.path.join(path, 'config.php')) and 'gitlab' in path:
+        return "GitLab"
+    elif os.path.isfile(os.path.join(path, 'config.php')) and 'rocketchat' in path:
+        return "RocketChat"
+    elif os.path.isfile(os.path.join(path, 'config.php')) and 'passbolt' in path:
+        return "Passbolt"
+    elif os.path.isfile(os.path.join(path, 'config.php')) and 'matrix' in path:
+        return "Matrix"
+    elif os.path.isfile(os.path.join(path, 'config.php')) and 'mattermost' in path:
+        return "Mattermost"
+    return "Unknown"
 
-# Fonction qui crée une condition pour trier les fichiers contenant les url
-def trueOrNot(fileConfig):
+# Fonction pour récupérer la version du CMS installé
+def getCmsVersion(path, cms_type):
     """
-    Vérifie si un fichier de configuration contient des informations liées à l'URL des CMS.
+    Récupère la version du CMS installé à partir des fichiers de version.
     """
-    fileConfig = fileConfig.split('\n')
-    for line in fileConfig:
-        if line.startswith('    0 => '):
-            return True
-        if line.startswith('    0 => \''):
-            return True
-    return False
+    if cms_type == "Wordpress":
+        wp_config_path = findWpConfigPath(path)
+        with open(wp_config_path, 'r') as file:
+            config = file.read()
+            version = re.search(r"define\(\s*['\"]WP_VERSION['\"]\s*,\s*['\"](.+?)['\"]\s*\);", config)
+            if version:
+                return version.group(1)
+    elif cms_type == "Moodle":
+        version_file = os.path.join(path, 'version.php')
+        with open(version_file, 'r') as file:
+            for line in file:
+                if line.startswith('$release'):
+                    return line.split('=')[1].strip().strip(';').strip("'")
+    elif cms_type == "NextCloud":
+        version_file = os.path.join(path, 'version.php')
+        with open(version_file, 'r') as file:
+            for line in file:
+                if line.startswith('$OC_VersionString'):
+                    return line.split('=')[1].strip().strip(';').strip("'")
+    elif cms_type == "PhpMyAdmin":
+        version_file = os.path.join(path, 'config.inc.php')
+        with open(version_file, 'r') as file:
+            for line in file:
+                if line.startswith('$cfg[''Version'']'):
+                    return line.split('=')[1].strip().strip(';').strip("'")
+    # Ajoutez des conditions similaires pour les autres CMS
+    return "Unknown"
 
-# Fonction qui crée une condition pour trier les fichiers contenant les url
-def trueOrNotJson(fileConfig):
+# Fonction pour récupérer les plugins installés
+def getPlugins(path, cms_type):
     """
-    Vérifie si un fichier de configuration JSON contient des informations liées à l'URL des CMS.
+    Récupère les plugins installés pour un CMS donné.
     """
-    fileConfig = fileConfig.split('\n')
-    for line in fileConfig:
-        if line.startswith('  ServerName '):
-            return True
-    return False
+    plugins = {'enabled': [], 'disabled': []}
+    if cms_type == "Wordpress":
+        wp_config_path = findWpConfigPath(path)
+        dbname, dbuser, dbpass = getDbCredentialsFromWpConfig(wp_config_path)
+        connection = pymysql.connect(
+            host='localhost',
+            user=dbuser,
+            password=dbpass,
+            database=dbname
+        )
+        cursor = connection.cursor()
+        cursor.execute("SELECT option_value FROM wp_options WHERE option_name = 'active_plugins'")
+        active_plugins = cursor.fetchone()[0]
+        active_plugins = [plugin.decode('utf-8') for plugin in phpserialize.loads(active_plugins.encode('utf-8')).values()]
+        cursor.execute("SELECT option_value FROM wp_options WHERE option_name = '_site_transient_update_plugins'")
+        update_plugins = cursor.fetchone()[0]
+        update_plugins = phpserialize.loads(
+            update_plugins.encode('utf-8'),
+            decode_strings=True,
+            object_hook=lambda name, obj: {(key.decode() if isinstance(key, bytes) else key): value for key, value in obj.items()}
+        )
+        for plugin in active_plugins:
+            plugin_name = plugin.split('/')[0]
+            plugin_version = update_plugins['checked'].get(plugin, 'unknown')
+            plugins['enabled'].append({'name': plugin_name, 'version': plugin_version})
+        plugins_dir = os.path.join(path, 'wp-content', 'plugins')
+        for root, dirs, files in os.walk(plugins_dir):
+            for file in files:
+                if file.endswith('.php'):
+                    plugin_path = os.path.join(root, file)
+                    plugin_name = os.path.splitext(file)[0]
+                    if plugin_name not in [p['name'] for p in plugins['enabled']]:
+                        plugin_version = 'unknown'
+                        with open(plugin_path, 'r') as f:
+                            for line in f:
+                                if 'Version:' in line:
+                                    plugin_version = line.split(':')[1].strip()
+                                    break
+                        plugins['disabled'].append({'name': plugin_name, 'version': plugin_version})
+        connection.close()
+    # Ajoutez des conditions similaires pour les autres CMS
+    return plugins
 
-def displayUrl():
+def getAllSites():
     """
-    Affiche les URLs des CMS (Wordpress, Moodle, NextCloud) en parcourant les fichiers de configuration.
+    Récupère toutes les informations sur les sites, y compris les URLs, types, versions et plugins.
     """
-    currentpath = "/" # chemin vers répertoire courant
-    pathOfFileConf = SearchUrl.SearchConf(currentpath)
-    listUrl = []
+    currentpath = "/etc/apache2/sites-enabled/" # chemin vers répertoire courant
+    apache_configs = SearchUrl.searchApacheConfigs(currentpath)
+    sites_info = []
 
-    for path in pathOfFileConf:
-        with open(path, 'r') as file:
-            fileConfig = file.read()
-            if 'wp' in path or 'wordpress' in path:
-                url = getWordPressUrl(path)
-                listUrl.append(url)  # Ajouter l'URL en tant qu'élément unique
-            else:
-                listUrl += TakeUrlCms(fileConfig)
-    return listUrl
-
-def displayUrlJson():
-    """
-    Affiche les URLs de PhpMyAdmin en parcourant les fichiers de configuration JSON.
-    """
-    currentpath = "/" # chemin vers répertoire courant
-    pathOfFileConfJson = SearchUrl.SearchConfJson(currentpath)
-    listUrlJson = []
-
-    for path in pathOfFileConfJson:
-        if "myadmin" in path:
-            with open(path, 'r') as file:
-                fileConfig = file.read()
-                listUrlJson += TakeUrlCmsJson(fileConfig)
-    return listUrlJson
+    for config_path in apache_configs:
+        with open(config_path, 'r') as file:
+            for line in file:
+                if "DocumentRoot" in line:
+                    path = line.split()[1]
+                    cms_type = determineCmsType(path)
+                    version = getCmsVersion(path, cms_type)
+                    plugins = getPlugins(path, cms_type)
+                    url = getWordPressUrl(path) if cms_type == "Wordpress" else path
+                    sites_info.append({
+                        'url': url,
+                        'type': cms_type,
+                        'version': version,
+                        'plugins': plugins
+                    })
+    return sites_info
