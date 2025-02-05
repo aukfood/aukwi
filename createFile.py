@@ -53,20 +53,19 @@ def createAndSend(glpi_url):
             "name": site['url'],
             "publisher": "AukFood",
             "version": site['version'],
-            "system_category": site['type'],
-            "children": []
+            "system_category": site['type']
         }
+        inventory["content"]["softwares"].append(new_software)
         for status in site['plugins'].keys():
             for plugin in site['plugins'][status]:
-                new_plugin = {
+                new_software = {
                     "arch": "all",
                     "name": plugin['name'],
                     "publisher": "AukFood",
                     "version": plugin['version'],
                     "system_category": f"Plugin ({status})"
                 }
-                new_software["children"].append(new_plugin)
-        inventory["content"]["softwares"].append(new_software)
+                inventory["content"]["softwares"].append(new_software)
 
     # Spécifier l'entité (client)
     with open("/etc/ansible/facts.d/client-server.fact", "r") as facts:
