@@ -15,8 +15,8 @@ def getAllSites():
         cms_type = determineCmsType(path)
         version = getCmsVersion(path, cms_type)
         plugins = getPlugins(path, cms_type)
-        if url!="Unknown" and cms_type!="Unknown":
-            sites_info.append({
+        # if url!="Unknown" and cms_type!="Unknown":
+        sites_info.append({
                 'url': url,
                 'type': cms_type,
                 'version': version,
@@ -60,7 +60,7 @@ def determineCmsType(path):
         return "Dolibarr"
     elif os.path.isfile(os.path.join(path, 'config.php')) and 'PeerTube' in open(os.path.join(path, 'config.php')).read():
         return "PeerTube"
-    elif os.path.isfile(os.path.join(path, 'config.php')) and 'lime' in open(os.path.join(path, 'config.php')).read():
+    elif os.path.isfile(os.path.join(path, 'application/config/config.php')) and 'lime' in open(os.path.join(path, 'application/config/config.php')).read():
         return "LimeSurvey"
     elif os.path.isfile(os.path.join(path, 'config.php')) and 'gitlab' in open(os.path.join(path, 'config.php')).read():
         return "GitLab"
@@ -90,7 +90,9 @@ def getCmsVersion(path, cms_type):
         with open(version_file, 'r') as file:
             for line in file:
                 if line.startswith('$release'):
-                    return line.split('=')[1].strip().strip(';').strip("'")
+                    version = re.search(r'(\d+\.\d+\.\d+)', line)
+                    if version:
+                        return version.group(1)
     elif cms_type == "NextCloud":
         version_file = os.path.join(path, 'version.php')
         with open(version_file, 'r') as file:
@@ -109,6 +111,20 @@ def getCmsVersion(path, cms_type):
         with open(version_file, 'r') as file:
             content = file.read()
             version = re.search(r'<version>(.*?)</version>', content)
+            if version:
+                return version.group(1)
+    elif cms_type == "LimeSurvey":
+        version_file = os.path.join(path, 'application/config/version.php')
+        with open(version_file, 'r') as file:
+            content = file.read()
+            version = re.search(r"\$config\['versionnumber'\]\s*=\s*'(.+?)';", content)
+            if version:
+                return version.group(1)
+    elif cms_type == "Drupal":
+        version_file = os.path.join(path, 'package.json')
+        with open(version_file, 'r') as file:
+            content = file.read()
+            version = re.search(r'"version":\s*"(.+?)"', content)
             if version:
                 return version.group(1)
     # Ajoutez des conditions similaires pour les autres CMS
@@ -177,6 +193,26 @@ def getPlugins(path, cms_type):
             packages = re.findall(r'"name":\s*"([^"]+)",\s*"version":\s*"([^"]+)"', content)
             for package in packages:
                 plugins['enabled'].append({'name': package[0], 'version': package[1]})
+    elif cms_type == "LimeSurvey":
+        config_path = os.path.join(path, 'application/config/config.php')
+        dbname, dbuser, dbpass, dbhost, dbport, table_prefix = getDbCredentialsFromLimeSurveyConfig(config_path)
+        connection = pymysql.connect(
+            host=dbhost,
+            port=int(dbport),
+            user=dbuser,
+            password=dbpass,
+            database=dbname
+        )
+        cursor = connection.cursor()
+        cursor.execute(f"SELECT name, version, active FROM {table_prefix}plugins")
+        plugins_data = cursor.fetchall()
+        for plugin in plugins_data:
+            plugin_info = {'name': plugin[0], 'version': plugin[1]}
+            if plugin[2] == 1:
+                plugins['enabled'].append(plugin_info)
+            else:
+                plugins['disabled'].append(plugin_info)
+        connection.close()
     return plugins
 
 def getDbCredentialsFromWpConfig(path):
@@ -193,6 +229,26 @@ def getDbCredentialsFromWpConfig(path):
         else:
             raise ValueError("Database credentials not found in wp-config.php")
 
+def getDbCredentialsFromLimeSurveyConfig(path):
+    """
+    Extrait les informations de connexion à la base de données depuis le fichier config.php de LimeSurvey.
+    """
+    with open(path, 'r') as file:
+        config = file.read()
+        connection_string = re.search(r"'connectionString'\s*=>\s*'(.+?)'", config)
+        dbuser = re.search(r"'username'\s*=>\s*'(.+?)'", config)
+        dbpass = re.search(r"'password'\s*=>\s*'(.+?)'", config)
+        table_prefix = re.search(r"'tablePrefix'\s*=>\s*'(.+?)'", config)
+        
+        if connection_string and dbuser and dbpass and table_prefix:
+            connection_string = connection_string.group(1)
+            dbname = re.search(r'dbname=([^;]+)', connection_string).group(1)
+            dbhost = re.search(r'host=([^;]+)', connection_string).group(1)
+            dbport = re.search(r'port=([^;]+)', connection_string).group(1)
+            return dbname, dbuser.group(1), dbpass.group(1), dbhost, dbport, table_prefix.group(1)
+        else:
+            raise ValueError("Database credentials not found in config.php")
+
 def searchConfigFiles(currentpath, pattern):
     """
     Recherche des fichiers correspondant à un pattern donné dans un répertoire et ses sous-répertoires.
@@ -203,3 +259,5 @@ def searchConfigFiles(currentpath, pattern):
             chemin = os.path.join(path, fname)
             listPath.append(chemin)
     return listPath
+
+print(getAllSites())
