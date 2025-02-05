@@ -127,7 +127,7 @@ def getAllDockers():
         if type != "Unknown" and docker_urls[name] != "Unknown":
             dockers_info.append({
                     "name": name,
-                    "cms": type,
+                    "type": type,
                     "version": docker_versions[name],
                     "url": docker_urls[name]
                 })
