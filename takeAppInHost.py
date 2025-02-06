@@ -2,7 +2,8 @@ import re
 import os
 import pymysql
 import phpserialize
-import fnmatch
+import packageUtils
+import fileUtils
 
 def getAllSites():
     """
@@ -15,13 +16,14 @@ def getAllSites():
         cms_type = determineCmsType(path)
         version = getCmsVersion(path, cms_type)
         plugins = getPlugins(path, cms_type)
-        # if url!="Unknown" and cms_type!="Unknown":
-        sites_info.append({
+        if url!="Unknown" and cms_type!="Unknown":
+            sites_info.append({
                 'url': url,
                 'type': cms_type,
                 'version': version,
                 'plugins': plugins
             })
+    sites_info += packageUtils.getSitesPackages()
     return sites_info
 
 def getUrls():
@@ -29,7 +31,7 @@ def getUrls():
     Récupère les URLs des sites.
     """
     currentpath = "/etc/apache2/sites-enabled/" # chemin vers répertoire d'apache
-    apache_configs =  searchConfigFiles(currentpath, '*.conf')
+    apache_configs =  fileUtils.searchConfigFiles(currentpath, '*.conf')
     url_path = {}
     for config in apache_configs:
         with open(config, 'r') as file:
@@ -54,7 +56,7 @@ def determineCmsType(path):
         return "PhpMyAdmin"
     elif os.path.isfile(os.path.join(path, 'index.php')) and 'JOOMLA' in open(os.path.join(path, 'index.php')).read():
         return "Joomla"
-    elif os.path.isfile(os.path.join(path, 'settings.php')) and 'Drupal' in open(os.path.join(path, 'settings.php')).read():
+    elif os.path.isfile(os.path.join(path, 'composer.json')) and 'drupal' in open(os.path.join(path, 'composer.json')).read():
         return "Drupal"
     elif os.path.isfile(os.path.join(path, 'htdocs')) and 'dolibarr' in open(os.path.join(path, 'htdocs')).read():
         return "Dolibarr"
@@ -121,10 +123,10 @@ def getCmsVersion(path, cms_type):
             if version:
                 return version.group(1)
     elif cms_type == "Drupal":
-        version_file = os.path.join(path, 'package.json')
+        version_file = os.path.join(path, 'composer.lock')
         with open(version_file, 'r') as file:
             content = file.read()
-            version = re.search(r'"version":\s*"(.+?)"', content)
+            version = re.search(r'"name":\s*"drupal/core",\s*"version":\s*"(.+?)"', content)
             if version:
                 return version.group(1)
     # Ajoutez des conditions similaires pour les autres CMS
@@ -137,7 +139,7 @@ def getPlugins(path, cms_type):
     plugins = {'enabled': [], 'disabled': []}
     if cms_type == "Wordpress":
         wp_config_path = os.path.join(path, 'wp-config.php')
-        dbname, dbuser, dbpass = getDbCredentialsFromWpConfig(wp_config_path)
+        dbname, dbuser, dbpass = fileUtils.getDbCredentialsFromWpConfig(wp_config_path)
         connection = pymysql.connect(
             host='localhost',
             user=dbuser,
@@ -195,7 +197,7 @@ def getPlugins(path, cms_type):
                 plugins['enabled'].append({'name': package[0], 'version': package[1]})
     elif cms_type == "LimeSurvey":
         config_path = os.path.join(path, 'application/config/config.php')
-        dbname, dbuser, dbpass, dbhost, dbport, table_prefix = getDbCredentialsFromLimeSurveyConfig(config_path)
+        dbname, dbuser, dbpass, dbhost, dbport, table_prefix = fileUtils.getDbCredentialsFromLimeSurveyConfig(config_path)
         connection = pymysql.connect(
             host=dbhost,
             port=int(dbport),
@@ -213,51 +215,21 @@ def getPlugins(path, cms_type):
             else:
                 plugins['disabled'].append(plugin_info)
         connection.close()
+    elif cms_type == "Drupal":
+        modules_dir = os.path.join(path, 'modules')
+        themes_dir = os.path.join(path, 'themes')
+        plugins = {'module': [], 'theme': []}
+        for plugins_dir in [modules_dir, themes_dir]:
+            for root, dirs, files in os.walk(plugins_dir):
+                for file in files:
+                    if file.endswith('.info.yml'):
+                        plugin_path = os.path.join(root, file)
+                        with open(plugin_path, 'r') as f:
+                            content = f.read()
+                            plugin_name = re.search(r'name:\s*(.+)', content).group(1)
+                            plugin_version = re.search(r'version:\s*\'(.+?)\'', content).group(1)
+                            type = re.search(r'type:\s*(.+)', content).group(1)
+                            plugins[type].append({'name': plugin_name, 'version': plugin_version})
+                        # Stop descending into subdirectories once a .info.yml file is found
+                        dirs[:] = []
     return plugins
-
-def getDbCredentialsFromWpConfig(path):
-    """
-    Extrait les informations de connexion à la base de données depuis le fichier wp-config.php.
-    """
-    with open(path, 'r') as file:
-        config = file.read()
-        dbname = re.search(r"define\(\s*['\"]DB_NAME['\"]\s*,\s*['\"](.+?)['\"]\s*\);", config)
-        dbuser = re.search(r"define\(\s*['\"]DB_USER['\"]\s*,\s*['\"](.+?)['\"]\s*\);", config)
-        dbpass = re.search(r"define\(\s*['\"]DB_PASSWORD['\"]\s*,\s*['\"](.+?)['\"]\s*\);", config)
-        if dbname and dbuser and dbpass:
-            return dbname.group(1), dbuser.group(1), dbpass.group(1)
-        else:
-            raise ValueError("Database credentials not found in wp-config.php")
-
-def getDbCredentialsFromLimeSurveyConfig(path):
-    """
-    Extrait les informations de connexion à la base de données depuis le fichier config.php de LimeSurvey.
-    """
-    with open(path, 'r') as file:
-        config = file.read()
-        connection_string = re.search(r"'connectionString'\s*=>\s*'(.+?)'", config)
-        dbuser = re.search(r"'username'\s*=>\s*'(.+?)'", config)
-        dbpass = re.search(r"'password'\s*=>\s*'(.+?)'", config)
-        table_prefix = re.search(r"'tablePrefix'\s*=>\s*'(.+?)'", config)
-        
-        if connection_string and dbuser and dbpass and table_prefix:
-            connection_string = connection_string.group(1)
-            dbname = re.search(r'dbname=([^;]+)', connection_string).group(1)
-            dbhost = re.search(r'host=([^;]+)', connection_string).group(1)
-            dbport = re.search(r'port=([^;]+)', connection_string).group(1)
-            return dbname, dbuser.group(1), dbpass.group(1), dbhost, dbport, table_prefix.group(1)
-        else:
-            raise ValueError("Database credentials not found in config.php")
-
-def searchConfigFiles(currentpath, pattern):
-    """
-    Recherche des fichiers correspondant à un pattern donné dans un répertoire et ses sous-répertoires.
-    """
-    listPath = []
-    for path, dirs, files in os.walk(currentpath):
-        for fname in fnmatch.filter(files, pattern):
-            chemin = os.path.join(path, fname)
-            listPath.append(chemin)
-    return listPath
-
-print(getAllSites())
