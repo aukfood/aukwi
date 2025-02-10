@@ -58,7 +58,7 @@ def determineCmsType(path):
         return "Joomla"
     elif os.path.isfile(os.path.join(path, 'composer.json')) and 'drupal' in open(os.path.join(path, 'composer.json')).read():
         return "Drupal"
-    elif os.path.isfile(os.path.join(path, 'htdocs')) and 'dolibarr' in open(os.path.join(path, 'htdocs')).read():
+    elif os.path.isfile(os.path.join(path, 'conf/conf.php')) and 'dolibarr' in open(os.path.join(path, 'conf/conf.php')).read():
         return "Dolibarr"
     elif os.path.isfile(os.path.join(path, 'config.php')) and 'PeerTube' in open(os.path.join(path, 'config.php')).read():
         return "PeerTube"
@@ -70,8 +70,6 @@ def determineCmsType(path):
         return "RocketChat"
     elif os.path.isfile(os.path.join(path, 'config.php')) and 'passbolt' in open(os.path.join(path, 'config.php')).read():
         return "Passbolt"
-    elif os.path.isfile(os.path.join(path, 'config.php')) and 'matrix' in open(os.path.join(path, 'config.php')).read():
-        return "Matrix"
     elif os.path.isfile(os.path.join(path, 'config.php')) and 'mattermost' in open(os.path.join(path, 'config.php')).read():
         return "Mattermost"
     return "Unknown"
@@ -127,6 +125,13 @@ def getCmsVersion(path, cms_type):
         with open(version_file, 'r') as file:
             content = file.read()
             version = re.search(r'"name":\s*"drupal/core",\s*"version":\s*"(.+?)"', content)
+            if version:
+                return version.group(1)
+    elif cms_type == "Dolibarr":
+        version_file = os.path.join(path, 'filefunc.inc.php')
+        with open(version_file, 'r') as file:
+            content = file.read()
+            version = re.search(r"define\('DOL_VERSION',\s*'(.+?)'\);", content)
             if version:
                 return version.group(1)
     # Ajoutez des conditions similaires pour les autres CMS
@@ -232,4 +237,24 @@ def getPlugins(path, cms_type):
                             plugins[type].append({'name': plugin_name, 'version': plugin_version})
                         # Stop descending into subdirectories once a .info.yml file is found
                         dirs[:] = []
+    elif cms_type == "Dolibarr":
+        custom_dir = os.path.join(path, 'custom')
+        core_modules_dir = os.path.join(path, 'core/modules')
+        plugins = {'custom': [], 'core': []}
+        for plugins_dir in [custom_dir, core_modules_dir]:
+            status = 'custom' if 'custom' in plugins_dir else 'core'
+            for root, dirs, files in os.walk(plugins_dir):
+                for file in files:
+                    if file.endswith('.class.php'):
+                        plugin_path = os.path.join(root, file)
+                        with open(plugin_path, 'r') as f:
+                            content = f.read()
+                            class_name = re.search(r'class\s+mod(\w+)\s+extends', content)
+                            plugin_version = re.search(r'\$this->version\s*=\s*\'(.+?)\'', content)
+                            if class_name and plugin_version:
+                                plugin_name = class_name.group(1)
+                                plugin_info = {'name': plugin_name, 'version': plugin_version.group(1)}
+                                plugins[status].append(plugin_info)
     return plugins
+
+print(getAllSites())

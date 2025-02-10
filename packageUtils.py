@@ -24,18 +24,28 @@ def getPackages():
     """
     Récupère les packages installés sur le système.
     """
-    currentpath = "/etc/apache2/sites-enabled/" # chemin vers répertoire d'apache
-    apache_configs =  fileUtils.searchConfigFiles(currentpath, '*.conf')
+    currentpath = "/etc/apache2/sites-enabled/"  # Chemin vers répertoire Apache
+    apache_configs = fileUtils.searchConfigFiles(currentpath, '*.conf')
     url_path = {}
+
     for config in apache_configs:
+        url, port = None, None
+        
         with open(config, 'r') as file:
-            for line in file:
-                if "ServerName" in line:
-                    url = line.split()[1]
-                elif "ProxyPass" in line:
-                    port = list(set(re.findall(r"ProxyPass(?:Match)?\s+[^\s]+\s+['\"]?https?://(?:127\.0\.0\.1|localhost):(\d+)", file.read())))
+            content = file.read()  # Lire tout le fichier d'un coup
+
+        # Récupérer le ServerName
+        match_url = re.search(r"ServerName\s+([\S]+)", content)
+        if match_url:
+            url = match_url.group(1)
+        # Récupérer le port
+        match_port = re.search(r"ProxyPass(?:Match)?\s+[^\s]+\s+['\"]?https?://(?:127\.0\.0\.1|localhost):(\d+)", content)
+        if match_port:
+            port = match_port.group(1)  # Premier port trouvé
+        
         if url and port:
-            url_path[url] = port[0]
+            url_path[url] = port
+
     return url_path
 
 def getProcessUsingPort(port):
@@ -46,12 +56,11 @@ def getProcessUsingPort(port):
         # Utiliser lsof pour obtenir le PID du processus utilisant le port
         lsof_result = subprocess.run(['lsof', '-i', f':{port}'], capture_output=True, text=True)
         lsof_output = lsof_result.stdout.strip().split('\n')
+        pid = lsof_output[1].split()[1]
         
         # si le processus est docker alors il ne faut pas le traiter
         if 'docker' in lsof_output[1].split()[0]:
             return None
-
-        pid = lsof_output[1].split()[1]
         
         # trouver le chemin du processus
         ps_result = subprocess.run(['ps', '-p', pid, '-o', 'args'], capture_output=True, text=True)
@@ -65,7 +74,7 @@ def getProcessUsingPort(port):
         return package_name
 
     except Exception as e:
-        print("impossible de trouver le processus")
+        print(f"impossible de trouver le processus pour {port}", e)
         return None
 
 def determineType(process):

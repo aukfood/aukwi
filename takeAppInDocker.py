@@ -132,3 +132,5 @@ def getAllDockers():
                     "url": docker_urls[name]
                 })
     return dockers_info
+
+print(getAllDockers())
