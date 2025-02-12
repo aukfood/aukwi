@@ -1,6 +1,7 @@
 import json
 import takeAppInHost
 import takeAppInDocker
+import fileUtils
 import subprocess
 import re
 
@@ -13,15 +14,18 @@ def createAndSend(glpi_url):
         progress = (step / total_steps) * 100
         print(f"\rProgression: {progress:.2f}% [{'#' * int(progress // 2)}{' ' * (50 - int(progress // 2))}]", end="", flush=True)
 
-    total_steps = 4
+    total_steps = 5
     current_step = 0
 
     # Préparation des données
     print_progress(current_step, total_steps)
-    Dockers = takeAppInDocker.getAllDockers()
+    configs = fileUtils.getWebsiteConfig()
     current_step += 1
     print_progress(current_step, total_steps)
-    sites_info = takeAppInHost.getAllSites()
+    Dockers = takeAppInDocker.getAllDockers(configs)
+    current_step += 1
+    print_progress(current_step, total_steps)
+    sites_info = takeAppInHost.getAllSites(configs)
     current_step += 1
     print_progress(current_step, total_steps)
 
@@ -68,12 +72,13 @@ def createAndSend(glpi_url):
                 inventory["content"]["softwares"].append(new_software)
 
     # Spécifier l'entité (client)
-    with open("/etc/ansible/facts.d/client-server.fact", "r") as facts:
-        for line in facts:
-            if line.startswith('client'):
-                client = line.split('=')[1].strip()
-                break
-    if not client:
+    try:
+        with open("/etc/ansible/facts.d/client-server.fact", "r") as facts:
+            for line in facts:
+                if line.startswith('client'):
+                    client = line.split('=')[1].strip()
+                    break
+    except FileNotFoundError:
         client = "Clients"
 
     # Enregistrer le fichier JSON modifié

@@ -5,42 +5,27 @@ import phpserialize
 import packageUtils
 import fileUtils
 
-def getAllSites():
+def getAllSites(configs):
     """
     Récupère toutes les informations sur les sites, y compris les URLs, types, versions et plugins.
     """
-    urls = getUrls()
     sites_info = []
 
-    for url, path in urls.items():
-        cms_type = determineCmsType(path)
-        version = getCmsVersion(path, cms_type)
-        plugins = getPlugins(path, cms_type)
-        if url!="Unknown" and cms_type!="Unknown":
+    for config in configs:
+        print( config)
+        if config['path']:
+            cms_type = determineCmsType(config['path'])
+            version = getCmsVersion(config['path'], cms_type)
+            plugins = getPlugins(config['path'], cms_type)
+            #if config['url']!="Unknown" and cms_type!="Unknown":
             sites_info.append({
-                'url': url,
-                'type': cms_type,
-                'version': version,
-                'plugins': plugins
-            })
-    sites_info += packageUtils.getSitesPackages()
+                    'url': config['url'],
+                    'type': cms_type,
+                    'version': version,
+                    'plugins': plugins
+                })
+    sites_info += packageUtils.getSitesPackages(configs)
     return sites_info
-
-def getUrls():
-    """
-    Récupère les URLs des sites.
-    """
-    currentpath = "/etc/apache2/sites-enabled/" # chemin vers répertoire d'apache
-    apache_configs =  fileUtils.searchConfigFiles(currentpath, '*.conf')
-    url_path = {}
-    for config in apache_configs:
-        with open(config, 'r') as file:
-            for line in file:
-                if "ServerName" in line:
-                    url = line.split()[1]
-                elif "DocumentRoot" in line:
-                    url_path[url] = line.split()[1]
-    return url_path
 
 def determineCmsType(path):
     """
@@ -60,18 +45,18 @@ def determineCmsType(path):
         return "Drupal"
     elif os.path.isfile(os.path.join(path, 'conf/conf.php')) and 'dolibarr' in open(os.path.join(path, 'conf/conf.php')).read():
         return "Dolibarr"
-    elif os.path.isfile(os.path.join(path, 'config.php')) and 'PeerTube' in open(os.path.join(path, 'config.php')).read():
-        return "PeerTube"
     elif os.path.isfile(os.path.join(path, 'application/config/config.php')) and 'lime' in open(os.path.join(path, 'application/config/config.php')).read():
         return "LimeSurvey"
     elif os.path.isfile(os.path.join(path, 'config.php')) and 'gitlab' in open(os.path.join(path, 'config.php')).read():
         return "GitLab"
     elif os.path.isfile(os.path.join(path, 'config.php')) and 'rocketchat' in open(os.path.join(path, 'config.php')).read():
         return "RocketChat"
-    elif os.path.isfile(os.path.join(path, 'config.php')) and 'passbolt' in open(os.path.join(path, 'config.php')).read():
+    elif os.path.isfile(os.path.join(path, 'index.php')) and 'passbolt' in open(os.path.join(path, 'index.php')).read():
         return "Passbolt"
     elif os.path.isfile(os.path.join(path, 'config.php')) and 'mattermost' in open(os.path.join(path, 'config.php')).read():
         return "Mattermost"
+    elif os.path.isfile(os.path.join(path, 'package.json')) and 'peertube' in open(os.path.join(path, 'package.json')).read():
+        return "Peertube"
     return "Unknown"
 
 def getCmsVersion(path, cms_type):
@@ -99,7 +84,7 @@ def getCmsVersion(path, cms_type):
             for line in file:
                 if line.startswith('$OC_VersionString'):
                     return line.split('=')[1].strip().strip(';').strip("'")
-    elif cms_type == "PhpMyAdmin":
+    elif cms_type in ["PhpMyAdmin", "Peertube"]:
         version_file = os.path.join(path, 'package.json')
         with open(version_file, 'r') as file:
             content = file.read()
@@ -134,6 +119,17 @@ def getCmsVersion(path, cms_type):
             version = re.search(r"define\('DOL_VERSION',\s*'(.+?)'\);", content)
             if version:
                 return version.group(1)
+    elif cms_type == "Passbolt":
+        # Remove 'webroot' from the path and add 'bin/cake'
+        base_path = path.replace('/webroot', '')
+        command = f"{base_path}/bin/cake passbolt version"
+        try:
+            output = os.popen(command).read()
+            version = re.search(r"Passbolt (?:CE|EE) (\d+\.\d+\.\d+)", output)
+            if version:
+                return version.group(1)
+        except Exception:
+            return "Unknown"
     # Ajoutez des conditions similaires pour les autres CMS
     return "Unknown"
 
@@ -255,6 +251,32 @@ def getPlugins(path, cms_type):
                                 plugin_name = class_name.group(1)
                                 plugin_info = {'name': plugin_name, 'version': plugin_version.group(1)}
                                 plugins[status].append(plugin_info)
+    elif cms_type == "Moodle":
+        mod_dir = os.path.join(path, 'mod')
+        for root, dirs, files in os.walk(mod_dir):
+            for file in files:
+                if file == 'version.php':
+                    plugin_path = os.path.join(root, file)
+                    plugin_name = os.path.basename(os.path.dirname(plugin_path))
+                    with open(plugin_path, 'r') as f:
+                        content = f.read()
+                        plugin_version = re.search(r'\$plugin->version\s*=\s*(\d+);', content).group(1)
+                        plugins['enabled'].append({'name': plugin_name, 'version': plugin_version})
+    elif cms_type == "Joomla":
+        plugins_dir = os.path.join(path, 'plugins')
+        for root, dirs, files in os.walk(plugins_dir):
+            for file in files:
+                if file.endswith('.xml'):
+                    plugin_path = os.path.join(root, file)
+                    with open(plugin_path, 'r') as f:
+                        content = f.read()
+                        plugin_name_match = re.search(r'<name>(.*?)</name>', content)
+                        plugin_version_match = re.search(r'<version>(.*?)</version>', content)
+                        if plugin_name_match and plugin_version_match:
+                            plugin_name = plugin_name_match.group(1).split('_')[1]
+                            plugin_version = plugin_version_match.group(1)  
+                            plugins['enabled'].append({'name': plugin_name, 'version': plugin_version})
+        plugins['enabled'] = [dict(t) for t in {tuple(d.items()) for d in plugins['enabled']}]
     return plugins
 
-print(getAllSites())
+print(getAllSites(fileUtils.getWebsiteConfig()))

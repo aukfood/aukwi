@@ -1,7 +1,29 @@
 import subprocess
-import os
-import re
 import json
+
+def getAllDockers(configs):
+    """
+    Récupère toutes les informations sur les conteneurs Docker, y compris les noms, versions et URLs.
+    """
+    # Récupérer les noms des containers
+    docker_names = getDockerNames()
+    # Récupérer les versions des containers
+    docker_versions = getDockerVersions(docker_names)
+    
+    # Récupérer les URLs des containers
+    docker_urls = getDockerUrls(list(docker_names.keys()), configs)
+
+    # Combiner les informations dans une liste de dictionnaires
+    dockers_info = []
+    for name, type in docker_names.items():
+        if type != "Unknown" and docker_urls[name] != "Unknown":
+            dockers_info.append({
+                    "name": name,
+                    "type": type,
+                    "version": docker_versions[name],
+                    "url": docker_urls[name]
+                })
+    return dockers_info
 
 # Fonction pour récupérer tous les noms des containers Docker correspondant à un pattern
 def getDockerNames():
@@ -62,7 +84,7 @@ def getDockerVersions(nameList):
     return versions
 
 # Fonction pour récupérer les URLs des applications Docker
-def getDockerUrls(container_names, apache_config_path="/etc/apache2/sites-enabled"):
+def getDockerUrls(container_names, configs):
     """
     Récupère les URLs des applications Docker en associant les ports des conteneurs aux vhosts Apache.
     """
@@ -88,49 +110,14 @@ def getDockerUrls(container_names, apache_config_path="/etc/apache2/sites-enable
         except Exception as e:
             print(f"Erreur lors de l'inspection du conteneur {container} : {str(e)}")
     
-    # Étape 2 : Associer les ports aux vhosts Apache
-    for root, dirs, files in os.walk(apache_config_path):
-        for file in files:
-            if file.endswith(".conf"):  # Analyser uniquement les fichiers .conf
-                with open(os.path.join(root, file), 'r') as f:
-                    content = f.read()
-                    
-                    # Extraire les ServerName
-                    server_names = list(set(re.findall(r"ServerName\s+([^\s]+)", content)))
-                    
-                    # Extraire les ports dans ProxyPass et ProxyPassMatch, même avec du texte avant ou après
-                    proxy_passes = list(set(re.findall(r"ProxyPass(?:Match)?\s+[^\s]+\s+['\"]?https?://(?:127\.0\.0\.1|localhost):(\d+)", content)))
-                    
-                    # Associer les vhosts aux conteneurs en fonction des ports
-                    for server_name in server_names:
-                        for container, ports in container_ports.items():
-                            for port in ports:
-                                if port in proxy_passes:  # Si le port du conteneur correspond
-                                    vhosts[container] = server_name
+    # Étape 2 : Associer les ports aux vhosts
+    for config in configs:
+        if config['port']:  
+            for container, ports in container_ports.items():
+                if config['port'] in ports:
+                    vhosts[container] = config['url']
     return vhosts
 
-def getAllDockers():
-    """
-    Récupère toutes les informations sur les conteneurs Docker, y compris les noms, versions et URLs.
-    """
-    # Récupérer les noms des containers
-    docker_names = getDockerNames()
-    # Récupérer les versions des containers
-    docker_versions = getDockerVersions(docker_names)
-    
-    # Récupérer les URLs des containers
-    docker_urls = getDockerUrls(list(docker_names.keys()))
 
-    # Combiner les informations dans une liste de dictionnaires
-    dockers_info = []
-    for name, type in docker_names.items():
-        if type != "Unknown" and docker_urls[name] != "Unknown":
-            dockers_info.append({
-                    "name": name,
-                    "type": type,
-                    "version": docker_versions[name],
-                    "url": docker_urls[name]
-                })
-    return dockers_info
-
-print(getAllDockers())
+import fileUtils
+print(getAllDockers(fileUtils.getWebsiteConfig()))
