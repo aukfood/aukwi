@@ -12,7 +12,6 @@ def getAllSites(configs):
     sites_info = []
 
     for config in configs:
-        print( config)
         if config['path']:
             cms_type = determineCmsType(config['path'])
             version = getCmsVersion(config['path'], cms_type)

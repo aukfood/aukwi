@@ -54,19 +54,18 @@ def getWebsiteConfig():
     nginx_configs = searchConfigFiles("/etc/nginx/sites-enabled/", '*.conf')
     sites = []
     for config in apache_configs + nginx_configs:
-        print(config)
         with open(config, 'r') as file:
             content = file.read()
             url, path, port = None, None, None
             if "apache2" in config:
                 url_match = re.search(r"ServerName\s+([\S]+)", content)
                 path_match = re.search(r"DocumentRoot\s+([\S]+)", content)
-                port_match = re.search(r"ProxyPass(?:Match)?\s+[^\s]+\s+['\"]?(?:http://|https://)?(?:localhost|(?:\d{1,3}\.){3}\d{1,3}):(\d+)", content)
+                port_match = re.search(r"(?:ProxyPass(?:Match)?|ProxyPassReverse)\s+(?:(?!['\"]?(?:https?|ws)://)[^\s]+\s+)?['\"]?(?:https?|ws)://(?:127\.0\.0\.1|localhost):(\d+)", content)
             elif "nginx" in config:
                 url_match = re.search(r"server_name\s+([\S]+);", content)
                 path_match = re.search(r"root\s+([\S]+);", content)
-                port_match = re.search(r"server\s+(?:localhost|(?:\d{1,3}\.){3}\d{1,3}):(\d+)", content)
-
+                port_match = re.search(r"server\s+127\.0\.0\.1:(\d+)", content)
+            
             if url_match:
                 url = url_match.group(1)
             if path_match:

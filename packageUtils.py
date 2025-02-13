@@ -8,7 +8,8 @@ def getSitesPackages(configs):
         if config['port']:
             process = getProcessUsingPort(config['port'])
             if process:
-                version = re.match(r'(\d+\.\d+(\.\d+)*)', os.popen(f"dpkg-query -f '${{Version}}' -W {process}").read()).group(1)
+                version = re.match(r'(\d+\.\d+(\.\d+)*)', os.popen(f"dpkg-query -f '${{Version}}' -W {process}").read())
+                version = version.group(1) if version else searchVersion(process)
                 type = determineType(process)
                 sites_info.append({
                     'url': config['url'],
@@ -39,11 +40,10 @@ def getProcessUsingPort(port):
 
         # Utiliser dpkg pour obtenir le nom du paquet
         dpkg_result = subprocess.run(['dpkg', '-S', script_path], capture_output=True, text=True)
-        if dpkg_result.returncode == 0:
-            dpkg_output = dpkg_result.stdout.strip()
-            package_name = dpkg_output.split(':')[0]
-            return package_name
-        return script_path
+        dpkg_output = dpkg_result.stdout.strip()
+        package_name = dpkg_output.split(':')[0]
+
+        return package_name if package_name else script_path.split('/')[-1]
 
     except Exception as e:
         print(f"impossible de trouver le processus pour {port}", e)
@@ -59,3 +59,25 @@ def determineType(process):
         return "Matrix"
     else:
         return process
+    
+def searchVersion(process):
+    """
+    Recherche la version du cms avec systemctl.
+    """
+    try:
+        # Utiliser systemctl pour obtenir le répertoire de travail du paquet
+        systemctl_result = subprocess.run(['systemctl', 'show', process], capture_output=True, text=True)
+        systemctl_output = systemctl_result.stdout.strip().split('\n')
+        for line in systemctl_output:
+            if line.startswith('WorkingDirectory='):
+                working_directory = line.split('=')[1].strip()
+                version_file = os.path.join(working_directory, 'package.json')
+        with open(version_file, 'r') as file:
+            content = file.read()
+            version = re.search(r'"version":\s*"(.+?)"', content)
+            if version:
+                return version.group(1)
+        return "Unknown"
+    except Exception as e:
+        print(f"impossible de trouver le répertoire de travail pour {process}", e)
+        return "Unknown"

@@ -17,12 +17,14 @@ if __name__ == "__main__":
 # qu'est ce qui ne fonctionne pas ?
 # Version : docker[nextcloud?,rocket,calcom,matermost,]
 
-# peertube (normal)
+
 
 # rocketchat (normal + container) /x
-# mattermost (normal + container à venir) x/
+# mattermost (normal + container à venir) xx
 # nextcloud (normal + container) /x
+# calcom (container) x
 
+# peertube (normal) /
 # joomla (normal) /
 # moodle (normal + container à venir) //
 # passbolt (normal + container) //
