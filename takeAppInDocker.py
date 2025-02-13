@@ -102,6 +102,3 @@ def getAllDockers(configs):
                 })
     
     return dockers_info
-
-import fileUtils
-print(getAllDockers(fileUtils.getWebsiteConfig()))

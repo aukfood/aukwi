@@ -277,5 +277,3 @@ def getPlugins(path, cms_type):
                             plugins['enabled'].append({'name': plugin_name, 'version': plugin_version})
         plugins['enabled'] = [dict(t) for t in {tuple(d.items()) for d in plugins['enabled']}]
     return plugins
-
-print(getAllSites(fileUtils.getWebsiteConfig()))

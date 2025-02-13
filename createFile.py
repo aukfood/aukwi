@@ -4,7 +4,7 @@ import takeAppInDocker
 import fileUtils
 import subprocess
 import re
-
+import os
 def createAndSend(glpi_url):
     """
     Crée l'inventaire JSON en local, ajoute les sites en tant que logiciels, et l'envoie à GLPI.
@@ -90,6 +90,8 @@ def createAndSend(glpi_url):
     # Étape 3 : Soumettre l'inventaire mis à jour à GLPI
     print_progress(current_step, total_steps)
     print("\n")
-    subprocess.run(["glpi-agent", "--force", f"--server={glpi_url}", f"--tag={re.sub(r'[^A-Za-z0-9]', '', client)}"])
+    
+    workingDir = os.getcwd()
+    subprocess.run(["sudo", "glpi-agent", "--force", f"--additional-content={workingDir}/inventory.json", f"--server={glpi_url}", f"--tag={re.sub(r'[^A-Za-z0-9]', '', client)}"])
 
     print("\nInventaire terminé et envoyé à GLPI.")
