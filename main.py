@@ -12,18 +12,11 @@ def main():
 
 if __name__ == "__main__":
     main()
-    
-    
-# qu'est ce qui ne fonctionne pas ?
-# Version : docker[nextcloud?,rocket,calcom,matermost,]
 
-
-
-# rocketchat (normal + container) /x
-# mattermost (normal + container à venir) xx
-# nextcloud (normal + container) /x
-# calcom (container) x
-
+# rocketchat (normal + container) //
+# mattermost (normal + container à venir) //
+# nextcloud (normal + container) //
+# calcom (container) /
 # peertube (normal) /
 # joomla (normal) /
 # moodle (normal + container à venir) //
@@ -36,3 +29,4 @@ if __name__ == "__main__":
 # onlyoffice (container) /
 # phpmyadmin (normal) /
 # dolibarr (normal) /
+# wordpress /

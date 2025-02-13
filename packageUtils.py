@@ -8,7 +8,7 @@ def getSitesPackages(configs):
         if config['port']:
             process = getProcessUsingPort(config['port'])
             if process:
-                version = re.match(r'(\d+\.\d+(\.\d+)*)', os.popen(f"dpkg-query -f '${{Version}}' -W {process}").read())
+                version = re.match(r'(\d+\.\d+(\.\d+)*)', os.popen(f"dpkg-query -f '${{Version}}' -W {process} 2>/dev/null").read())
                 version = version.group(1) if version else searchVersion(process)
                 type = determineType(process)
                 sites_info.append({
@@ -71,12 +71,21 @@ def searchVersion(process):
         for line in systemctl_output:
             if line.startswith('WorkingDirectory='):
                 working_directory = line.split('=')[1].strip()
-                version_file = os.path.join(working_directory, 'package.json')
-        with open(version_file, 'r') as file:
-            content = file.read()
-            version = re.search(r'"version":\s*"(.+?)"', content)
-            if version:
-                return version.group(1)
+                break
+        if process == "mattermost":
+            version_output = subprocess.getoutput(f'{working_directory}/bin/mattermost version')
+            if version_output:
+                # Parcourir les lignes pour trouver celle qui commence par "Version:"
+                for line in version_output.split('\n'):
+                    if line.startswith('Version:'):
+                        return line.split('Version:')[1].strip()
+        else:
+            version_file = os.path.join(working_directory, 'package.json')
+            with open(version_file, 'r') as file:
+                content = file.read()
+                version = re.search(r'"version":\s*"(.+?)"', content)
+                if version:
+                    return version.group(1)
         return "Unknown"
     except Exception as e:
         print(f"impossible de trouver le répertoire de travail pour {process}", e)
