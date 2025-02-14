@@ -1,9 +1,19 @@
 import re
 import os
 import fnmatch
+
 def getDbCredentialsFromWpConfig(path):
     """
     Extrait les informations de connexion à la base de données depuis le fichier wp-config.php.
+    
+    Args:
+        path: Chemin vers le fichier wp-config.php
+        
+    Returns:
+        Tuple (dbname, dbuser, dbpass) contenant les informations de connexion
+        
+    Raises:
+        ValueError: Si les informations ne sont pas trouvées
     """
     with open(path, 'r') as file:
         config = file.read()
@@ -18,6 +28,15 @@ def getDbCredentialsFromWpConfig(path):
 def getDbCredentialsFromLimeSurveyConfig(path):
     """
     Extrait les informations de connexion à la base de données depuis le fichier config.php de LimeSurvey.
+    
+    Args:
+        path: Chemin vers le fichier config.php
+        
+    Returns:
+        Tuple (dbname, dbuser, dbpass, dbhost, dbport, table_prefix) contenant les informations de connexion
+        
+    Raises:
+        ValueError: Si les informations ne sont pas trouvées
     """
     with open(path, 'r') as file:
         config = file.read()
@@ -37,7 +56,14 @@ def getDbCredentialsFromLimeSurveyConfig(path):
 
 def searchConfigFiles(currentpath, pattern):
     """
-    Recherche des fichiers correspondant à un pattern donné dans un répertoire et ses sous-répertoires.
+    Recherche récursivement des fichiers correspondant à un pattern dans un répertoire.
+    
+    Args:
+        currentpath: Répertoire de départ pour la recherche
+        pattern: Pattern de nom de fichier à rechercher (ex: "*.conf")
+        
+    Returns:
+        Liste des chemins complets des fichiers trouvés
     """
     listPath = []
     for path, dirs, files in os.walk(currentpath):
@@ -48,7 +74,10 @@ def searchConfigFiles(currentpath, pattern):
 
 def getWebsiteConfig():
     """
-    Recherche des configurations de sites web dans les répertoires des serveurs web
+    Recherche et analyse les configurations de sites web dans Apache et Nginx.
+    
+    Returns:
+        Liste de dictionnaires contenant les informations des sites (url, path, port)
     """
     apache_configs = searchConfigFiles("/etc/apache2/sites-enabled/", '*.conf')
     nginx_configs = searchConfigFiles("/etc/nginx/sites-enabled/", '*.conf')

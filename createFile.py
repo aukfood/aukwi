@@ -5,7 +5,7 @@ import fileUtils
 import subprocess
 import re
 import os
-def createAndSend(glpi_url):
+def createAndSend(glpi_url, config_path):
     """
     Crée l'inventaire JSON en local, ajoute les sites en tant que logiciels, et l'envoie à GLPI.
     """
@@ -61,29 +61,34 @@ def createAndSend(glpi_url):
             "name": site['url'],
             "publisher": "AukFood",
             "version": site['version'],
-            "system_category": site['type']
+            "system_category": site['type'],
+            "comments": "\n".join([
+                f"{plugin['name']} (v{plugin['version']}) - {status}"
+                for status in site['plugins'].keys()
+                for plugin in site['plugins'][status]
+            ]),
         }
         inventory["content"]["softwares"].append(new_software)
-        for status in site['plugins'].keys():
-            for plugin in site['plugins'][status]:
-                new_software = {
-                    "arch": "all",
-                    "name": plugin['name'],
-                    "publisher": "AukFood",
-                    "version": plugin['version'],
-                    "system_category": f"Plugin ({status})"
-                }
-                inventory["content"]["softwares"].append(new_software)
+        # for status in site['plugins'].keys():
+        #     for plugin in site['plugins'][status]:
+        #         new_software = {
+        #             "arch": "all",
+        #             "name": plugin['name'],
+        #             "publisher": "AukFood",
+        #             "version": plugin['version'],
+        #             "system_category": f"Plugin ({status})"
+        #         }
+        #         inventory["content"]["softwares"].append(new_software)
 
     # Spécifier l'entité (client)
     try:
-        with open("/etc/ansible/facts.d/client-server.fact", "r") as facts:
+        with open(config_path, "r") as facts:
             for line in facts:
                 if line.startswith('client'):
                     client = line.split('=')[1].strip()
                     break
     except FileNotFoundError:
-        client = "Clients"
+        client = None
 
     # Enregistrer le fichier JSON modifié
     print_progress(current_step, total_steps)
@@ -96,6 +101,9 @@ def createAndSend(glpi_url):
     print("\n")
     
     workingDir = os.getcwd()
-    subprocess.run(["sudo", "glpi-agent", "--force", f"--additional-content={workingDir}/inventory.json", f"--server={glpi_url}", f"--tag={re.sub(r'[^A-Za-z0-9]', '', client)}"])
+    if client is not None:
+        subprocess.run(["sudo", "glpi-agent", "--force", f"--additional-content={workingDir}/inventory.json", f"--server={glpi_url}", f"--tag={re.sub(r'[^A-Za-z0-9]', '', client)}"])
+    else:
+        subprocess.run(["sudo", "glpi-agent", "--force", f"--additional-content={workingDir}/inventory.json", f"--server={glpi_url}"])
 
     print("\nInventaire terminé et envoyé à GLPI.")

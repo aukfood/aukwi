@@ -31,45 +31,45 @@ def determineCmsType(path):
     Détermine le type de CMS (Wordpress, Moodle, NextCloud, etc.) à partir des fichiers de configuration spécifiques.
     """
     if os.path.isfile(os.path.join(path, 'wp-config.php')):
-        return "Wordpress"
+        return "wordpress"
     elif os.path.isfile(os.path.join(path, 'config.php')) and 'moodle' in open(os.path.join(path, 'config.php')).read():
-        return "Moodle"
+        return "moodle"
     elif os.path.isfile(os.path.join(path, 'version.php')) and 'OC_Version' in open(os.path.join(path, 'version.php')).read():
-        return "NextCloud"
+        return "nextcloud"
     elif os.path.isfile(os.path.join(path, 'package.json')) and 'phpmyadmin' in open(os.path.join(path, 'package.json')).read():
-        return "PhpMyAdmin"
+        return "phpmyadmin"
     elif os.path.isfile(os.path.join(path, 'index.php')) and 'JOOMLA' in open(os.path.join(path, 'index.php')).read():
-        return "Joomla"
+        return "joomla"
     elif os.path.isfile(os.path.join(path, 'composer.json')) and 'drupal' in open(os.path.join(path, 'composer.json')).read():
-        return "Drupal"
+        return "drupal"
     elif os.path.isfile(os.path.join(path, 'conf/conf.php')) and 'dolibarr' in open(os.path.join(path, 'conf/conf.php')).read():
-        return "Dolibarr"
+        return "dolibarr"
     elif os.path.isfile(os.path.join(path, 'application/config/config.php')) and 'lime' in open(os.path.join(path, 'application/config/config.php')).read():
-        return "LimeSurvey"
+        return "limesurvey"
     elif os.path.isfile(os.path.join(path, 'config.php')) and 'gitlab' in open(os.path.join(path, 'config.php')).read():
-        return "GitLab"
+        return "gitlab"
     elif os.path.isfile(os.path.join(path, 'config.php')) and 'rocketchat' in open(os.path.join(path, 'config.php')).read():
-        return "RocketChat"
+        return "rocketchat"
     elif os.path.isfile(os.path.join(path, 'index.php')) and 'passbolt' in open(os.path.join(path, 'index.php')).read():
-        return "Passbolt"
+        return "passbolt"
     elif os.path.isfile(os.path.join(path, 'config.php')) and 'mattermost' in open(os.path.join(path, 'config.php')).read():
-        return "Mattermost"
+        return "mattermost"
     elif os.path.isfile(os.path.join(path, 'package.json')) and 'peertube' in open(os.path.join(path, 'package.json')).read():
-        return "Peertube"
-    return "Unknown"
+        return "peertube"
+    return path.split('/')[-1].split('.')[0]
 
 def getCmsVersion(path, cms_type):
     """
     Récupère la version du CMS installé à partir des fichiers de version.
     """
-    if cms_type == "Wordpress":
+    if cms_type == "wordpress":
         version_file = os.path.join(path, 'wp-includes/version.php')
         with open(version_file, 'r') as file:
             content = file.read()
             version = re.search(r"\$wp_version\s*=\s*'(.+?)';", content)
             if version:
                 return version.group(1)
-    elif cms_type == "Moodle":
+    elif cms_type == "moodle":
         version_file = os.path.join(path, 'version.php')
         with open(version_file, 'r') as file:
             for line in file:
@@ -77,49 +77,41 @@ def getCmsVersion(path, cms_type):
                     version = re.search(r'(\d+\.\d+\.\d+)', line)
                     if version:
                         return version.group(1)
-    elif cms_type == "NextCloud":
+    elif cms_type == "nextcloud":
         version_file = os.path.join(path, 'version.php')
         with open(version_file, 'r') as file:
             for line in file:
                 if line.startswith('$OC_VersionString'):
                     return line.split('=')[1].strip().strip(';').strip("'")
-    elif cms_type in ["PhpMyAdmin", "Peertube"]:
-        version_file = os.path.join(path, 'package.json')
-        with open(version_file, 'r') as file:
-            content = file.read()
-            version = re.search(r'"version":\s*"(.+?)"', content)
-            if version:
-                return version.group(1)
-    elif cms_type == "Joomla":
+    elif cms_type == "joomla":
         version_file = os.path.join(path, 'administrator/manifests/files/joomla.xml')
         with open(version_file, 'r') as file:
             content = file.read()
             version = re.search(r'<version>(.*?)</version>', content)
             if version:
                 return version.group(1)
-    elif cms_type == "LimeSurvey":
+    elif cms_type == "limesurvey":
         version_file = os.path.join(path, 'application/config/version.php')
         with open(version_file, 'r') as file:
             content = file.read()
             version = re.search(r"\$config\['versionnumber'\]\s*=\s*'(.+?)';", content)
             if version:
                 return version.group(1)
-    elif cms_type == "Drupal":
+    elif cms_type == "drupal":
         version_file = os.path.join(path, 'composer.lock')
         with open(version_file, 'r') as file:
             content = file.read()
             version = re.search(r'"name":\s*"drupal/core",\s*"version":\s*"(.+?)"', content)
             if version:
                 return version.group(1)
-    elif cms_type == "Dolibarr":
+    elif cms_type == "dolibarr":
         version_file = os.path.join(path, 'filefunc.inc.php')
         with open(version_file, 'r') as file:
             content = file.read()
             version = re.search(r"define\('DOL_VERSION',\s*'(.+?)'\);", content)
             if version:
                 return version.group(1)
-    elif cms_type == "Passbolt":
-        # Remove 'webroot' from the path and add 'bin/cake'
+    elif cms_type == "passbolt":
         base_path = path.replace('/webroot', '')
         command = f"{base_path}/bin/cake passbolt version"
         try:
@@ -129,7 +121,13 @@ def getCmsVersion(path, cms_type):
                 return version.group(1)
         except Exception:
             return "Unknown"
-    # Ajoutez des conditions similaires pour les autres CMS
+    elif os.path.isfile(os.path.join(path, 'package.json')):
+        version_file = os.path.join(path, 'package.json')
+        with open(version_file, 'r') as file:
+            content = file.read()
+            version = re.search(r'"version":\s*"(.+?)"', content)
+            if version:
+                return version.group(1)
     return "Unknown"
 
 def getPlugins(path, cms_type):
@@ -177,7 +175,7 @@ def getPlugins(path, cms_type):
                         if re.search(r'\d', plugin_version):
                             plugins['disabled'].append({'name': plugin_name, 'version': plugin_version})
         connection.close()
-    elif cms_type == "NextCloud":
+    elif cms_type == "nextcloud":
         apps_dir = os.path.join(path, 'apps')
         for root, dirs, files in os.walk(apps_dir):
             for dir in dirs:
@@ -188,14 +186,14 @@ def getPlugins(path, cms_type):
                         app_name = re.search(r'<id>(.*?)</id>', content).group(1)
                         app_version = re.search(r'<version>(.*?)</version>', content).group(1)
                         plugins['enabled'].append({'name': app_name, 'version': app_version})
-    elif cms_type == "PhpMyAdmin":
+    elif cms_type == "phpmyadmin":
         composer_lock_file = os.path.join(path, 'composer.lock')
         with open(composer_lock_file, 'r') as file:
             content = file.read()
             packages = re.findall(r'"name":\s*"([^"]+)",\s*"version":\s*"([^"]+)"', content)
             for package in packages:
                 plugins['enabled'].append({'name': package[0], 'version': package[1]})
-    elif cms_type == "LimeSurvey":
+    elif cms_type == "limesurvey":
         config_path = os.path.join(path, 'application/config/config.php')
         dbname, dbuser, dbpass, dbhost, dbport, table_prefix = fileUtils.getDbCredentialsFromLimeSurveyConfig(config_path)
         connection = pymysql.connect(
@@ -215,7 +213,7 @@ def getPlugins(path, cms_type):
             else:
                 plugins['disabled'].append(plugin_info)
         connection.close()
-    elif cms_type == "Drupal":
+    elif cms_type == "drupal":
         modules_dir = os.path.join(path, 'modules')
         themes_dir = os.path.join(path, 'themes')
         plugins = {'module': [], 'theme': []}
@@ -232,7 +230,7 @@ def getPlugins(path, cms_type):
                             plugins[type].append({'name': plugin_name, 'version': plugin_version})
                         # Stop descending into subdirectories once a .info.yml file is found
                         dirs[:] = []
-    elif cms_type == "Dolibarr":
+    elif cms_type == "dolibarr":
         custom_dir = os.path.join(path, 'custom')
         core_modules_dir = os.path.join(path, 'core/modules')
         plugins = {'custom': [], 'core': []}
@@ -250,7 +248,7 @@ def getPlugins(path, cms_type):
                                 plugin_name = class_name.group(1)
                                 plugin_info = {'name': plugin_name, 'version': plugin_version.group(1)}
                                 plugins[status].append(plugin_info)
-    elif cms_type == "Moodle":
+    elif cms_type == "moodle":
         mod_dir = os.path.join(path, 'mod')
         for root, dirs, files in os.walk(mod_dir):
             for file in files:
@@ -261,7 +259,7 @@ def getPlugins(path, cms_type):
                         content = f.read()
                         plugin_version = re.search(r'\$plugin->version\s*=\s*(\d+);', content).group(1)
                         plugins['enabled'].append({'name': plugin_name, 'version': plugin_version})
-    elif cms_type == "Joomla":
+    elif cms_type == "joomla":
         plugins_dir = os.path.join(path, 'plugins')
         for root, dirs, files in os.walk(plugins_dir):
             for file in files:

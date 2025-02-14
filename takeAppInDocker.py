@@ -1,5 +1,6 @@
 import subprocess
 import json
+import re
 
 def getDockerFromPort(port):
     """
@@ -28,7 +29,7 @@ def getDockerFromPort(port):
         common_word = next((word for word in image_parts if any(word in part for part in name_parts)), None)
         docker_type = common_word if common_word else image_parts[0] if image_parts else name_parts[0]
         
-        docker_type = docker_type[:1].upper() + docker_type[1:] if docker_type else "Unknown"
+        docker_type = docker_type.lower() if docker_type else "Unknown"
             
         return {"name": container_name, "type": docker_type}
     except Exception as e:
@@ -40,18 +41,18 @@ def getDockerVersion(container_name, docker_type, port):
     Récupère la version d'un conteneur Docker selon son type.
     """
     try:
-        if "cal" in docker_type.lower():
+        if "cal" in docker_type:
             version_output = subprocess.getoutput(f'docker exec {container_name} npm pkg get version --workspace=@calcom/web')
             if version_output:
                 version_json = json.loads(version_output)
                 return version_json["@calcom/web"]
                 
-        elif "mattermost" in docker_type.lower():
+        elif "mattermost" in docker_type:
             version_output = subprocess.getoutput(f'docker exec {container_name} mattermost version')
             if version_output:
                 return version_output.split('\n')[0].split('Version:')[1].strip()
                 
-        elif "nextcloud" in docker_type.lower():
+        elif "nextcloud" in docker_type:
             container_name = container_name.replace('-apache', '')
             main_container = subprocess.getoutput(f'docker ps --format "{{{{.Names}}}}" | grep "{container_name}" | grep "nextcloud-aio-nextcloud$"')
             if main_container:
@@ -60,7 +61,7 @@ def getDockerVersion(container_name, docker_type, port):
                     version_json = json.loads(version_output)
                     return version_json.get('version', 'Unknown')
 
-        elif "rocket" in docker_type.lower():
+        elif "rocket" in docker_type:
             try:
                 version_output = subprocess.getoutput(f'curl -s http://localhost:{port}/api/info')
                 version_json = json.loads(version_output)
@@ -70,13 +71,12 @@ def getDockerVersion(container_name, docker_type, port):
                 return "Unknown"
 
         else:
-            status = subprocess.getoutput(f'docker exec -it {container_name} cat /var/lib/dpkg/status').split()
-            package_name = next((pkg for pkg in status if docker_type in pkg), None)
-            if package_name:
-                package_index = status.index(package_name)
-                status = status[package_index:]
-                version_index = status.index("Version:") + 1
-                return status[version_index]
+            # Récupérer le contenu du fichier status
+            status = subprocess.getoutput(f'docker exec {container_name} cat /var/lib/dpkg/status')
+            # Rechercher le bloc correspondant au package avec des préfixes et suffixes possibles
+            package_block = re.search(f'Package: .*?[-.a-z]*{docker_type.lower()}[-.a-z]*.*?Version: ([\d.-]+(?:ce|ee)?\.?\d*)', status, re.DOTALL | re.IGNORECASE)
+            if package_block:
+                return package_block.group(1)
                 
     except Exception as e:
         print(f"Erreur lors de la récupération de la version pour {container_name}: {str(e)}")

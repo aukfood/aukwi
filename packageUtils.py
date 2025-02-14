@@ -3,6 +3,15 @@ import re
 import subprocess
 
 def getSitesPackages(configs):
+    """
+    Récupère les informations des sites installés via des paquets système.
+    
+    Args:
+        configs: Liste des configurations de sites contenant les ports et URLs
+        
+    Returns:
+        Liste de dictionnaires contenant les informations des sites (url, type, version, plugins)
+    """
     sites_info = []
     for config in configs:
         if config['port']:
@@ -21,7 +30,13 @@ def getSitesPackages(configs):
 
 def getProcessUsingPort(port):
     """
-    Récupère le processus utilisant un port donné.
+    Récupère le nom du processus/paquet qui utilise un port donné.
+    
+    Args:
+        port: Numéro du port à vérifier
+        
+    Returns:
+        Nom du paquet ou None si non trouvé/erreur
     """
     try:
         # Utiliser lsof pour obtenir le PID du processus utilisant le port
@@ -51,18 +66,30 @@ def getProcessUsingPort(port):
 
 def determineType(process):
     """
-    Détermine le type du cms.
+    Détermine le type de CMS basé sur le nom du processus.
+    
+    Args:
+        process: Nom du processus
+        
+    Returns:
+        Type de CMS identifié ou le nom du processus si non reconnu
     """
     if process == "coolwsd":
-        return "Collabora"
+        return "collabora"
     elif process == "matrix-synapse-py3":
-        return "Matrix"
+        return "matrix"
     else:
         return process
     
 def searchVersion(process):
     """
-    Recherche la version du cms avec systemctl.
+    Recherche la version du CMS en utilisant systemctl et les fichiers de configuration.
+    
+    Args:
+        process: Nom du processus
+        
+    Returns:
+        Version trouvée ou "Unknown" si non trouvée
     """
     try:
         # Utiliser systemctl pour obtenir le répertoire de travail du paquet
