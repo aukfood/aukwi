@@ -38,6 +38,10 @@ def createAndSend(glpi_url):
     # Étape 2 : Modifier le fichier JSON pour ajouter les sites en tant que logiciels
     with open("inventory.json", "r") as file:
         inventory = json.load(file)
+    
+    # Supprimer complètement la liste des logiciels existants et la réinitialiser
+    if "softwares" in inventory["content"]:
+        del inventory["content"]["softwares"]
     inventory["content"]["softwares"] = []
 
     # Ajouter les sites en tant que logiciels

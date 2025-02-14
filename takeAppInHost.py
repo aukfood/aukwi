@@ -16,8 +16,8 @@ def getAllSites(configs):
             cms_type = determineCmsType(config['path'])
             version = getCmsVersion(config['path'], cms_type)
             plugins = getPlugins(config['path'], cms_type)
-            #if config['url']!="Unknown" and cms_type!="Unknown":
-            sites_info.append({
+            if config['url']!="Unknown" and cms_type!="Unknown":
+                sites_info.append({
                     'url': config['url'],
                     'type': cms_type,
                     'version': version,
