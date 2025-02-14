@@ -79,8 +79,8 @@ def getWebsiteConfig():
     Returns:
         Liste de dictionnaires contenant les informations des sites (url, path, port)
     """
-    apache_configs = searchConfigFiles("/etc/apache2/sites-enabled/", '*.conf')
-    nginx_configs = searchConfigFiles("/etc/nginx/sites-enabled/", '*.conf')
+    apache_configs = searchConfigFiles("/etc/apache2/sites-enabled/", '*')
+    nginx_configs = searchConfigFiles("/etc/nginx/sites-enabled/", '*')
     sites = []
     for config in apache_configs + nginx_configs:
         with open(config, 'r') as file:
